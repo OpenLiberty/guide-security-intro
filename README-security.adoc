@@ -1,0 +1,288 @@
+// Copyright (c) 2017 IBM Corporation and others.
+// Licensed under Creative Commons Attribution-NoDerivatives
+// 4.0 International (CC BY-ND 4.0)
+//   https://creativecommons.org/licenses/by-nd/4.0/
+//
+// Contributors:
+//   IBM Corporation
+:projectid: microprofile-security
+:page-layout: guide
+:page-duration: 30 minutes
+:page-releasedate: 2017-12-11
+:page-description: Learn how to use the
+:page-tags: ['REST', 'MicroProfile', 'Security', 'CDI']
+:page-permalink: /guides/{projectid}
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:source-highlighter: prettify
+= Securing a web application. OR Building a secure web application.
+
+Learn how to use appSecurity-3.0 to secure a web application.
+
+// =================================================================================================
+// What you'll learn
+// =================================================================================================
+
+== What you'll learn
+You will learn how to secure your web application by performing authentication and authorization. 
+
+Authentication confirms the identity of the user.The most common authentication is user name and password, through basic authentication or form authentication. In this application we will be using form authentication. You will be setting up a basic user registry with test variables. 
+
+--
+--
+--
+
+Authorization determines whether a user has access to a specific role within the system. In this application we will have two roles: Event Administrator and Registered User. 
+
+--
+--
+--
+
+The application itself is a basic event application that allows Registered Users to create and register for events.Registered Users have access to the attendees of events they have created only. Whereas the Event Administrator has access to the attendees of all events regardless of whether they created the event.
+
+
+// =================================================================================================
+== Getting Started
+// =================================================================================================
+
+
+The fastest way to work through this guide is to clone the Git repository and use the projects that are provided inside:
+
+[subs="attributes"]
+----
+git clone https://github.com/openliberty/guide-{projectid}.git
+cd guide-{projectid}
+----
+
+The `start` directory contains the starting project that you will build upon.
+
+The `finish` directory contains the finished project, which is what you will build.
+
+*Try what you'll build*
+
+The  `finish` directory in the root of this guide contains the finished events application. Feel free to give it a try before you proceed.
+
+To try out the application, first navigate to the `finish` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
+
+`mvn install liberty:start-server`
+
+After starting the application, you can access the following " " to test the application:
+
+`http://localhost:9080/eventmanager.jsf`
+
+~SCENARIO~
+
+* As mentioned above, you can access this application under two different roles
+
+.Basic Registry
+|===
+|Username |Password|Role
+
+|bob
+|pwd
+|eventAdministrator
+
+|alice
+|alicepwd
+|registeredUser
+|===
+
+* To try out the authentication of the application, sign in with either credentials from the Basic Registry
+
+* To try out the authorization of the application, sign in as Bob, create an event and register for it
+
+* Click details, as you can see you will be able to see that you have registered for the event
+
+* Next, log out and sign in as Alice, create an event and register for it
+
+* Click details, as you can see you will not be able to see that you have registered for the event. 
+
+
+Once you are done checking out the application, stop the Open Liberty server:
+`mvn liberty:stop-server`
+
+
+
+// =================================================================================================
+//
+// =================================================================================================
+== Configuration
+* Configure the basic registry and roles
+* Add the following into the server.xml file 
+
+```a
+<basicRegistry id="basic" realm="WebRealm">
+    <user name="bob" password="{xor}Lyg7" />  <!-- pwd -->
+    <user name="alice" password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
+    <user name="carl" password="{xor}PD4tMy8oOw==" />   <!-- carlpwd -->
+
+    <group name="myAdmins">
+      <member name="bob" />
+    </group>
+
+    <group name="myUsers">
+      <member name="bob" />
+      <member name="alice" />
+      <member name="carl" />
+    </group>
+  </basicRegistry>
+```
+* You can define users and groups in the basic user registry for authentication. 
+* The names for users and groups must be unique. 
+* In our case, we have a group called "myAdmins" and another group called "myUsers".
+
+* Next, we will use these groups we have defined in order to specify the security roles that each group takes on. 
+
+* Add the following into the server.xml file 
+
+```
+      <application location="io.openliberty.guides.eventapp.war" type="war"
+        id="io.openliberty.guides.eventapp" name="io.openliberty.guides.eventapp"
+        context-root="/">
+        <application-bnd>
+          <security-role name="eventAdministrator">
+            <group name="myAdmins" />
+          </security-role>
+          <security-role name="registeredUser">
+            <group name="myUsers" />
+          </security-role>
+        </application-bnd>
+      </application>
+
+```
+* Specifies the security roles to groups you previously defined
+
+* Next, we will specify the security roles and constraints in the web.xml file located in ...
+
+```
+  <!-- SECURITY CONSTRAINTS -->
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>ViewUsers</web-resource-name>
+      <url-pattern>/event/users</url-pattern>
+      <http-method>GET</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>eventAdministrator</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+
+  <!-- AUTHENTICATION METHOD: Basic authentication -->
+  <!-- <login-config> <auth-method>BASIC</auth-method> </login-config> -->
+
+
+  <login-config id="LoginConfig_1">
+    <auth-method>FORM</auth-method>
+    <realm-name>WebRealm</realm-name>
+    <form-login-config id="FormLoginConfig_1">
+      <form-login-page>/login.jsf</form-login-page>
+      <form-error-page>/loginerror.jsf</form-error-page>
+    </form-login-config>
+  </login-config>
+
+```
+== Authentication
+* FormAuthenticationMechanismDefinition annotation
+
+*Insert the following annotation in the LoginBean.java file
+
+```
+@FormAuthenticationMechanismDefinition(
+  loginToContinue = @LoginToContinue(
+    loginPage = "/login.jsf",
+    errorPage = "/loginerror.jsf",
+    useForwardToLogin = true)
+  )
+
+```
+
+* Authentication by request.login(this.j_username, this.j_password);
+
+```
+  public String doLogIn() {
+    HttpServletRequest request = SessionUtils.getRequest();
+
+    // do login
+    try {
+      request.login(this.j_username, this.j_password);
+    } catch (ServletException e) {
+      //context.addMessage(null, new FacesMessage("Login failed."));
+      System.out.println("Login failed.");
+      pageDispatcher.showLogError();
+      return "eventmanager.jsf";
+    }
+
+  }
+```
+* request.login(this.j_username, this.j_password) validates the given username and password we configured earlier in the basic registry
+
+== Authorization 
+* Authorization can be achieved after login:
+
+```
+String remoteUser = request.getRemoteUser();
+String role = getRole(request);
+
+// update session
+if (remoteUser != null && remoteUser.equals(j_username)){
+    updateSessionUser(request, j_username, j_password, role);
+} else {
+  System.out.println("Update Sessional User Failed.");
+}
+
+pageDispatcher.showMainPage();
+return "eventmanager.jsf";
+```
+
+* request.getRemoteUser / getRole => figures out what role the current user that just successfully logged in has
+
+* updateSessionUser( ...) gives the session the role the user has which will be checked later on... 
+
+
+// =================================================================================================
+// Building the application
+// =================================================================================================
+
+== Building the application
+include::{common-includes}/mvnbuild.adoc[]
+
+
+// =================================================================================================
+// Starting the application
+// =================================================================================================
+
+== Starting the application
+
+To see the new application in action, run the Maven `liberty:start-server` command from the `start` directory:
+
+[source]
+----
+$ mvn liberty:start-server
+----
+
+
+
+
+// =================================================================================================
+// Testing the application
+// =================================================================================================
+
+== Testing the application
+
+* Testing Authentication
+  - request.login() with correct credentials 
+  - request.login() with incorrect credentials and checking for the correct exception
+
+* Testing Authorization
+  - checking if eventAdmin has access to list of people registered for events
+  - checking that registeredUser does not have access to list of people registered for events
+
+
+=== Running the tests
+
+
+
+== Great work! You're done!
+
+include::{common-includes}/finish.adoc[]
