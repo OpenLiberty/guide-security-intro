@@ -25,7 +25,7 @@ Learn how to use appSecurity-3.0 to secure a web application.
 == What you'll learn
 You will learn how to secure your web application by performing authentication and authorization. 
 
-Authentication confirms the identity of the user.The most common authentication is user name and password, through basic authentication or form authentication. In this application we will be using form authentication. You will be setting up a basic user registry with test variables. 
+Authentication confirms the identity of the user. The most common authentication is user name and password, through basic authentication or form authentication. In this application we will be showing both methods of authentication. You will be setting up a basic user registry with test variables. 
 
 --
 --
@@ -71,7 +71,7 @@ After starting the application, you can access the following " " to test the app
 
 ~SCENARIO~
 
-* As mentioned above, you can access this application under two different roles
+As mentioned above, you can access this application under two different roles:
 
 .Basic Registry
 |===
@@ -86,9 +86,10 @@ After starting the application, you can access the following " " to test the app
 |registeredUser
 |===
 
-* To try out the authentication of the application, sign in with either credentials from the Basic Registry
 
-* To try out the authorization of the application, sign in as Bob, create an event and register for it
+Try out the authentication of the application by signing in with either credentials from the Basic Registry. 
+
+* Try out the authorization of the application, sign in as Bob, create an event and register for it
 
 * Click details, as you can see you will be able to see that you have registered for the event
 
@@ -167,20 +168,6 @@ Once you are done checking out the application, stop the Open Liberty server:
     </auth-constraint>
   </security-constraint>
 
-
-  <!-- AUTHENTICATION METHOD: Basic authentication -->
-  <!-- <login-config> <auth-method>BASIC</auth-method> </login-config> -->
-
-
-  <login-config id="LoginConfig_1">
-    <auth-method>FORM</auth-method>
-    <realm-name>WebRealm</realm-name>
-    <form-login-config id="FormLoginConfig_1">
-      <form-login-page>/login.jsf</form-login-page>
-      <form-error-page>/loginerror.jsf</form-error-page>
-    </form-login-config>
-  </login-config>
-
 ```
 == Authentication
 * FormAuthenticationMechanismDefinition annotation
@@ -218,6 +205,13 @@ Once you are done checking out the application, stop the Open Liberty server:
 * request.login(this.j_username, this.j_password) validates the given username and password we configured earlier in the basic registry
 
 == Authorization 
+*Authorization with specific roles can be achieved using the following annotations 
+
+** @DeclareRoles()
+** @RolesAllowed()
+
+* These annotations allow you to specify the roles of each user group without configuration in the server.xml file. The group to role mapping is accomplished automatically as long as the user group names and the role names are identical. 
+
 * Authorization can be achieved after login:
 
 ```
