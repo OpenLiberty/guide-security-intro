@@ -25,25 +25,35 @@ import javax.ws.rs.core.Response;
 import io.openliberty.guides.inventory.model.InventoryList;
 import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Context;
+
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.Context;
 
 @RequestScoped
 @Path("systems")
+// @PermitAll
+@DeclareRoles({"myAdmins", "myUsers"})
 public class InventoryResource {
 
   @Inject
   InventoryManager manager;
 
+
+  @Context
+  private SecurityContext securityContext;
+
   @GET
-  @RolesAllowed({ "admin", "user" })
+  @RolesAllowed({ "myAdmins", "myUsers" })
   @Path("{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getPropertiesForHost(@PathParam("hostname") String hostname,
       @Context HttpHeaders httpHeaders) {
-    String authHeader = httpHeaders.getRequestHeaders()
-                                   .getFirst(HttpHeaders.AUTHORIZATION);
-    Properties props = manager.get(hostname, authHeader);
+    // String authHeader = httpHeaders.getRequestHeaders()
+    //                                .getFirst(HttpHeaders.AUTHORIZATION);
+    Properties props = manager.get(hostname);
     if (props == null) {
       return Response.status(Response.Status.NOT_FOUND)
                      .entity(
@@ -54,9 +64,15 @@ public class InventoryResource {
   }
 
   @GET
-  @RolesAllowed({ "admin" })
+  @RolesAllowed({ "myAdmins" })
   @Produces(MediaType.APPLICATION_JSON)
   public InventoryList listContents() {
+    Boolean isUserInRole = securityContext.isUserInRole("admin");
+    if (isUserInRole){
+      System.out.println("USER is ADMIN");
+    } else{
+      System.out.println("USER is NOT admin");
+    }
     return manager.list();
   }
 }

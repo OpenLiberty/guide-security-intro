@@ -33,11 +33,11 @@ public class ApplicationBean {
 
   private String hostname;
 
-  public String getJwt() {
-    String jwtTokenString = SessionUtils.getJwtToken();
-    String authHeader = "Bearer " + jwtTokenString;
-    return authHeader;
-  }
+  // public String getJwt() {
+  //   String jwtTokenString = SessionUtils.getJwtToken();
+  //   String authHeader = "Bearer " + jwtTokenString;
+  //   return authHeader;
+  // }
 
   public String getOs() {
     String authHeader = getJwt();

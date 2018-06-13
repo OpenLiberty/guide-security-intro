@@ -40,7 +40,7 @@ public class SystemEndpointTest {
 
   @Test
   public void testSuite() {
-    this.testGetPropertiesWithJwt();
+    // this.testGetPropertiesWithJwt();
   }
 
   public void testGetPropertiesWithJwt() {
