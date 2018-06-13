@@ -40,8 +40,8 @@ public class InventoryEndpointTest {
 
   @Test
   public void testSuite() {
-    this.testEmptyInventoryWithJwt();
-    this.testHostRegistrationWithJwt();
+    // this.testEmptyInventoryWithJwt();
+    // this.testHostRegistrationWithJwt();
   }
 
   public void testEmptyInventoryWithJwt() {
