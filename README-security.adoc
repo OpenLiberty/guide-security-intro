@@ -31,13 +31,17 @@ Authentication confirms the identity of the user. The most common authentication
 --
 --
 
-Authorization determines whether a user has access to a specific role within the system. In this application we will have two roles: Event Administrator and Registered User. 
+Authorization determines whether a user has access to a specific role within the system. In this application we will have two roles: Administrator and User. 
 
 --
 --
 --
 
 The application itself is a basic event application that allows Registered Users to create and register for events.Registered Users have access to the attendees of events they have created only. Whereas the Event Administrator has access to the attendees of all events regardless of whether they created the event.
+
+The application itself shows certain users properties of their system. Administrators have access to see the all the system properties whereas users will not have access to see any of the system properties.
+
+[I think I can refine this so that the users will see partial information]
 
 
 // =================================================================================================
@@ -79,11 +83,11 @@ As mentioned above, you can access this application under two different roles:
 
 |bob
 |pwd
-|eventAdministrator
+|myAdmins
 
 |alice
 |alicepwd
-|registeredUser
+|myUsers
 |===
 
 
@@ -136,23 +140,22 @@ Once you are done checking out the application, stop the Open Liberty server:
 * Add the following into the server.xml file 
 
 ```
-      <application location="io.openliberty.guides.eventapp.war" type="war"
-        id="io.openliberty.guides.eventapp" name="io.openliberty.guides.eventapp"
-        context-root="/">
+    <application location="${application.name}" type="war" id="${application.name}"
+                 name="${application.name}" context-root="/">
         <application-bnd>
-          <security-role name="eventAdministrator">
-            <group name="myAdmins" />
-          </security-role>
-          <security-role name="registeredUser">
-            <group name="myUsers" />
-          </security-role>
+            <security-role name="myAdmins">
+                <group name="myAdmins" />
+            </security-role>
+            <security-role name="myUsers">
+                <group name="myUsers" />
+            </security-role>
         </application-bnd>
-      </application>
+    </application>
 
 ```
 * Specifies the security roles to groups you previously defined
 
-* Next, we will specify the security roles and constraints in the web.xml file located in ...
+* Next, we will specify the security roles and constraints in the LoginBean.java
 
 ```
   <!-- SECURITY CONSTRAINTS -->

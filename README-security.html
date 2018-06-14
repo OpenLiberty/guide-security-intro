@@ -448,21 +448,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>You will learn how to secure your web application by performing authentication and authorization.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Authentication confirms the identity of the user.</p>
-</li>
-<li>
-<p>The most common authentication is user name and password, through basic authentication or form authentication.</p>
-</li>
-<li>
-<p>In this application we will be using basic authentication.</p>
-</li>
-<li>
-<p>You will be setting up a basic user registry with test variables.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Authentication confirms the identity of the user. The most common authentication is user name and password, through basic authentication or form authentication. In this application we will be showing both methods of authentication. You will be setting up a basic user registry with test variables.</p>
 </div>
 <div class="openblock">
 <div class="content">
@@ -471,15 +458,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="openblock">
 <div class="content">
-<div class="ulist">
-<ul>
-<li>
-<p>Authorization determines whether a user has access to a specific role within the system.</p>
-</li>
-<li>
-<p>In this application we will have two roles: Event Administrator and Registered User.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Authorization determines whether a user has access to a specific role within the system. In this application we will have two roles: Administrator and User.</p>
 </div>
 </div>
 </div>
@@ -488,18 +468,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>The application itself is a basic event application that allows Registered Users to create and register for events.</p>
-</li>
-<li>
-<p>Registered Users have access to the attendees of events they have created only.</p>
-</li>
-<li>
-<p>Whereas the Event Administrator has access to the attendees of all events regardless of whether they created the event.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>The application itself is a basic event application that allows Registered Users to create and register for events.Registered Users have access to the attendees of events they have created only. Whereas the Event Administrator has access to the attendees of all events regardless of whether they created the event.</p>
+</div>
+<div class="paragraph">
+<p>The application itself shows certain users properties of their system. Administrators have access to see the all the system properties whereas users will not have access to see any of the system properties.</p>
 </div>
 </div>
 </div>
@@ -542,12 +515,8 @@ cd guide-microprofile-security</pre>
 <div class="paragraph">
 <p><sub>SCENARIO</sub></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>As mentioned above, you can access this application under two different roles</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>As mentioned above, you can access this application under two different roles:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Basic Registry</caption>
@@ -567,22 +536,22 @@ cd guide-microprofile-security</pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bob</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">pwd</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">eventAdministrator</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">myAdmins</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">alice</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">alicepwd</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">registeredUser</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">myUsers</p></td>
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<p>Try out the authentication of the application by signing in with either credentials from the Basic Registry.</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>To try out the authentication of the application, sign in with either credentials from the Basic Registry</p>
-</li>
-<li>
-<p>To try out the authorization of the application, sign in as Bob, create an event and register for it</p>
+<p>Try out the authorization of the application, sign in as Bob, create an event and register for it</p>
 </li>
 <li>
 <p>Click details, as you can see you will be able to see that you have registered for the event</p>
@@ -680,16 +649,7 @@ cd guide-microprofile-security</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code>  &lt;security-role&gt;
-    &lt;role-name&gt;eventAdministrator&lt;/role-name&gt;
-  &lt;/security-role&gt;
-
-  &lt;security-role&gt;
-    &lt;role-name&gt;registeredUser&lt;/role-name&gt;
-  &lt;/security-role&gt;
-
-
-  &lt;!-- SECURITY CONSTRAINTS --&gt;
+<pre class="prettyprint highlight"><code>  &lt;!-- SECURITY CONSTRAINTS --&gt;
 
   &lt;security-constraint&gt;
     &lt;web-resource-collection&gt;
@@ -700,21 +660,7 @@ cd guide-microprofile-security</pre>
     &lt;auth-constraint&gt;
       &lt;role-name&gt;eventAdministrator&lt;/role-name&gt;
     &lt;/auth-constraint&gt;
-  &lt;/security-constraint&gt;
-
-
-  &lt;!-- AUTHENTICATION METHOD: Basic authentication --&gt;
-  &lt;!-- &lt;login-config&gt; &lt;auth-method&gt;BASIC&lt;/auth-method&gt; &lt;/login-config&gt; --&gt;
-
-
-  &lt;login-config id="LoginConfig_1"&gt;
-    &lt;auth-method&gt;FORM&lt;/auth-method&gt;
-    &lt;realm-name&gt;WebRealm&lt;/realm-name&gt;
-    &lt;form-login-config id="FormLoginConfig_1"&gt;
-      &lt;form-login-page&gt;/login.jsf&lt;/form-login-page&gt;
-      &lt;form-error-page&gt;/loginerror.jsf&lt;/form-error-page&gt;
-    &lt;/form-login-config&gt;
-  &lt;/login-config&gt;</code></pre>
+  &lt;/security-constraint&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -754,13 +700,6 @@ cd guide-microprofile-security</pre>
 <pre class="prettyprint highlight"><code>  public String doLogIn() {
     HttpServletRequest request = SessionUtils.getRequest();
 
-    // do filter
-    if (revokeList.contains(j_username)) {
-      System.out.println("User is blocked.");
-      pageDispatcher.showLogBlocked();
-      return "eventmanager.jsf";
-    }
-
     // do login
     try {
       request.login(this.j_username, this.j_password);
@@ -777,9 +716,6 @@ cd guide-microprofile-security</pre>
 <div class="ulist">
 <ul>
 <li>
-<p>revokeList.contains(j_username) checks whether or not the username is in the revoke list text file [Not sure if this should be included in the security app or not]</p>
-</li>
-<li>
 <p>request.login(this.j_username, this.j_password) validates the given username and password we configured earlier in the basic registry</p>
 </li>
 </ul>
@@ -789,10 +725,26 @@ cd guide-microprofile-security</pre>
 <div class="sect1">
 <h2 id="_authorization">Authorization</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>*Authorization with specific roles can be achieved using the following annotations</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
+<p>@DeclareRoles()</p>
+</li>
+<li>
+<p>@RolesAllowed()</p>
+<div class="ulist">
+<ul>
+<li>
+<p>These annotations allow you to specify the roles of each user group without configuration in the server.xml file. The group to role mapping is accomplished automatically as long as the user group names and the role names are identical.</p>
+</li>
+<li>
 <p>Authorization can be achieved after login:</p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
@@ -800,7 +752,6 @@ cd guide-microprofile-security</pre>
 <div class="content">
 <pre class="prettyprint highlight"><code>String remoteUser = request.getRemoteUser();
 String role = getRole(request);
-System.out.println("AFTER LOGIN, REMOTE USER: " + remoteUser + " " + role);
 
 // update session
 if (remoteUser != null &amp;&amp; remoteUser.equals(j_username)){
@@ -896,7 +847,7 @@ return "eventmanager.jsf";</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-06-07 16:10:50 Eastern Daylight Time
+Last updated 2018-06-14 13:27:27 Eastern Daylight Time
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
