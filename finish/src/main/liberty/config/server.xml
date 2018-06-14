@@ -36,14 +36,6 @@
 
     <application location="${application.name}" type="war" id="${application.name}"
                  name="${application.name}" context-root="/">
-        <application-bnd>
-            <security-role name="myAdmins">
-                <group name="myAdmins" />
-            </security-role>
-            <security-role name="myUsers">
-                <group name="myUsers" />
-            </security-role>
-        </application-bnd>
     </application>
 
   <webApplication location="rest.war" contextRoot="${app.context.root}"/>
