@@ -35,9 +35,9 @@ public class SessionUtils {
                                             .getExternalContext().getRequest();
   }
 
-  public static String getJwtToken() {
-    return (String) getSession().getAttribute("jwt");
-  }
+  // public static String getJwtToken() {
+  //   return (String) getSession().getAttribute("jwt");
+  // }
 
 }
 // end::jwt[]

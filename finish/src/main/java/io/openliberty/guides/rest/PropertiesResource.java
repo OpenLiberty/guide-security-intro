@@ -32,13 +32,13 @@ import javax.annotation.security.DeclareRoles;
 
 // tag::class[]
 @Path("properties")
-// @DeclareRoles({"myAdmins", "myUsers"})
+@DeclareRoles({"myAdmins", "myUsers"})
 public class PropertiesResource {
 // end::class[]
 
     // tag::getProperties[]
     @GET
-    // @RolesAllowed("myAdmins")
+    @RolesAllowed("myAdmins")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject getProperties() {
 
