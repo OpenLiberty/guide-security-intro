@@ -4,7 +4,32 @@
     version="3.1">
     <display-name>Liberty Project</display-name>
 
+
+
+
+        <!-- WebAppJSF: Faces Servlet -->
+<servlet>
+  <servlet-name>Faces Servlet</servlet-name>
+  <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+  <load-on-startup>1</load-on-startup>
+</servlet>
+<!-- WebAppJSF: Faces Servlet Mapping -->
+<servlet-mapping>
+  <servlet-name>Faces Servlet</servlet-name>
+  <url-pattern>*.jsf</url-pattern>
+</servlet-mapping>
+
+<!--   <login-config id="LoginConfig">
+    <auth-method>FORM</auth-method>
+    <realm-name>WebRealm</realm-name>
+    <form-login-config id="FormLoginConfig_1">
+      <form-login-page>/login.jsf</form-login-page>
+      <form-error-page>/error.jsf</form-error-page>
+    </form-login-config>
+  </login-config> -->
+
     <welcome-file-list>
-        <welcome-file>login.xhtml</welcome-file>
+        <welcome-file>login.jsf</welcome-file>
     </welcome-file-list>
+ 
 </web-app>

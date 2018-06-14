@@ -31,35 +31,35 @@ import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
 
 public class EndpointTest {
 
-    @Test
-    public void testGetProperties() {
-        // tag::systemProperties[]
-        String port = System.getProperty("liberty.test.port");
-        String war = System.getProperty("war.name");
-        String url = "http://localhost:" + port + "/" + war + "/";
-        // end::systemProperties[]
+    // @Test
+    // public void testGetProperties() {
+    //     // tag::systemProperties[]
+    //     String port = System.getProperty("liberty.test.port");
+    //     String war = System.getProperty("war.name");
+    //     String url = "http://localhost:" + port + "/" + war + "/";
+    //     // end::systemProperties[]
 
-        // tag::clientSetup[]
-        Client client = ClientBuilder.newClient();
-        client.register(JsrJsonpProvider.class);
-        // end::clientSetup[]
+    //     // tag::clientSetup[]
+    //     Client client = ClientBuilder.newClient();
+    //     client.register(JsrJsonpProvider.class);
+    //     // end::clientSetup[]
 
-        // tag::request[]
-        WebTarget target = client.target(url + "System/properties");
-        Response response = target.request().get();
-        // end::request[]
+    //     // tag::request[]
+    //     WebTarget target = client.target(url + "System/properties");
+    //     Response response = target.request().get();
+    //     // end::request[]
 
-        // tag::response[]
-        assertEquals("Incorrect response code from " + url, 200, response.getStatus());
-        // end::response[]
+    //     // tag::response[]
+    //     assertEquals("Incorrect response code from " + url, 200, response.getStatus());
+    //     // end::response[]
 
-        // tag::body[]
-        JsonObject obj = response.readEntity(JsonObject.class);
+    //     // tag::body[]
+    //     JsonObject obj = response.readEntity(JsonObject.class);
 
-        assertEquals("The system property for the local and remote JVM should match",
-                     System.getProperty("os.name"),
-                     obj.getString("os.name"));
-        // end::body[]
-        response.close();
-    }
+    //     assertEquals("The system property for the local and remote JVM should match",
+    //                  System.getProperty("os.name"),
+    //                  obj.getString("os.name"));
+    //     // end::body[]
+    //     response.close();
+    // }
 }

@@ -36,8 +36,7 @@ import io.openliberty.guides.frontend.SessionUtils;
     errorPage = "/loginerror.jsf",
     useForwardToLogin = true)
   )
-  
-public class LoginBean {
+  public class LoginBean {
 
     private String username;
     private String password;
@@ -70,7 +69,7 @@ public class LoginBean {
             return "error.jsf";
         }
 
-        return "application.jsf";
+        return "index.xhtml";
     }
 
 }

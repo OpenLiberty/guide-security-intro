@@ -1,15 +1,40 @@
 <server description="Intro REST Guide Liberty server">
 
   <featureManager>
-  	  <feature>appSecurity-2.0</feature>
+<!--   	  <feature>appSecurity-2.0</feature>
       <feature>jaxrs-2.0</feature>
       <feature>jsonp-1.0</feature>
+      <feature>servlet-3.1</feature> -->
+              <feature>jaxrs-2.0</feature>
+        <feature>jsonp-1.0</feature>
+        <feature>jsf-2.2</feature>
+        <!-- FOR SECURITY -->
+        <feature>appSecurity-2.0</feature>
+        <feature>servlet-3.1</feature>
+        <feature>jwt-1.0</feature>
+
   </featureManager>
+
+    <basicRegistry id="basic" realm="WebRealm">
+        <user name="bob" password="{xor}PTA9Lyg7" />  <!-- bobpwd -->
+        <user name="alice" password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
+        <user name="carl" password="{xor}PD4tMy8oOw==" />   <!-- carlpwd -->
+
+        <group name="myAdmins">
+            <member name="bob" />
+        </group>
+
+        <group name="myUsers">
+            <member name="bob" />
+            <member name="alice" />
+            <member name="carl" />
+        </group>
+    </basicRegistry>
 
   <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
       id="defaultHttpEndpoint" host="*" />
 
-  <!--   <application location="${application.name}" type="war" id="${application.name}"
+    <application location="${application.name}" type="war" id="${application.name}"
                  name="${application.name}" context-root="/">
         <application-bnd>
             <security-role name="myAdmins">
@@ -19,7 +44,7 @@
                 <group name="myUsers" />
             </security-role>
         </application-bnd>
-    </application> -->
+    </application>
 
   <webApplication location="rest.war" contextRoot="${app.context.root}"/>
 </server>
