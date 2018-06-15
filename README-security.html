@@ -504,13 +504,10 @@ cd guide-microprofile-security</pre>
 <p><code>mvn install liberty:start-server</code></p>
 </div>
 <div class="paragraph">
-<p>After starting the application, you can access the following " " to test the application:</p>
+<p>Next, point your browser to:</p>
 </div>
 <div class="paragraph">
 <p><code><a href="http://localhost:9080/LibertyProject" class="bare">http://localhost:9080/LibertyProject</a></code></p>
-</div>
-<div class="paragraph">
-<p><sub>SCENARIO</sub></p>
 </div>
 <div class="paragraph">
 <p>As mentioned above, you can access this application under two different roles:</p>
@@ -532,7 +529,7 @@ cd guide-microprofile-security</pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bob</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pwd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bobpwd</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">myAdmins</p></td>
 </tr>
 <tr>
@@ -543,17 +540,7 @@ cd guide-microprofile-security</pre>
 </tbody>
 </table>
 <div class="paragraph">
-<p>Try out the authentication of the application by signing in with either credentials from the Basic Registry.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Try out the authorization of the application, sign in as Bob, view the system properties.</p>
-</li>
-<li>
-<p>When you sign in as Alice, you will not have access.</p>
-</li>
-</ul>
+<p>You can try out the authentication of the application by signing in with either credentials from the Basic Registry and you can try the authorization by signing in as Bob to view the system properties. When you sign in as Alice, you will not have access to the system properties link.</p>
 </div>
 <div class="paragraph">
 <p>Once you are done checking out the application, stop the Open Liberty server:
@@ -564,15 +551,8 @@ cd guide-microprofile-security</pre>
 <div class="sect1">
 <h2 id="_configuration">Configuration</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Configure the basic registry and roles</p>
-</li>
-<li>
-<p>Add the following into the server.xml file</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>We will be setting up a user registry to define users and group information. To do this, you need to add the following into the server.xml file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -593,33 +573,19 @@ cd guide-microprofile-security</pre>
   &lt;/basicRegistry&gt;</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>You can define users and groups in the basic user registry for authentication.</p>
-</li>
-<li>
-<p>The names for users and groups must be unique.</p>
-</li>
-<li>
-<p>In our case, we have a group called "myAdmins" and another group called "myUsers".</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Now you&#8217;ve defined users and groups in the basic user registry for authentication. The names for the users and groups must be unique. In our case, we have a group called "myAdmins" and another group called "myUsers".</p>
+</div>
+<div class="paragraph">
+<p>As you can see, the password is encoded here with Liberty&#8217;s securityUtility command. Here, we are using the xor encoding. There are two other supported encodings are well: hash and aes that can be used.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_authentication">Authentication</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>FormAuthenticationMechanismDefinition annotation</p>
-</li>
-<li>
-<p>Insert the following annotation in the LoginBean.java file</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Next, we will be implementing authentication in order to confirm the identity of the user. Add the following annotation in the LoginBean.java file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -631,11 +597,17 @@ cd guide-microprofile-security</pre>
   )</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Form Authentication allows you to customize your login screen and error page. As you can see, loginPage is directed to "login.jfs" and errorPage is directed to "loginerror.jsf". If you would like to see the how those pages are designed they are in the /finish/src/main/webapp directory.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_authorization">Authorization</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Authorization determines whether a user has access to a certain role within the system. We can achieve this with the following annotations: <code>DeclareRoles()</code> and <code>RolesAllowed()</code>.</p>
+</div>
 <div class="paragraph">
 <p>*Authorization with specific roles can be achieved using the following annotations</p>
 </div>
@@ -770,7 +742,7 @@ public class PropertiesResource {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-06-14 14:10:13 Eastern Daylight Time
+Last updated 2018-06-15 16:02:50 Eastern Daylight Time
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">

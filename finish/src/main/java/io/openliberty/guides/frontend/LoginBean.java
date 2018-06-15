@@ -10,7 +10,6 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::jwt[]
 package io.openliberty.guides.frontend;
 
 import java.util.Set;
@@ -30,14 +29,14 @@ import io.openliberty.guides.frontend.SessionUtils;
 
 @ManagedBean
 @ViewScoped
-// @BasicAuthenticationMechanismDefinition(
-//     realmName = "myRealm")
-@FormAuthenticationMechanismDefinition(
-  loginToContinue = @LoginToContinue(
-    loginPage = "/login.jsf",
-    errorPage = "/loginerror.jsf",
-    useForwardToLogin = true)
-  )
+@BasicAuthenticationMechanismDefinition(
+    realmName = "myRealm")
+// @FormAuthenticationMechanismDefinition(
+//   loginToContinue = @LoginToContinue(
+//     loginPage = "/login.jsf",
+//     errorPage = "/loginerror.jsf",
+//     useForwardToLogin = true)
+//   )
   public class LoginBean {
 
     private String username;

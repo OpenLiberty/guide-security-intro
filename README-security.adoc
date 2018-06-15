@@ -39,7 +39,6 @@ Authorization determines whether a user has access to a specific role within the
 
 The application itself shows certain users properties of their system. Administrators have access to see the all the system properties whereas users will not have access to see any of the system properties.
 
-[I think I can refine this so that the users will see partial information]
 
 
 // =================================================================================================
@@ -67,11 +66,9 @@ To try out the application, first navigate to the `finish` directory and then ru
 
 `mvn install liberty:start-server`
 
-After starting the application, you can access the following " " to test the application:
+Next, point your browser to:
 
 `http://localhost:9080/LibertyProject`
-
-~SCENARIO~
 
 As mentioned above, you can access this application under two different roles:
 
@@ -80,7 +77,7 @@ As mentioned above, you can access this application under two different roles:
 |Username |Password|Role
 
 |bob
-|pwd
+|bobpwd
 |myAdmins
 
 |alice
@@ -88,13 +85,7 @@ As mentioned above, you can access this application under two different roles:
 |myUsers
 |===
 
-
-Try out the authentication of the application by signing in with either credentials from the Basic Registry. 
-
-* Try out the authorization of the application, sign in as Bob, view the system properties.
-
-* When you sign in as Alice, you will not have access.
-
+You can try out the authentication of the application by signing in with either credentials from the Basic Registry and you can try the authorization by signing in as Bob to view the system properties. When you sign in as Alice, you will not have access to the system properties link.
 
 Once you are done checking out the application, stop the Open Liberty server:
 `mvn liberty:stop-server`
@@ -105,8 +96,8 @@ Once you are done checking out the application, stop the Open Liberty server:
 //
 // =================================================================================================
 == Configuration
-* Configure the basic registry and roles
-* Add the following into the server.xml file 
+
+We will be setting up a user registry to define users and group information. To do this, you need to add the following into the server.xml file:
 
 ```a
 <basicRegistry id="basic" realm="WebRealm">
@@ -125,14 +116,14 @@ Once you are done checking out the application, stop the Open Liberty server:
     </group>
   </basicRegistry>
 ```
-* You can define users and groups in the basic user registry for authentication. 
-* The names for users and groups must be unique. 
-* In our case, we have a group called "myAdmins" and another group called "myUsers".
+
+Now you've defined users and groups in the basic user registry for authentication. The names for the users and groups must be unique. In our case, we have a group called "myAdmins" and another group called "myUsers". 
+
+As you can see, the password is encoded here with Liberty's securityUtility command. Here, we are using the xor encoding. There are two other supported encodings are well: hash and aes that can be used.
 
 == Authentication
-* FormAuthenticationMechanismDefinition annotation
 
-* Insert the following annotation in the LoginBean.java file
+Next, we will be implementing authentication in order to confirm the identity of the user. Add the following annotation in the LoginBean.java file:
 
 ```
 @FormAuthenticationMechanismDefinition(
@@ -144,7 +135,12 @@ Once you are done checking out the application, stop the Open Liberty server:
 
 ```
 
+Form Authentication allows you to customize your login screen and error page. As you can see, loginPage is directed to "login.jfs" and errorPage is directed to "loginerror.jsf". If you would like to see the how those pages are designed they are in the /finish/src/main/webapp directory.
+
+
 == Authorization 
+Authorization determines whether a user has access to a certain role within the system. We can achieve this with the following annotations: `DeclareRoles()` and `RolesAllowed()`. 
+
 *Authorization with specific roles can be achieved using the following annotations 
 
 ** @DeclareRoles()
