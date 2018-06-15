@@ -23,13 +23,15 @@ import javax.faces.bean.ViewScoped;
 
 import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
 import javax.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
 
 
-// import com.ibm.websphere.security.jwt.*;
 import io.openliberty.guides.frontend.SessionUtils;
 
 @ManagedBean
 @ViewScoped
+// @BasicAuthenticationMechanismDefinition(
+//     realmName = "myRealm")
 @FormAuthenticationMechanismDefinition(
   loginToContinue = @LoginToContinue(
     loginPage = "/login.jsf",
