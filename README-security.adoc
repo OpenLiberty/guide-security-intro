@@ -26,7 +26,6 @@ Learn how to use appSecurity-3.0 to secure a web application.
 You will learn how to secure your web application by performing authentication and authorization. 
 
 Authentication confirms the identity of the user. The most common authentication is user name and password, through basic authentication or form authentication. In this application we will be showing both methods of authentication. You will be setting up a basic user registry with test variables. 
-
 --
 --
 --
