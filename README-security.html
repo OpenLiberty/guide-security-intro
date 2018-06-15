@@ -469,9 +469,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>The application itself is a basic event application that allows Registered Users to create and register for events.Registered Users have access to the attendees of events they have created only. Whereas the Event Administrator has access to the attendees of all events regardless of whether they created the event.</p>
-</div>
-<div class="paragraph">
 <p>The application itself shows certain users properties of their system. Administrators have access to see the all the system properties whereas users will not have access to see any of the system properties.</p>
 </div>
 </div>
@@ -510,7 +507,7 @@ cd guide-microprofile-security</pre>
 <p>After starting the application, you can access the following " " to test the application:</p>
 </div>
 <div class="paragraph">
-<p><code><a href="http://localhost:9080/eventmanager.jsf" class="bare">http://localhost:9080/eventmanager.jsf</a></code></p>
+<p><code><a href="http://localhost:9080/LibertyProject" class="bare">http://localhost:9080/LibertyProject</a></code></p>
 </div>
 <div class="paragraph">
 <p><sub>SCENARIO</sub></p>
@@ -551,16 +548,10 @@ cd guide-microprofile-security</pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Try out the authorization of the application, sign in as Bob, create an event and register for it</p>
+<p>Try out the authorization of the application, sign in as Bob, view the system properties.</p>
 </li>
 <li>
-<p>Click details, as you can see you will be able to see that you have registered for the event</p>
-</li>
-<li>
-<p>Next, log out and sign in as Alice, create an event and register for it</p>
-</li>
-<li>
-<p>Click details, as you can see you will not be able to see that you have registered for the event.</p>
+<p>When you sign in as Alice, you will not have access.</p>
 </li>
 </ul>
 </div>
@@ -613,55 +604,7 @@ cd guide-microprofile-security</pre>
 <li>
 <p>In our case, we have a group called "myAdmins" and another group called "myUsers".</p>
 </li>
-<li>
-<p>Next, we will use these groups we have defined in order to specify the security roles that each group takes on.</p>
-</li>
-<li>
-<p>Add the following into the server.xml file</p>
-</li>
 </ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code>      &lt;application location="io.openliberty.guides.eventapp.war" type="war"
-        id="io.openliberty.guides.eventapp" name="io.openliberty.guides.eventapp"
-        context-root="/"&gt;
-        &lt;application-bnd&gt;
-          &lt;security-role name="eventAdministrator"&gt;
-            &lt;group name="myAdmins" /&gt;
-          &lt;/security-role&gt;
-          &lt;security-role name="registeredUser"&gt;
-            &lt;group name="myUsers" /&gt;
-          &lt;/security-role&gt;
-        &lt;/application-bnd&gt;
-      &lt;/application&gt;</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Specifies the security roles to groups you previously defined</p>
-</li>
-<li>
-<p>Next, we will specify the security roles and constraints in the web.xml file located in &#8230;&#8203;</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code>  &lt;!-- SECURITY CONSTRAINTS --&gt;
-
-  &lt;security-constraint&gt;
-    &lt;web-resource-collection&gt;
-      &lt;web-resource-name&gt;ViewUsers&lt;/web-resource-name&gt;
-      &lt;url-pattern&gt;/event/users&lt;/url-pattern&gt;
-      &lt;http-method&gt;GET&lt;/http-method&gt;
-    &lt;/web-resource-collection&gt;
-    &lt;auth-constraint&gt;
-      &lt;role-name&gt;eventAdministrator&lt;/role-name&gt;
-    &lt;/auth-constraint&gt;
-  &lt;/security-constraint&gt;</code></pre>
-</div>
 </div>
 </div>
 </div>
@@ -673,10 +616,10 @@ cd guide-microprofile-security</pre>
 <li>
 <p>FormAuthenticationMechanismDefinition annotation</p>
 </li>
+<li>
+<p>Insert the following annotation in the LoginBean.java file</p>
+</li>
 </ul>
-</div>
-<div class="paragraph">
-<p>*Insert the following annotation in the LoginBean.java file</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -687,38 +630,6 @@ cd guide-microprofile-security</pre>
     useForwardToLogin = true)
   )</code></pre>
 </div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Authentication by request.login(this.j_username, this.j_password);</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code>  public String doLogIn() {
-    HttpServletRequest request = SessionUtils.getRequest();
-
-    // do login
-    try {
-      request.login(this.j_username, this.j_password);
-    } catch (ServletException e) {
-      //context.addMessage(null, new FacesMessage("Login failed."));
-      System.out.println("Login failed.");
-      pageDispatcher.showLogError();
-      return "eventmanager.jsf";
-    }
-
-  }</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>request.login(this.j_username, this.j_password) validates the given username and password we configured earlier in the basic registry</p>
-</li>
-</ul>
 </div>
 </div>
 </div>
@@ -741,7 +652,7 @@ cd guide-microprofile-security</pre>
 <p>These annotations allow you to specify the roles of each user group without configuration in the server.xml file. The group to role mapping is accomplished automatically as long as the user group names and the role names are identical.</p>
 </li>
 <li>
-<p>Authorization can be achieved after login:</p>
+<p>Add the following annotations to the PropertiesResource.java file:</p>
 </li>
 </ul>
 </div>
@@ -750,27 +661,39 @@ cd guide-microprofile-security</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code>String remoteUser = request.getRemoteUser();
-String role = getRole(request);
+<pre class="prettyprint highlight"><code>// tag::class[]
+@Path("properties")
+@DeclareRoles({"myAdmins", "myUsers"})
+public class PropertiesResource {
+// end::class[]
 
-// update session
-if (remoteUser != null &amp;&amp; remoteUser.equals(j_username)){
-    updateSessionUser(request, j_username, j_password, role);
-} else {
-  System.out.println("Update Sessional User Failed.");
-}
+    // tag::getProperties[]
+    @GET
+    @RolesAllowed("myAdmins")
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonObject getProperties() {
 
-pageDispatcher.showMainPage();
-return "eventmanager.jsf";</code></pre>
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+
+        System.getProperties()
+              .entrySet()
+              .stream()
+              .forEach(entry -&gt; builder.add((String)entry.getKey(),
+                                            (String)entry.getValue()));
+
+       return builder.build();
+    }
+    // end::getProperties[]
+}</code></pre>
 </div>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>request.getRemoteUser / getRole &#8658; figures out what role the current user that just successfully logged in has</p>
+<p>Notice how the roles "myAdmins" and "myUsers" are identical to the group names we set up earlier in the basic registry. They must be exactly the same for the mapping to work.</p>
 </li>
 <li>
-<p>updateSessionUser( &#8230;&#8203;) gives the session the role the user has which will be checked later on&#8230;&#8203;</p>
+<p>The properties are only allowed by users of the role "myAdmins".</p>
 </li>
 </ul>
 </div>
@@ -847,7 +770,7 @@ return "eventmanager.jsf";</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-06-14 13:27:27 Eastern Daylight Time
+Last updated 2018-06-14 14:10:13 Eastern Daylight Time
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">

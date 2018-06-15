@@ -1,15 +1,11 @@
 <server description="Intro REST Guide Liberty server">
 
   <featureManager>
-<!--   	  <feature>appSecurity-2.0</feature>
-      <feature>jaxrs-2.0</feature>
-      <feature>jsonp-1.0</feature>
-      <feature>servlet-3.1</feature> -->
-              <feature>jaxrs-2.0</feature>
+        <feature>jaxrs-2.0</feature>
         <feature>jsonp-1.0</feature>
         <feature>jsf-2.2</feature>
         <!-- FOR SECURITY -->
-        <feature>appSecurity-2.0</feature>
+        <feature>appSecurity-3.0</feature>
         <feature>servlet-3.1</feature>
         <feature>jwt-1.0</feature>
 

@@ -37,8 +37,6 @@ Authorization determines whether a user has access to a specific role within the
 --
 --
 
-The application itself is a basic event application that allows Registered Users to create and register for events.Registered Users have access to the attendees of events they have created only. Whereas the Event Administrator has access to the attendees of all events regardless of whether they created the event.
-
 The application itself shows certain users properties of their system. Administrators have access to see the all the system properties whereas users will not have access to see any of the system properties.
 
 [I think I can refine this so that the users will see partial information]
@@ -71,7 +69,7 @@ To try out the application, first navigate to the `finish` directory and then ru
 
 After starting the application, you can access the following " " to test the application:
 
-`http://localhost:9080/eventmanager.jsf`
+`http://localhost:9080/LibertyProject`
 
 ~SCENARIO~
 
@@ -93,13 +91,9 @@ As mentioned above, you can access this application under two different roles:
 
 Try out the authentication of the application by signing in with either credentials from the Basic Registry. 
 
-* Try out the authorization of the application, sign in as Bob, create an event and register for it
+* Try out the authorization of the application, sign in as Bob, view the system properties.
 
-* Click details, as you can see you will be able to see that you have registered for the event
-
-* Next, log out and sign in as Alice, create an event and register for it
-
-* Click details, as you can see you will not be able to see that you have registered for the event. 
+* When you sign in as Alice, you will not have access.
 
 
 Once you are done checking out the application, stop the Open Liberty server:
@@ -135,47 +129,10 @@ Once you are done checking out the application, stop the Open Liberty server:
 * The names for users and groups must be unique. 
 * In our case, we have a group called "myAdmins" and another group called "myUsers".
 
-* Next, we will use these groups we have defined in order to specify the security roles that each group takes on. 
-
-* Add the following into the server.xml file 
-
-```
-    <application location="${application.name}" type="war" id="${application.name}"
-                 name="${application.name}" context-root="/">
-        <application-bnd>
-            <security-role name="myAdmins">
-                <group name="myAdmins" />
-            </security-role>
-            <security-role name="myUsers">
-                <group name="myUsers" />
-            </security-role>
-        </application-bnd>
-    </application>
-
-```
-* Specifies the security roles to groups you previously defined
-
-* Next, we will specify the security roles and constraints in the LoginBean.java
-
-```
-  <!-- SECURITY CONSTRAINTS -->
-
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>ViewUsers</web-resource-name>
-      <url-pattern>/event/users</url-pattern>
-      <http-method>GET</http-method>
-    </web-resource-collection>
-    <auth-constraint>
-      <role-name>eventAdministrator</role-name>
-    </auth-constraint>
-  </security-constraint>
-
-```
 == Authentication
 * FormAuthenticationMechanismDefinition annotation
 
-*Insert the following annotation in the LoginBean.java file
+* Insert the following annotation in the LoginBean.java file
 
 ```
 @FormAuthenticationMechanismDefinition(
@@ -187,26 +144,6 @@ Once you are done checking out the application, stop the Open Liberty server:
 
 ```
 
-* Authentication by request.login(this.j_username, this.j_password);
-
-```
-  public String doLogIn() {
-    HttpServletRequest request = SessionUtils.getRequest();
-
-    // do login
-    try {
-      request.login(this.j_username, this.j_password);
-    } catch (ServletException e) {
-      //context.addMessage(null, new FacesMessage("Login failed."));
-      System.out.println("Login failed.");
-      pageDispatcher.showLogError();
-      return "eventmanager.jsf";
-    }
-
-  }
-```
-* request.login(this.j_username, this.j_password) validates the given username and password we configured earlier in the basic registry
-
 == Authorization 
 *Authorization with specific roles can be achieved using the following annotations 
 
@@ -215,27 +152,38 @@ Once you are done checking out the application, stop the Open Liberty server:
 
 * These annotations allow you to specify the roles of each user group without configuration in the server.xml file. The group to role mapping is accomplished automatically as long as the user group names and the role names are identical. 
 
-* Authorization can be achieved after login:
+* Add the following annotations to the PropertiesResource.java file:
 
 ```
-String remoteUser = request.getRemoteUser();
-String role = getRole(request);
+// tag::class[]
+@Path("properties")
+@DeclareRoles({"myAdmins", "myUsers"})
+public class PropertiesResource {
+// end::class[]
 
-// update session
-if (remoteUser != null && remoteUser.equals(j_username)){
-    updateSessionUser(request, j_username, j_password, role);
-} else {
-  System.out.println("Update Sessional User Failed.");
+    // tag::getProperties[]
+    @GET
+    @RolesAllowed("myAdmins")
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonObject getProperties() {
+
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+
+        System.getProperties()
+              .entrySet()
+              .stream()
+              .forEach(entry -> builder.add((String)entry.getKey(),
+                                            (String)entry.getValue()));
+
+       return builder.build();
+    }
+    // end::getProperties[]
 }
-
-pageDispatcher.showMainPage();
-return "eventmanager.jsf";
 ```
 
-* request.getRemoteUser / getRole => figures out what role the current user that just successfully logged in has
+* Notice how the roles "myAdmins" and "myUsers" are identical to the group names we set up earlier in the basic registry. They must be exactly the same for the mapping to work.
 
-* updateSessionUser( ...) gives the session the role the user has which will be checked later on... 
-
+* The properties are only allowed by users of the role "myAdmins".
 
 // =================================================================================================
 // Building the application

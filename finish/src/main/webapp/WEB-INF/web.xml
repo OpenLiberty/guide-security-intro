@@ -19,14 +19,6 @@
   <url-pattern>*.jsf</url-pattern>
 </servlet-mapping>
 
-<!--   <login-config id="LoginConfig">
-    <auth-method>FORM</auth-method>
-    <realm-name>WebRealm</realm-name>
-    <form-login-config id="FormLoginConfig_1">
-      <form-login-page>/login.jsf</form-login-page>
-      <form-error-page>/error.jsf</form-error-page>
-    </form-login-config>
-  </login-config> -->
 
     <welcome-file-list>
         <welcome-file>login.jsf</welcome-file>
