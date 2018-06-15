@@ -22,10 +22,10 @@
   xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <title> Welcome to the Security Guide </title>
 <body>
-<h2>If you are authorized as an admin you will be able to view the following link:</h2>
-<!--   <meta http-equiv="refresh" content="0; URL=http://localhost:9080/LibertyProject/System/properties"/>
- -->
+<h2>Welcome to the Security Guide</h2>
+If you are authorized as an admin you will be able to view the following link:
        <a href="http://localhost:9080/LibertyProject/System/properties">http://localhost:9080/LibertyProject/System/properties</a>
+<br /><br />
        <style>
              #logoutButton {
           width: 100%;
@@ -34,7 +34,9 @@
           margin-bottom: 1em;
       }
     </style>
+
     <body>
+      <br />
           <h:panelGroup id="logoutButton" layout="block">
         <FORM METHOD="POST" ACTION="ibm_security_logout" NAME="logout">
           <input type="submit" name="logout" value="Log Out" />

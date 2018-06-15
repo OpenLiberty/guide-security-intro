@@ -10,7 +10,6 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::jwt[]
 package io.openliberty.guides.frontend;
 
 import javax.faces.context.FacesContext;
@@ -35,9 +34,5 @@ public class SessionUtils {
                                             .getExternalContext().getRequest();
   }
 
-  // public static String getJwtToken() {
-  //   return (String) getSession().getAttribute("jwt");
-  // }
-
 }
-// end::jwt[]
+
