@@ -102,7 +102,6 @@ We will be setting up a user registry to define users and group information. To 
 <basicRegistry id="basic" realm="WebRealm">
     <user name="bob" password="{xor}Lyg7" />  <!-- pwd -->
     <user name="alice" password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
-    <user name="carl" password="{xor}PD4tMy8oOw==" />   <!-- carlpwd -->
 
     <group name="myAdmins">
       <member name="bob" />
@@ -111,7 +110,6 @@ We will be setting up a user registry to define users and group information. To 
     <group name="myUsers">
       <member name="bob" />
       <member name="alice" />
-      <member name="carl" />
     </group>
   </basicRegistry>
 ```
@@ -139,15 +137,14 @@ Form Authentication allows you to customize your login screen and error page. As
 
 == Authorization 
 Authorization determines whether a user has access to a certain role within the system. We can achieve this with the following annotations: `DeclareRoles()` and `RolesAllowed()`. 
-
-*Authorization with specific roles can be achieved using the following annotations 
+Authorization with specific roles can be achieved using the following annotations:
 
 ** @DeclareRoles()
 ** @RolesAllowed()
 
-* These annotations allow you to specify the roles of each user group without configuration in the server.xml file. The group to role mapping is accomplished automatically as long as the user group names and the role names are identical. 
+These annotations allow you to specify the roles of each user group without configuration in the server.xml file. The group to role mapping is accomplished automatically as long as the user group names and the role names are identical. 
 
-* Add the following annotations to the PropertiesResource.java file:
+Add the following annotations to the PropertiesResource.java file:
 
 ```
 // tag::class[]
@@ -176,9 +173,9 @@ public class PropertiesResource {
 }
 ```
 
-* Notice how the roles "myAdmins" and "myUsers" are identical to the group names we set up earlier in the basic registry. They must be exactly the same for the mapping to work.
+Notice how the roles "myAdmins" and "myUsers" are identical to the group names we set up earlier in the basic registry. They must be exactly the same for the mapping to work.
 
-* The properties are only allowed by users of the role "myAdmins".
+The properties are only allowed by users of the role "myAdmins".
 
 // =================================================================================================
 // Building the application
