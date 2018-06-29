@@ -5,13 +5,16 @@
         <feature>jsonp-1.0</feature>
         <feature>jsf-2.2</feature>
         <!-- FOR SECURITY -->
-        <feature>appSecurity-2.0</feature>
+        <feature>appSecurity-3.0</feature>
         <feature>servlet-3.1</feature>
+        <feature>jwt-1.0</feature>
+
   </featureManager>
 
     <basicRegistry id="basic" realm="WebRealm">
-        <user name="bob" password="bobpwd" />  <!-- bobpwd -->
+        <user name="bob" password="{xor}PTA9Lyg7" />  <!-- bobpwd -->
         <user name="alice" password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
+        <user name="carl" password="{xor}PD4tMy8oOw==" />   <!-- carlpwd -->
 
         <group name="myAdmins">
             <member name="bob" />
@@ -20,6 +23,7 @@
         <group name="myUsers">
             <member name="bob" />
             <member name="alice" />
+            <member name="carl" />
         </group>
     </basicRegistry>
 

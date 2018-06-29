@@ -559,7 +559,6 @@ cd guide-microprofile-security</pre>
 <pre class="prettyprint highlight"><code class="language-a" data-lang="a">&lt;basicRegistry id="basic" realm="WebRealm"&gt;
     &lt;user name="bob" password="{xor}Lyg7" /&gt;  &lt;!-- pwd --&gt;
     &lt;user name="alice" password="{xor}PjM2PDovKDs=" /&gt;  &lt;!-- alicepwd --&gt;
-    &lt;user name="carl" password="{xor}PD4tMy8oOw==" /&gt;   &lt;!-- carlpwd --&gt;
 
     &lt;group name="myAdmins"&gt;
       &lt;member name="bob" /&gt;
@@ -568,7 +567,6 @@ cd guide-microprofile-security</pre>
     &lt;group name="myUsers"&gt;
       &lt;member name="bob" /&gt;
       &lt;member name="alice" /&gt;
-      &lt;member name="carl" /&gt;
     &lt;/group&gt;
   &lt;/basicRegistry&gt;</code></pre>
 </div>
@@ -606,10 +604,8 @@ cd guide-microprofile-security</pre>
 <h2 id="_authorization">Authorization</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Authorization determines whether a user has access to a certain role within the system. We can achieve this with the following annotations: <code>DeclareRoles()</code> and <code>RolesAllowed()</code>.</p>
-</div>
-<div class="paragraph">
-<p>*Authorization with specific roles can be achieved using the following annotations</p>
+<p>Authorization determines whether a user has access to a certain role within the system. We can achieve this with the following annotations: <code>DeclareRoles()</code> and <code>RolesAllowed()</code>.
+Authorization with specific roles can be achieved using the following annotations:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -618,18 +614,14 @@ cd guide-microprofile-security</pre>
 </li>
 <li>
 <p>@RolesAllowed()</p>
-<div class="ulist">
-<ul>
-<li>
-<p>These annotations allow you to specify the roles of each user group without configuration in the server.xml file. The group to role mapping is accomplished automatically as long as the user group names and the role names are identical.</p>
-</li>
-<li>
-<p>Add the following annotations to the PropertiesResource.java file:</p>
 </li>
 </ul>
 </div>
-</li>
-</ul>
+<div class="paragraph">
+<p>These annotations allow you to specify the roles of each user group without configuration in the server.xml file. The group to role mapping is accomplished automatically as long as the user group names and the role names are identical.</p>
+</div>
+<div class="paragraph">
+<p>Add the following annotations to the PropertiesResource.java file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -659,15 +651,11 @@ public class PropertiesResource {
 }</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
+<div class="paragraph">
 <p>Notice how the roles "myAdmins" and "myUsers" are identical to the group names we set up earlier in the basic registry. They must be exactly the same for the mapping to work.</p>
-</li>
-<li>
+</div>
+<div class="paragraph">
 <p>The properties are only allowed by users of the role "myAdmins".</p>
-</li>
-</ul>
 </div>
 </div>
 </div>
@@ -742,7 +730,7 @@ public class PropertiesResource {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-06-15 16:02:50 Eastern Daylight Time
+Last updated 2018-06-27 10:20:47 Eastern Daylight Time
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
