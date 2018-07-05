@@ -27,7 +27,6 @@
         <p>
           Username
           <h:inputText id="username" value="#{loginBean.username}" required="true"/>
-<!-- s -->
 
         </p>
         <p>
@@ -38,9 +37,11 @@
           <h:commandButton value="Submit" type="submit"
             action="#{loginBean.doLogin()}">
           </h:commandButton>
+        </p>
+        <p>
            <br /> <br /> <input
             type="reset" value="Reset" />
         </p>
-      </h:form>
+</h:form>
 </body>
 </html>
