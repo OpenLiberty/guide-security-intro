@@ -3,10 +3,6 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
     version="3.1">
     <display-name>Liberty Project</display-name>
-
-
-
-
         <!-- WebAppJSF: Faces Servlet -->
 <servlet>
   <servlet-name>Faces Servlet</servlet-name>
@@ -19,9 +15,25 @@
   <url-pattern>*.jsf</url-pattern>
 </servlet-mapping>
 
-
     <welcome-file-list>
         <welcome-file>login.jsf</welcome-file>
     </welcome-file-list>
+
+      <security-role>
+    <role-name>admin</role-name>
+  </security-role>
+
+  <security-role>
+    <role-name>user</role-name>
+  </security-role>
+
+<!--   <login-config id="LoginConfig">
+    <auth-method>FORM</auth-method>
+    <realm-name>WebRealm</realm-name>
+    <form-login-config id="FormLoginConfig_1">
+      <form-login-page>/login.jsf</form-login-page>
+      <form-error-page>/error.jsf</form-error-page>
+    </form-login-config>
+  </login-config> -->
  
 </web-app>

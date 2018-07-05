@@ -29,6 +29,8 @@ import javax.json.JsonNumber;
 
 import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.DeclareRoles;
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
+
 
 // tag::class[]
 @Path("properties")
@@ -52,5 +54,7 @@ public class PropertiesResource {
 
        return builder.build();
     }
+
+    
     // end::getProperties[]
 }
