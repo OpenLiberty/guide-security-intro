@@ -31,12 +31,12 @@ import io.openliberty.guides.frontend.SessionUtils;
 @ViewScoped
 @BasicAuthenticationMechanismDefinition(
     realmName = "myRealm")
-// @FormAuthenticationMechanismDefinition(
-//   loginToContinue = @LoginToContinue(
-//     loginPage = "/login.jsf",
-//     errorPage = "/loginerror.jsf",
-//     useForwardToLogin = true)
-//   )
+@FormAuthenticationMechanismDefinition(
+  loginToContinue = @LoginToContinue(
+    loginPage = "/index.jsf",
+    errorPage = "/loginerror.jsf",
+    useForwardToLogin = true)
+  )
   public class LoginBean {
 
     private String username;
@@ -70,7 +70,7 @@ import io.openliberty.guides.frontend.SessionUtils;
             return "error.jsf";
         }
 
-        return "index.xhtml";
+        return "index.jsf";
     }
 
 }
