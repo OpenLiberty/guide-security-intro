@@ -15,8 +15,35 @@
   <url-pattern>*.jsf</url-pattern>
 </servlet-mapping>
 
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>ProtectedPage</web-resource-name>
+      <url-pattern>/primary.jsf</url-pattern>
+      <url-pattern>/LibertyProject/primary.jsf</url-pattern>
+      <http-method>GET</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+      <role-name>user</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+    <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>VeryProtectedPage</web-resource-name>
+      <url-pattern>/secondary.jsf</url-pattern>
+      <url-pattern>/LibertyProject/secondary.jsf</url-pattern>
+
+      <http-method>GET</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+
     <welcome-file-list>
-        <welcome-file>login.jsf</welcome-file>
+        <welcome-file>index.jsf</welcome-file>
     </welcome-file-list>
 
       <security-role>

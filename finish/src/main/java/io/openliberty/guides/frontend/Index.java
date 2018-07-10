@@ -37,6 +37,7 @@ import javax.servlet.http.*;
     errorPage = "/error.jsf",
     useForwardToLogin = true)
   )
+
 @ApplicationPath("index")
 public class Index extends Application {
 

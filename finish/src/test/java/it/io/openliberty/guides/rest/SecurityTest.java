@@ -96,14 +96,14 @@ public class SecurityTest {
 
 		public void printPage(Response response){
 
-					System.out.println("Response status of page I am printing:");
+					// System.out.println("Response status of page I am printing:");
 					System.out.println(response.getStatus());
 				 BufferedReader br = new BufferedReader(new InputStreamReader((InputStream) response.getEntity()));
 	    List<String> result = new ArrayList<String>();
-	    System.out.println("REACHED before the try");
+	    // System.out.println("REACHED before the try");
 	    try {
 	    	String input;
-	    	System.out.println("inside try");
+	    	// System.out.println("inside try");
 	    	while ((input = br.readLine()) != null){
 	    		System.out.println(input);
 
@@ -116,7 +116,7 @@ public class SecurityTest {
 	    }
 		}
 		public int logIn(String usernameAndPassword){
-			String authHeader = "Form "
+			String authHeader = "Basic "
 	        + java.util.Base64.getEncoder()
 	                          .encodeToString(usernameAndPassword.getBytes());
 

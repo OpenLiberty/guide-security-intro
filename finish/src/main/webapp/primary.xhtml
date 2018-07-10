@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!DOCTYPE html>
 <!--
   Copyright (c) 2018 IBM Corp.
@@ -20,12 +21,13 @@
   xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
   xmlns:jsf="http://xmlns.jcp.org/jsf"
   xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<title> Welcome to the Security Guide </title>
+<title> Primary page </title>
+<h2>Primary Page</h2>
 <body>
-<h2>Welcome to the Security Guide</h2>
+  <p> Welcome to the security app! If you are viewing this page, this means you have successfully logged in as either an admin or a user </p>
   <input type="submit" value="Next" 
-    onclick="window.location='/primary.jsf';" />    
-      <!--  <style>
+    onclick="window.location='/secondary.jsf';" />    
+ <style>
              #logoutButton {
           width: 100%;
           border-bottom: 1px solid black;
@@ -39,10 +41,11 @@
           <h:panelGroup id="logoutButton" layout="block">
         <FORM METHOD="POST" ACTION="ibm_security_logout" NAME="logout">
           <input type="submit" name="logout" value="Log Out" />
-          <input type="HIDDEN" name="logoutExitPage" value="/System/properties" />
+          <input type="HIDDEN" name="logoutExitPage" value="/index.jsf" />
         </FORM>
     </h:panelGroup>
-    </body> -->
+    </body>
+
 
 </body>
 </html>

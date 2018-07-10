@@ -37,6 +37,7 @@ import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import static javax.security.enterprise.AuthenticationStatus.SEND_CONTINUE;
 import static javax.security.enterprise.AuthenticationStatus.SEND_FAILURE;
 import static javax.security.enterprise.authentication.mechanism.http.AuthenticationParameters.withParams;
+import java.io.IOException;
 
 
 
@@ -105,12 +106,12 @@ import io.openliberty.guides.frontend.SessionUtils;
         if (status.equals(SEND_CONTINUE)) {
     
             facesContext.responseComplete();
-            //         try{
-            //     facesContext.getCurrentInstance().getExternalContext().redirect("index.jsf");
-            //     return;
-            // } catch (IOException e){
-            //  //error
-            // }
+                    try{
+                facesContext.getCurrentInstance().getExternalContext().redirect("primary.jsf");
+                return;
+            } catch (IOException e){
+             //error
+            }
 
             
         } else if (status.equals(SEND_FAILURE)) {
