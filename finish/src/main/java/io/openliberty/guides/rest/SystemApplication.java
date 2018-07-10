@@ -17,6 +17,12 @@ import javax.ws.rs.ApplicationPath;
 import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
 import javax.security.enterprise.authentication.mechanism.http.CustomFormAuthenticationMechanismDefinition;
 
+// @CustomFormAuthenticationMechanismDefinition(
+//   loginToContinue = @LoginToContinue(
+//     loginPage = "/login.jsf",
+//     errorPage = "/error.jsf",
+//     useForwardToLogin = true)
+//   )
 
 @ApplicationPath("System")
 public class SystemApplication extends Application {
