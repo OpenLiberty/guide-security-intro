@@ -106,40 +106,11 @@ import io.openliberty.guides.frontend.SessionUtils;
         if (status.equals(SEND_CONTINUE)) {
     
             facesContext.responseComplete();
-                    try{
-                facesContext.getCurrentInstance().getExternalContext().redirect("primary.jsf");
-                return;
-            } catch (IOException e){
-             //error
-            }
-
             
         } else if (status.equals(SEND_FAILURE)) {
             addError(facesContext, "Authentication failed");
         }
 
-
-        // HttpServletRequest request = SessionUtils.getRequest();
-        // try {
-        //     request.logout();
-        //     request.login(this.username, this.password);
-        // } catch (ServletException e) {
-        //     return "no";
-        // }
-        // return "yes";
-        
-        // do login
-        // try {
-        //     request.logout();
-        //     request.login(this.username, this.password);
-            
-        // } catch (ServletException e) {
-        //     System.out.println("Login failed.");
-
-        //     return "error.jsf";
-        // }
-
-        // return "index.jsf";
     }
 
 }
