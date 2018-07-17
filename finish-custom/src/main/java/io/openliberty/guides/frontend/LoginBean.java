@@ -104,9 +104,7 @@ import io.openliberty.guides.frontend.SessionUtils;
             getResponseFrom(facesContext),
             withParams().credential(credential));
         if (status.equals(SEND_CONTINUE)) {
-    
             facesContext.responseComplete();
-            
         } else if (status.equals(SEND_FAILURE)) {
             addError(facesContext, "Authentication failed");
         }

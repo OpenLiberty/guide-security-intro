@@ -1,0 +1,419 @@
+// Copyright (c) 2017 IBM Corporation and others.
+// Licensed under Creative Commons Attribution-NoDerivatives
+// 4.0 International (CC BY-ND 4.0)
+//   https://creativecommons.org/licenses/by-nd/4.0/
+//
+// Contributors:
+//   IBM Corporation
+:projectid: microprofile-security
+:page-layout: guide
+:page-duration: 30 minutes
+:page-releasedate: 2017-12-11
+:page-description: Learn how to use the
+:page-tags: ['REST', 'MicroProfile', 'Security', 'CDI']
+:page-permalink: /guides/{projectid}
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:source-highlighter: prettify
+= Securing a web application.
+
+Learn how to use appSecurity-3.0 to secure a web application.
+
+// =================================================================================================
+// What you'll learn
+// =================================================================================================
+
+== What you'll learn
+You will learn how to secure your web application by performing authentication and authorization. 
+
+Authentication confirms the identity of the user. The most common authentication is user name and password, through basic authentication or form authentication. This application demonstrates both methods of authentication. You will be setting up a basic user registry with test variables. 
+--
+--
+--
+
+Authorization determines whether a user has access to a specific role within the system. This application specifies two roles: Administrator and User. 
+
+--
+--
+--
+
+The application itself allows users and admins to access servlets. Administrators have access to both servlets, the HelloServlet and the AdminServlet. Whereas the user will only have access to the HelloServlet.
+
+This guide will also demonstrate two different ways to achieve authorization and authentication: through configuration in the web.xml file and through annotations on the servlets.
+
+
+// =================================================================================================
+== Getting Started
+// =================================================================================================
+
+
+The fastest way to work through this guide is to clone the Git repository and use the projects that are provided inside:
+
+[subs="attributes"]
+----
+git clone https://github.com/openliberty/guide-{projectid}.git
+cd guide-{projectid}
+----
+
+The `start` directory contains the starting project that you will build upon.
+
+The `finish` directory contains the finished project, which is what you will build.
+
+*Try what you'll build*
+
+The  `finish` directory in the root of this guide contains the finished events application. Feel free to give it a try before you proceed.
+
+To try out the application, first navigate to the `finish` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
+
+`mvn install liberty:start-server`
+
+Next, point your browser to:
+
+`http://localhost:9080/LibertyProject`
+
+As mentioned above, you can access this application under two different roles:
+
+.Basic Registry
+|===
+|Username |Password|Role
+
+|bob
+|bobpwd
+|admin
+
+|alice
+|alicepwd
+|user
+|===
+
+You can try out the authentication of the application by clicking the first link and signing in with either credentials from the Basic Registry and you can try the authorization by clicking the second link and signing in as Bob to view the AdminServlet. When you sign in as Alice, you will not have access to the AdminServlet.
+
+In order to sign in as different users, you must close the browser and re-open it at the same link.
+
+Once you are done checking out the application, stop the Open Liberty server:
+`mvn liberty:stop-server`
+
+
+
+// =================================================================================================
+//
+// =================================================================================================
+== Configuring a user registry
+
+We will be setting up a user registry to define users and group information. To do this, you need to add the following into the server.xml file:
+
+```
+<basicRegistry id="basic" realm="WebRealm">
+    <user name="bob" password="{xor}Lyg7" />  <!-- pwd -->
+    <user name="alice" password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
+
+    <group name="admin">
+      <member name="bob" />
+    </group>
+
+    <group name="user">
+      <member name="bob" />
+      <member name="alice" />
+    </group>
+  </basicRegistry>
+```
+
+Now you've defined users and groups in the basic user registry for authentication. The names for the users and groups must be unique. In our case, we have a group called "admin" and another group called "user". 
+
+As you can see, the password is encoded here with Liberty's securityUtility command. Here, we are using the xor encoding. There are two other supported encodings are well: hash and aes that can be used.
+
+== Implementing authentication
+
+Next, we will be implementing authentication in order to confirm the identity of the user. This application uses Basic Authentication. Basic Authentication [explains basic auth here].
+
+Open the web.xml file located under webapp/WEB-INF. Notice how basic authentication is configured in the server.xml. The auth-method specifies that the authentication mechanism used is Basic and the realm name is declared. 
+
+```
+    <login-config>
+      <auth-method>BASIC</auth-method>
+      <realm-name>default</realm-name>
+    </login-config>
+```
+Remove the login-config from the web.xml file and open the HelloServlet.java file located at src/main/java/io/openliberty/guides/hello. Add the @BasicAuthenticationMechanismDefinition to the HelloServlet.java file.
+
+```
+// tag::comment[]
+/*******************************************************************************
+ * Copyright (c) 2017 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+ // end::comment[]
+package io.openliberty.guides.hello;
+
+import java.io.IOException;
+import javax.ws.rs.GET;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.DeclareRoles;
+
+import  javax.servlet.annotation.ServletSecurity;
+import javax.servlet.annotation.HttpConstraint;
+
+
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
+
+
+@BasicAuthenticationMechanismDefinition(
+  realmName = "webRealm"
+  )
+
+@WebServlet(urlPatterns="/servlet")
+
+public class HelloServlet extends HttpServlet {
+
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    @GET
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().append("Hello! How are you today?\n");
+
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
+}
+
+```
+
+
+== Implementing authorization
+Authorization determines whether a user has access to a certain role within the system. This is currently configured in the web.xml file under webapp/WEB-INF. 
+
+```
+    <security-constraint>
+      <web-resource-collection>
+        <web-resource-name>HelloServlet</web-resource-name>
+        <url-pattern>/servlet</url-pattern>
+        <url-pattern>/ServletSample/servlet</url-pattern>
+        <http-method>GET</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+        <role-name>admin</role-name>
+        <role-name>user</role-name>
+      </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+      <web-resource-collection>
+        <web-resource-name>AdminServlet</web-resource-name>
+        <url-pattern>/adminonly</url-pattern>
+        <url-pattern>/ServletSample/adminonly</url-pattern>
+        <http-method>GET</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+        <role-name>admin</role-name>
+      </auth-constraint>
+  </security-constraint>
+
+```
+
+This can be achieved with the annotation @ServletSecurity. Remove the security-constraints and open the HelloServlet.java and add the following annotation to the class:
+
+```
+// tag::comment[]
+/*******************************************************************************
+ * Copyright (c) 2017 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+ // end::comment[]
+package io.openliberty.guides.hello;
+
+import java.io.IOException;
+import javax.ws.rs.GET;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.DeclareRoles;
+
+import  javax.servlet.annotation.ServletSecurity;
+import javax.servlet.annotation.HttpConstraint;
+
+
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
+
+
+@BasicAuthenticationMechanismDefinition(
+  realmName = "webRealm"
+  )
+
+@WebServlet(urlPatterns="/servlet")
+@ServletSecurity(
+    value = @HttpConstraint(
+            rolesAllowed = {
+                "admin", "user"
+            }))
+public class HelloServlet extends HttpServlet {
+
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    @GET
+    @RolesAllowed("admin")
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().append("Hello! How are you today?\n");
+
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
+}
+
+```
+
+The roles "admin" and "user" are identical to the group names in the basic registry. They must be exactly the same for the mapping to work. They are declared under rolesAllowed so that the Hello Servlet can only be accessed by those two user groups.
+
+Now, open the AdminServlet.java file and add the same annotation, except only allow "admin" in roles allowed.
+
+```
+// tag::comment[]
+/*******************************************************************************
+ * Copyright (c) 2017 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+ // end::comment[]
+package io.openliberty.guides.hello;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import  javax.servlet.annotation.ServletSecurity;
+import javax.servlet.annotation.HttpConstraint;
+
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.DeclareRoles;
+
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
+
+@WebServlet(urlPatterns="/adminonly")
+
+@ServletSecurity(
+    value = @HttpConstraint(
+            rolesAllowed = {
+                "admin"
+            }))
+
+public class AdminServlet extends HttpServlet {
+
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().append("Hello Admin! How are you today?\n");
+        
+
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
+}
+
+```
+
+This specifies that even if a "user" such as Alice is signed in, they will not be able to access the Admin Servlet.
+
+// =================================================================================================
+// Building the application
+// =================================================================================================
+
+== Building the application
+include::{common-includes}/mvnbuild.adoc[]
+
+
+// =================================================================================================
+// Starting the application
+// =================================================================================================
+
+== Starting the application
+
+To see the new application in action, run the Maven `liberty:start-server` command from the `start` directory:
+
+[source]
+----
+$ mvn liberty:start-server
+----
+
+
+
+
+// =================================================================================================
+// Testing the application
+// =================================================================================================
+
+== Testing the application
+
+* Testing Authentication
+  - request.login() with correct credentials 
+  - request.login() with incorrect credentials and checking for the correct exception
+
+* Testing Authorization
+  - checking if eventAdmin has access to list of people registered for events
+  - checking that registeredUser does not have access to list of people registered for events
+
+
+=== Running the tests
+
+
+
+== Great work! You're done!
+
+include::{common-includes}/finish.adoc[]

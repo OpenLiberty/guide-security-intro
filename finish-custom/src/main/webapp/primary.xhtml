@@ -21,13 +21,14 @@
   xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
   xmlns:jsf="http://xmlns.jcp.org/jsf"
   xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<title> Secondary page </title>
-<h2>Secondary Page</h2>
-<p> Welcome to the Secondary Page! If you've reached this page, this means you are logged in as an admin.</p>
+<title> Users page </title>
+<h2>Users Page</h2>
 <body>
-    <input type="submit" value="Next" 
-    onclick="window.location='/LibertyProject/System/properties';" />    
-   <style>
+  <p> Welcome to the security app! If you are viewing this page, this means you have successfully logged in as either an admin or a user </p>
+
+  <input type="submit" value="Next" 
+    onclick="window.location='/secondary.jsf';" />    
+ <style>
              #logoutButton {
           width: 100%;
           border-bottom: 1px solid black;
@@ -37,15 +38,14 @@
     </style>
 
     <body>
-      <br />
+      <br />     <br />
           <h:panelGroup id="logoutButton" layout="block">
         <FORM METHOD="POST" ACTION="ibm_security_logout" NAME="logout">
           <input type="submit" name="logout" value="Log Out" />
-          <input type="HIDDEN" name="logoutExitPage" value="/index.jsf" />
+          <input type="HIDDEN" name="logoutExitPage" value="/" />
         </FORM>
     </h:panelGroup>
     </body>
-
 
 
 </body>

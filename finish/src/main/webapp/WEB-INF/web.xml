@@ -2,65 +2,41 @@
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
     version="3.1">
-    <display-name>Liberty Project</display-name>
-        <!-- WebAppJSF: Faces Servlet -->
-<servlet>
-  <servlet-name>Faces Servlet</servlet-name>
-  <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-  <load-on-startup>1</load-on-startup>
-</servlet>
-<!-- WebAppJSF: Faces Servlet Mapping -->
-<servlet-mapping>
-  <servlet-name>Faces Servlet</servlet-name>
-  <url-pattern>*.jsf</url-pattern>
-</servlet-mapping>
-
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>ProtectedPage</web-resource-name>
-      <url-pattern>/primary.jsf</url-pattern>
-      <url-pattern>/LibertyProject/primary.jsf</url-pattern>
-      <http-method>GET</http-method>
-    </web-resource-collection>
-    <auth-constraint>
-      <role-name>admin</role-name>
-      <role-name>user</role-name>
-    </auth-constraint>
-  </security-constraint>
-
-    <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>VeryProtectedPage</web-resource-name>
-      <url-pattern>/secondary.jsf</url-pattern>
-      <url-pattern>/LibertyProject/secondary.jsf</url-pattern>
-
-      <http-method>GET</http-method>
-    </web-resource-collection>
-    <auth-constraint>
-      <role-name>admin</role-name>
-    </auth-constraint>
-  </security-constraint>
-
+    <display-name>Hello Servlet</display-name>
 
     <welcome-file-list>
-        <welcome-file>index.jsf</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
-      <security-role>
-    <role-name>admin</role-name>
-  </security-role>
 
-  <security-role>
-    <role-name>user</role-name>
-  </security-role>
+    <login-config>
+      <auth-method>BASIC</auth-method>
+      <realm-name>default</realm-name>
+    </login-config>
 
-<!--   <login-config id="LoginConfig">
-    <auth-method>FORM</auth-method>
-    <realm-name>WebRealm</realm-name>
-    <form-login-config id="FormLoginConfig_1">
-      <form-login-page>/login.jsf</form-login-page>
-      <form-error-page>/error.jsf</form-error-page>
-    </form-login-config>
-  </login-config> -->
- 
+    <security-constraint>
+      <web-resource-collection>
+        <web-resource-name>HelloServlet</web-resource-name>
+        <url-pattern>/servlet</url-pattern>
+        <url-pattern>/ServletSample/servlet</url-pattern>
+        <http-method>GET</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+        <role-name>admin</role-name>
+        <role-name>user</role-name>
+      </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+      <web-resource-collection>
+        <web-resource-name>AdminServlet</web-resource-name>
+        <url-pattern>/adminonly</url-pattern>
+        <url-pattern>/ServletSample/adminonly</url-pattern>
+        <http-method>GET</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+        <role-name>admin</role-name>
+      </auth-constraint>
+  </security-constraint>
+
 </web-app>
