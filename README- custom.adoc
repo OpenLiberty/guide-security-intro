@@ -123,7 +123,7 @@ As you can see, the password is encoded here with Liberty's securityUtility comm
 Next, we will be implementing authentication in order to confirm the identity of the user. Add the following annotation in the LoginBean.java file:
 
 ```
-@FormAuthenticationMechanismDefinition(
+@CustomFormAuthenticationMechanismDefinition(
   loginToContinue = @LoginToContinue(
     loginPage = "/login.jsf",
     errorPage = "/loginerror.jsf",
@@ -132,7 +132,7 @@ Next, we will be implementing authentication in order to confirm the identity of
 
 ```
 
-Form Authentication allows you to customize your login screen and error page. As you can see, loginPage is directed to "login.jsf" and errorPage is directed to "loginerror.jsf". If you would like to see the how those pages are designed they are in the /finish/src/main/webapp directory.
+Custom Form Authentication allows you to customize your login screen and error page. As you can see, loginPage is directed to "login.jsf" and errorPage is directed to "loginerror.jsf". If you would like to see the how those pages are designed they are in the /finish/src/main/webapp directory.
 
 
 == Implementing authorization

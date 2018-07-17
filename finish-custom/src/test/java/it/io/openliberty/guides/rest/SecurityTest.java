@@ -34,13 +34,19 @@ import javax.json.JsonArray;
 import javax.ws.rs.core.Form;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
-
-
+import org.xml.sax.InputSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.Node;
 
 public class SecurityTest {
 	private static String httpPort;
@@ -78,7 +84,8 @@ public class SecurityTest {
 	}
 
 	@Test
-	public void testSuite(){
+	public void testSuite() throws Exception{
+		// this.panagiotis();
 		// this.testForm();
 		// this.testCorrectAdmin();
 		// this.testCorrectUser();
@@ -102,11 +109,24 @@ public class SecurityTest {
 		assertEquals(expectedResponseStatus, actualResponseStatus);
 	}
 
-	// public void testForm(){
-	// 	int e = 0;
-	// 	int a = testLogInHttpClient("bob:bobpwd");
-	// 	assertEquals(e,a);
-	// }
+	public void panagiotis() throws Exception{
+		getViewState();
+		assertEquals(1,1);
+	}
+
+	public void testForm(){
+		int e = 0;
+		// int a = 1;
+		try {
+				int a = testLogInHttpClient("bob:bobpwd");
+						assertEquals(e,a);
+
+		} catch (Exception ex){
+			System.out.println("io exception");
+			//do nothing
+		}
+
+	}
 
 		//Helper function - to be removed
 	 //Reads the page given the response
@@ -127,6 +147,38 @@ public class SecurityTest {
 	    	fail();
 	    }
 		}
+
+		public void getViewState() throws Exception{
+						Response response = client.target("http://localhost:9080/LibertyProject/primary.jsf")
+																													.request(MediaType.TEXT_HTML)
+																													.get();
+        String xml = response.readEntity(String.class);;
+        XPathFactory factory = XPathFactory.newInstance();
+        XPath xpath = factory.newXPath();
+        // String body = response.readEntity(String.class);
+
+        InputSource source = new InputSource(new StringReader(xml));
+        Node n = (Node) xpath.evaluate("//input[@name='javax.faces.ViewState']", source, XPathConstants.NODE);
+        String viewState = n.getAttributes().getNamedItem("value").getNodeValue();
+        System.out.println(viewState);
+        
+    }
+
+		// public void getViewState(){
+			// Response response = client.target("http://localhost:9080/LibertyProject/primary.jsf")
+			// 																										.request(MediaType.TEXT_HTML)
+			// 																										.get();
+			// String body = response.readEntity(String.class);
+		// 	System.out.println(body);
+
+		// 	InputSource source = new InputSource(body);
+		// 	XPathFactory xpathFactory = XPathFactory.newInstance();
+		// 	XPath xpath = xpathFactory.newXPath();
+
+		// 	String viewStateValue = xpath.evaluate("//input[@name='javax.faces.ViewState']", source);
+		// 	System.out.println("View state value:");
+		// 	System.out.println(viewStateValue);
+		// }
 
 
 		public int logIn(String usernameAndPassword){
@@ -149,30 +201,31 @@ public class SecurityTest {
 
 		}
 
-		// public int testLogInHttpClient(String usernameAndPassword){
-		// 	String authHeader = "Form "
-  //     + java.util.Base64.getEncoder()
-  //                       .encodeToString(usernameAndPassword.getBytes());
+		public int testLogInHttpClient(String usernameAndPassword) throws Exception{
+			//Sending GET
+			String authHeader = "Form "
+      + java.util.Base64.getEncoder()
+                        .encodeToString(usernameAndPassword.getBytes());
 
-  //  HttpClient client = new DefaultHttpClient();
-  //  HttpGet request = new HttpGet("http://localhost:9080/LibertyProject/primary.jsf");
+   HttpClient client = new DefaultHttpClient();
+   HttpGet request = new HttpGet("http://localhost:9080/LibertyProject/primary.jsf");
 
-  //  request.addHeader(authHeader);
+   request.addHeader("Form ", "bob:bobwd");
 
-  //  HttpResponse response = client.execute(request);
+   HttpResponse response = client.execute(request);
 
-  //  BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+   BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-  //  StringBuffer result = new StringBuffer();
-  //  String line = "";
-  //  while ((line = rd.readLine()) != null) {
-  //  	result.append(line);
-  //  }
+   StringBuffer result = new StringBuffer();
+   String line = "";
+   while ((line = rd.readLine()) != null) {
+   	result.append(line);
+   }
 
-  //  System.out.println(result.toString());
+   System.out.println(result.toString());
 
-  //  return 0;
+   return 0;
 
-		// }
+		}
 
 }

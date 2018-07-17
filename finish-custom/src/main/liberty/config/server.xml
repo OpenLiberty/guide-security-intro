@@ -1,0 +1,42 @@
+<server description="Intro REST Guide Liberty server">
+
+  <featureManager>
+        <feature>jaxrs-2.1</feature>
+        <feature>jsonp-1.1</feature>
+        <feature>jsf-2.3</feature>
+        <feature>appSecurity-3.0</feature>
+        <feature>servlet-4.0</feature>
+  </featureManager>
+
+    <basicRegistry id="basic" realm="myRealm">
+        <user name="bob" password="bobpwd" />  <!-- bobpwd -->
+        <user name="alice" password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
+
+        <group name="admin">
+            <member name="bob" />
+        </group>
+
+        <group name="user">
+            <member name="bob" />
+            <member name="alice" />
+        </group>
+    </basicRegistry>
+
+  <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
+      id="defaultHttpEndpoint" host="*" />
+
+    <application location="${application.name}" type="war" id="${application.name}"
+                 name="${application.name}" context-root="/">
+
+    <!--                      <application-bnd>
+            <security-role name="admin">
+                <group name="myAdmins" />
+            </security-role>
+            <security-role name="user">
+                <group name="myUsers" />
+            </security-role>
+        </application-bnd> -->
+    </application>
+
+  <webApplication location="rest.war" contextRoot="${app.context.root}"/>
+</server>

@@ -15,7 +15,11 @@ package io.openliberty.guides.rest;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.ApplicationPath;
 import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
-import javax.security.enterprise.authentication.mechanism.http.CustomFormAuthenticationMechanismDefinition;
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
+
+@BasicAuthenticationMechanismDefinition(
+  realmName = "webRealm"
+  )
 
 // @CustomFormAuthenticationMechanismDefinition(
 //   loginToContinue = @LoginToContinue(

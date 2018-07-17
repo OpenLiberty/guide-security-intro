@@ -29,18 +29,13 @@ import javax.json.JsonNumber;
 
 import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.DeclareRoles;
-import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
 
-
-// tag::class[]
 @Path("properties")
-@DeclareRoles({"myAdmins", "myUsers"})
+@DeclareRoles({"admin", "user"})
 public class PropertiesResource {
-// end::class[]
 
-    // tag::getProperties[]
     @GET
-    @RolesAllowed("myAdmins")
+    @RolesAllowed("admin")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject getProperties() {
 
@@ -56,5 +51,4 @@ public class PropertiesResource {
     }
 
     
-    // end::getProperties[]
 }
