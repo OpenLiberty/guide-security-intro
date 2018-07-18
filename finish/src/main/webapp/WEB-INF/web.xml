@@ -7,36 +7,4 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
-
-
-    <login-config>
-      <auth-method>BASIC</auth-method>
-      <realm-name>default</realm-name>
-    </login-config>
-
-    <security-constraint>
-      <web-resource-collection>
-        <web-resource-name>HelloServlet</web-resource-name>
-        <url-pattern>/servlet</url-pattern>
-        <url-pattern>/ServletSample/servlet</url-pattern>
-        <http-method>GET</http-method>
-      </web-resource-collection>
-      <auth-constraint>
-        <role-name>admin</role-name>
-        <role-name>user</role-name>
-      </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-      <web-resource-collection>
-        <web-resource-name>AdminServlet</web-resource-name>
-        <url-pattern>/adminonly</url-pattern>
-        <url-pattern>/ServletSample/adminonly</url-pattern>
-        <http-method>GET</http-method>
-      </web-resource-collection>
-      <auth-constraint>
-        <role-name>admin</role-name>
-      </auth-constraint>
-  </security-constraint>
-
 </web-app>

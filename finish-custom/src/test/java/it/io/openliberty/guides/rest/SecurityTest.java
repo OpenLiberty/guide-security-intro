@@ -1,4 +1,4 @@
-package it.io.openlibert.guides.rest;
+package it.io.openliberty.guides.rest;
 
 import static org.junit.Assert.*;
 import java.io.*;
@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
+// import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -33,14 +33,14 @@ import javax.ws.rs.core.Response;
 import javax.json.JsonArray;
 import javax.ws.rs.core.Form;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+// import org.apache.http.HttpResponse;
+// import org.apache.http.NameValuePair;
+// import org.apache.http.client.HttpClient;
+// import org.apache.http.client.entity.UrlEncodedFormEntity;
+// import org.apache.http.client.methods.HttpGet;
+// import org.apache.http.client.methods.HttpPost;
+// import org.apache.http.impl.client.DefaultHttpClient;
+// import org.apache.http.message.BasicNameValuePair;
 
 import org.xml.sax.InputSource;
 import javax.xml.xpath.XPath;
