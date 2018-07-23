@@ -449,7 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>You will learn how to secure your web application by performing authentication and authorization.</p>
 </div>
 <div class="paragraph">
-<p>Authentication confirms the identity of the user. The most common authentication is user name and password, through basic authentication or form authentication. In this application we will be showing both methods of authentication. You will be setting up a basic user registry with test variables.</p>
+<p>Authentication confirms the identity of the user. The most common authentication is user name and password, through basic authentication or form authentication. This application demonstrates both methods of authentication. You will be setting up a basic user registry with test variables.</p>
 </div>
 <div class="openblock">
 <div class="content">
@@ -459,7 +459,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="openblock">
 <div class="content">
 <div class="paragraph">
-<p>Authorization determines whether a user has access to a specific role within the system. In this application we will have two roles: Administrator and User.</p>
+<p>Authorization determines whether a user has access to a specific role within the system. This application specifies two roles: Administrator and User.</p>
 </div>
 </div>
 </div>
@@ -469,7 +469,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>The application itself shows certain users properties of their system. Administrators have access to see the all the system properties whereas users will not have access to see any of the system properties.</p>
+<p>The application itself allows users and admins to access servlets. Administrators have access to both servlets, the HelloServlet and the AdminServlet. Whereas the user will only have access to the HelloServlet.</p>
+</div>
+<div class="paragraph">
+<p>This guide will also demonstrate two different ways to achieve authorization and authentication: through configuration in the web.xml file and through annotations on the servlets.</p>
 </div>
 </div>
 </div>
@@ -530,17 +533,20 @@ cd guide-microprofile-security</pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bob</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bobpwd</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">myAdmins</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">admin</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">alice</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">alicepwd</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">myUsers</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user</p></td>
 </tr>
 </tbody>
 </table>
 <div class="paragraph">
-<p>You can try out the authentication of the application by signing in with either credentials from the Basic Registry and you can try the authorization by signing in as Bob to view the system properties. When you sign in as Alice, you will not have access to the system properties link.</p>
+<p>You can try out the authentication of the application by clicking the first link and signing in with either credentials from the Basic Registry and you can try the authorization by clicking the second link and signing in as Bob to view the AdminServlet. When you sign in as Alice, you will not have access to the AdminServlet.</p>
+</div>
+<div class="paragraph">
+<p>In order to sign in as different users, you must close the browser and re-open it at the same link.</p>
 </div>
 <div class="paragraph">
 <p>Once you are done checking out the application, stop the Open Liberty server:
@@ -552,30 +558,41 @@ cd guide-microprofile-security</pre>
 <h2 id="_configuring_a_user_registry">Configuring a user registry</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We will be setting up a user registry to define users and group information. To do this, you need to add the following into the server.xml file:</p>
+<p>The user registry is set up to define users and group information. To do this, you need to add the following <code>Basic Registry</code> into the server.xml file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-a" data-lang="a">&lt;basicRegistry id="basic" realm="WebRealm"&gt;
-    &lt;user name="bob" password="{xor}Lyg7" /&gt;  &lt;!-- pwd --&gt;
-    &lt;user name="alice" password="{xor}PjM2PDovKDs=" /&gt;  &lt;!-- alicepwd --&gt;
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;server description="Sample Servlet server"&gt;
+    &lt;featureManager&gt;
+        &lt;feature&gt;servlet-4.0&lt;/feature&gt;
+        &lt;feature&gt;appSecurity-3.0&lt;/feature&gt;
+    &lt;/featureManager&gt;
 
-    &lt;group name="myAdmins"&gt;
-      &lt;member name="bob" /&gt;
-    &lt;/group&gt;
+        &lt;basicRegistry id="basic" realm="myRealm"&gt;
+     &lt;user name="bob" password="bobpwd" /&gt;  &lt;!-- bobpwd --&gt;
+     &lt;user name="alice" password="{xor}PjM2PDovKDs=" /&gt;  &lt;!-- alicepwd --&gt;
 
-    &lt;group name="myUsers"&gt;
-      &lt;member name="bob" /&gt;
-      &lt;member name="alice" /&gt;
-    &lt;/group&gt;
-  &lt;/basicRegistry&gt;</code></pre>
+     &lt;group name="admin"&gt;
+         &lt;member name="bob" /&gt;
+     &lt;/group&gt;
+
+     &lt;group name="user"&gt;
+         &lt;member name="bob" /&gt;
+         &lt;member name="alice" /&gt;
+     &lt;/group&gt;
+ &lt;/basicRegistry&gt;
+
+    &lt;httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"  host="*" /&gt;
+
+    &lt;webApplication id="ServletSample" location="ServletSample-1.0-SNAPSHOT.war" contextRoot="${app.context.root}" /&gt;
+&lt;/server&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Now you&#8217;ve defined users and groups in the basic user registry for authentication. The names for the users and groups must be unique. In our case, we have a group called "myAdmins" and another group called "myUsers".</p>
+<p>Now you&#8217;ve defined users and groups in the basic user registry for authentication. The names for the users and groups must be unique. In this app, there is a group called "admin" and another group called "user".</p>
 </div>
 <div class="paragraph">
-<p>As you can see, the password is encoded here with Liberty&#8217;s securityUtility command. Here, we are using the xor encoding. There are two other supported encodings are well: hash and aes that can be used.</p>
+<p>As you can see, the password is encoded here with Liberty&#8217;s securityUtility command. Here, the application uses the xor encoding. There are two other supported encodings are well: hash and aes that can be used.</p>
 </div>
 </div>
 </div>
@@ -583,20 +600,92 @@ cd guide-microprofile-security</pre>
 <h2 id="_implementing_authentication">Implementing authentication</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Next, we will be implementing authentication in order to confirm the identity of the user. Add the following annotation in the LoginBean.java file:</p>
+<p>Next, authentication is implemented in order to confirm the identity of the user. This application uses Basic Authentication. Basic Authentication is a simple method to authenticate a user with a username and password. The request is sent with an Authorization header that contains the word <code>Basi`c followed by a base64-encoded string in the format `username:password</code>.</p>
+</div>
+<div class="paragraph">
+<p>Open the <code>server.xml file</code> located under <code>liberty/config/server.xml</code>. Notice how basic authentication is configured in the server.xml. The auth-method specifies that the authentication mechanism used is Basic and the realm name is declared.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code>@CustomFormAuthenticationMechanismDefinition(
-  loginToContinue = @LoginToContinue(
-    loginPage = "/login.jsf",
-    errorPage = "/loginerror.jsf",
-    useForwardToLogin = true)
-  )</code></pre>
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;server description="Sample Servlet server"&gt;
+    &lt;featureManager&gt;
+        &lt;feature&gt;servlet-4.0&lt;/feature&gt;
+        &lt;feature&gt;appSecurity-3.0&lt;/feature&gt;
+    &lt;/featureManager&gt;
+
+        &lt;basicRegistry id="basic" realm="myRealm"&gt;
+     &lt;user name="bob" password="bobpwd" /&gt;  &lt;!-- bobpwd --&gt;
+     &lt;user name="alice" password="{xor}PjM2PDovKDs=" /&gt;  &lt;!-- alicepwd --&gt;
+
+     &lt;group name="admin"&gt;
+         &lt;member name="bob" /&gt;
+     &lt;/group&gt;
+
+     &lt;group name="user"&gt;
+         &lt;member name="bob" /&gt;
+         &lt;member name="alice" /&gt;
+     &lt;/group&gt;
+ &lt;/basicRegistry&gt;
+
+    &lt;httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"  host="*" /&gt;
+
+    &lt;webApplication id="ServletSample" location="ServletSample-1.0-SNAPSHOT.war" contextRoot="${app.context.root}" /&gt;
+&lt;/server&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Custom Form Authentication allows you to customize your login screen and error page. As you can see, loginPage is directed to "login.jsf" and errorPage is directed to "loginerror.jsf". If you would like to see the how those pages are designed they are in the /finish/src/main/webapp directory.</p>
+<p>Remove the login-config from the server.xml file and open the HelloServlet.java file located at <code>src/main/java/io/openliberty/guides/hello</code>. <code>HelloServlet</code> is a simple servlet that shows the message <code>Hello! How are you today?</code> if accessed. Add the <code>@BasicAuthenticationMechanismDefinition</code> to the HelloServlet.java file to configure Basic Authentication.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">package io.openliberty.guides.hello;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.DeclareRoles;
+
+import  javax.servlet.annotation.ServletSecurity;
+import javax.servlet.annotation.HttpConstraint;
+
+
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
+@BasicAuthenticationMechanismDefinition(
+  realmName = "webRealm"
+  )
+
+@WebServlet(urlPatterns="/servlet")
+
+@ServletSecurity(
+    value = @HttpConstraint(
+            rolesAllowed = {
+                "admin", "user"
+            }))
+
+public class HelloServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().append("Hello! How are you today?\n");
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
+}</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -604,58 +693,135 @@ cd guide-microprofile-security</pre>
 <h2 id="_implementing_authorization">Implementing authorization</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Authorization determines whether a user has access to a certain role within the system. We can achieve this with the following annotations: <code>DeclareRoles()</code> and <code>RolesAllowed()</code>.
-Authorization with specific roles can be achieved using the following annotations:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>@DeclareRoles()</p>
-</li>
-<li>
-<p>@RolesAllowed()</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>These annotations allow you to specify the roles of each user group without configuration in the server.xml file. The group to role mapping is accomplished automatically as long as the user group names and the role names are identical.</p>
-</div>
-<div class="paragraph">
-<p>Add the following annotations to the PropertiesResource.java file:</p>
+<p>Authorization determines whether a user has access to a certain role within the system. This is currently configured in the web.xml file under webapp/WEB-INF.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code>// tag::class[]
-@Path("properties")
-@DeclareRoles({"myAdmins", "myUsers"})
-public class PropertiesResource {
-// end::class[]
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+    version="3.1"&gt;
+    &lt;display-name&gt;Hello Servlet&lt;/display-name&gt;
 
-    // tag::getProperties[]
-    @GET
-    @RolesAllowed("myAdmins")
-    @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject getProperties() {
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This can be achieved with the annotation <code>@ServletSecurity</code>. Remove the security-constraints and open the HelloServlet.java and add the following <code>@ServletSecurity</code> annotation to the class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">package io.openliberty.guides.hello;
 
-        JsonObjectBuilder builder = Json.createObjectBuilder();
+import java.io.IOException;
 
-        System.getProperties()
-              .entrySet()
-              .stream()
-              .forEach(entry -&gt; builder.add((String)entry.getKey(),
-                                            (String)entry.getValue()));
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-       return builder.build();
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.DeclareRoles;
+
+import  javax.servlet.annotation.ServletSecurity;
+import javax.servlet.annotation.HttpConstraint;
+
+
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
+@BasicAuthenticationMechanismDefinition(
+  realmName = "webRealm"
+  )
+
+@WebServlet(urlPatterns="/servlet")
+
+@ServletSecurity(
+    value = @HttpConstraint(
+            rolesAllowed = {
+                "admin", "user"
+            }))
+
+public class HelloServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().append("Hello! How are you today?\n");
     }
-    // end::getProperties[]
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Notice how the roles "myAdmins" and "myUsers" are identical to the group names we set up earlier in the basic registry. They must be exactly the same for the mapping to work.</p>
+<p>The roles "admin" and "user" are identical to the group names in the basic registry. They must be exactly the same for the mapping to work. They are declared under rolesAllowed so that the Hello Servlet can only be accessed by those two user groups.</p>
 </div>
 <div class="paragraph">
-<p>The properties are only allowed by users of the role "myAdmins".</p>
+<p>Now, open the <code>AdminServlet.java</code> file and add the same annotation, except only allow "admin" in roles allowed. <code>AdminServlet</code> is a servlet that displays the message <code>Hello Admin! How are you today?</code> when accessed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">package io.openliberty.guides.hello;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import  javax.servlet.annotation.ServletSecurity;
+import javax.servlet.annotation.HttpConstraint;
+
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.DeclareRoles;
+
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
+
+@WebServlet(urlPatterns="/adminonly")
+
+@ServletSecurity(
+    value = @HttpConstraint(
+            rolesAllowed = {
+                "admin"
+            }))
+
+public class AdminServlet extends HttpServlet {
+
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().append("Hello Admin! How are you today?\n");
+
+
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This specifies that even if a "user" such as Alice is signed in, they will not be able to access the Admin Servlet.</p>
 </div>
 </div>
 </div>
@@ -683,35 +849,116 @@ public class PropertiesResource {
 <div class="sect1">
 <h2 id="_testing_the_application">Testing the application</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Testing Authentication</p>
-<div class="ulist">
-<ul>
-<li>
-<p>request.login() with correct credentials</p>
-</li>
-<li>
-<p>request.login() with incorrect credentials and checking for the correct exception</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Create the test class, <code>src/test/java/io/openliberty/guides/hello/it/SecurityTest.java</code>.</p>
 </div>
-</li>
-<li>
-<p>Testing Authorization</p>
-<div class="ulist">
-<ul>
-<li>
-<p>checking if eventAdmin has access to list of people registered for events</p>
-</li>
-<li>
-<p>checking that registeredUser does not have access to list of people registered for events</p>
-</li>
-</ul>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">package io.openliberty.guides.hello.it;
+
+import static org.junit.Assert.*;
+import java.io.*;
+import java.util.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+
+public class SecurityTest {
+    private Client client;
+
+    private static String URL;
+    private final String ADMIN_NAME = "bob:bobpwd";
+    private final String ADMIN_SERVLET = "adminonly";
+
+    private final String USER_NAME = "alice:alicepwd";
+    private final String USER_SERVLET = "servlet";
+
+    private final String INCORRECT_NAME = "carl:carlpwd";
+
+
+
+    @BeforeClass
+    public static void init() {
+
+        String port = System.getProperty("liberty.test.port");
+        String war = System.getProperty("war.name");
+        URL = "http://localhost:" + port + "/" + war + "/";
+
+    }
+
+    @Before
+    public void setup(){
+        client = ClientBuilder.newClient();
+    }
+
+    @After
+    public void teardown() {
+        client.close();
+    }
+
+    @Test
+    public void testSuite(){
+        this.testCorrectAdmin();
+        this.testCorrectUser();
+        this.testIncorrectUser();
+    }
+
+    public void testCorrectAdmin(){
+        int expectedResponseStatus = 200;
+        int actualResponseStatus = logIn(ADMIN_NAME, ADMIN_SERVLET);
+        assertEquals(expectedResponseStatus, actualResponseStatus);
+    }
+
+    public void testCorrectUser(){
+        int expectedResponseStatus = 200;
+        int actualResponseStatus = logIn(USER_NAME, USER_SERVLET);
+        assertEquals(expectedResponseStatus, actualResponseStatus);
+    }
+
+    public void testIncorrectAuthorization(){
+        int expectedResponseStatus = 403;
+        int actualResponseStatus = logIn(USER_NAME, ADMIN_SERVLET);
+        assertEquals(expectedResponseStatus, actualResponseStatus);
+    }
+
+    public void testIncorrectUser(){
+        int expectedResponseStatus = 401;
+        int actualResponseStatus = logIn(INCORRECT_NAME, USER_SERVLET);
+        assertEquals(expectedResponseStatus, actualResponseStatus);
+    }
+
+
+    public int logIn(String usernameAndPassword, String servlet){
+        String authHeader = "Basic "
+            + java.util.Base64.getEncoder()
+                              .encodeToString(usernameAndPassword.getBytes());
+
+        Response response = client.target("http://localhost:9080/ServletSample/" + servlet)
+                                         .request(MediaType.APPLICATION_JSON)
+                                         .header("Authorization",
+                                             authHeader)
+                                         .get();
+
+        int loginResponseValue = response.getStatus();
+        response.close();
+
+        return loginResponseValue;
+
+    }
+
+}</code></pre>
 </div>
-</li>
-</ul>
+</div>
+<div class="paragraph">
+<p>There are four tests in this class, <code>testCorrectAdmin()</code> accesses the AdminServlet using Bob&#8217;s credentials and <code>testCorrectUser()</code> accesses the UserServlet using Alice&#8217;s credentials which should both yield <code>200 OK</code> responses. <code>testIncorrectAuthorization()</code> accesses the AdminServlet using Alice&#8217;s credentials which yields a <code>403 Forbidden</code> response and finally there is a test for incorrect credentials <code>testIncorrectUser()</code> which yields a <code>401 Unauthorized</code> response.</p>
 </div>
 <div class="sect2">
 <h3 id="_running_the_tests">Running the tests</h3>
@@ -730,7 +977,7 @@ public class PropertiesResource {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-12 14:11:34 Eastern Daylight Time
+Last updated 2018-07-23 16:51:43 Eastern Daylight Time
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">

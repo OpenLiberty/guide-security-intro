@@ -1,4 +1,4 @@
-// tag::copyright[]
+// tag::comment[]
 /*******************************************************************************
  * Copyright (c) 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -9,8 +9,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-// end::copyright[]
-// tag::security[]
+// end::comment[]
 package io.openliberty.guides.hello.it;
 
 import static org.junit.Assert.*;
@@ -77,12 +76,6 @@ public class SecurityTest {
     }
 
     public void testCorrectUser(){
-        int expectedResponseStatus = 200;
-        int actualResponseStatus = logIn(USER_NAME, USER_SERVLET);
-        assertEquals(expectedResponseStatus, actualResponseStatus);
-    }
-
-    public void testIncorrectAuthorization(){
         int expectedResponseStatus = 403;
         int actualResponseStatus = logIn(USER_NAME, ADMIN_SERVLET);
         assertEquals(expectedResponseStatus, actualResponseStatus);
@@ -114,4 +107,3 @@ public class SecurityTest {
     }
 
 }
-// end::security[]
