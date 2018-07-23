@@ -69,7 +69,7 @@ To try out the application, first navigate to the `finish` directory and then ru
 
 Next, point your browser to:
 
-`http://localhost:9080/LibertyProject`
+`http://localhost:9080/ServletSample`
 
 As mentioned above, you can access this application under two different roles:
 
@@ -114,16 +114,16 @@ As you can see, the password is encoded here with Liberty's securityUtility comm
 
 == Implementing authentication
 
-Next, authentication is implemented in order to confirm the identity of the user. This application uses Basic Authentication. Basic Authentication is a simple method to authenticate a user with a username and password. The request is sent with an Authorization header that contains the word Basic followed by a base64-encoded string in the format username:password.
+Next, authentication is implemented in order to confirm the identity of the user. This application uses Basic Authentication. Basic Authentication is a simple method to authenticate a user with a username and password. The request is sent with an Authorization header that contains the word `Basi`c followed by a base64-encoded string in the format `username:password`.
 
-Open the server.xml file located under liberty/config/server.xml. Notice how basic authentication is configured in the server.xml. The auth-method specifies that the authentication mechanism used is Basic and the realm name is declared. 
+Open the `server.xml file` located under `liberty/config/server.xml`. Notice how basic authentication is configured in the server.xml. The auth-method specifies that the authentication mechanism used is Basic and the realm name is declared. 
 
 [source, xml, indent=0]
 ----
 include::finish/src/main/liberty/config/server.xml[tags=security]
 ----
 
-Remove the login-config from the server.xml file and open the HelloServlet.java file located at src/main/java/io/openliberty/guides/hello. `HelloServlet` is a simple servlet that shows the message `Hello! How are you today?` if accessed. Add the `@BasicAuthenticationMechanismDefinition` to the HelloServlet.java file to configure Basic Authentication.
+Remove the login-config from the server.xml file and open the HelloServlet.java file located at `src/main/java/io/openliberty/guides/hello`. `HelloServlet` is a simple servlet that shows the message `Hello! How are you today?` if accessed. Add the `@BasicAuthenticationMechanismDefinition` to the HelloServlet.java file to configure Basic Authentication.
 
 [source, java, indent=0]
 ----
