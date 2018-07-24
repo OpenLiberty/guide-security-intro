@@ -114,7 +114,7 @@ As you can see, the password is encoded here with Liberty's securityUtility comm
 
 == Implementing authentication
 
-Next, authentication is implemented in order to confirm the identity of the user. This application uses Basic Authentication. Basic Authentication is a simple method to authenticate a user with a username and password. The request is sent with an Authorization header that contains the word `Basi`c followed by a base64-encoded string in the format `username:password`.
+Next, authentication is implemented in order to confirm the identity of the user. This application uses Basic Authentication. Basic Authentication is a simple method to authenticate a user with a username and password. The request is sent with an Authorization header that contains the word `Basic` followed by a base64-encoded string in the format `username:password`.
 
 Open the `server.xml file` located under `liberty/config/server.xml`. Notice how basic authentication is configured in the server.xml. The auth-method specifies that the authentication mechanism used is Basic and the realm name is declared. 
 
