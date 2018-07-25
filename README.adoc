@@ -61,7 +61,7 @@ The `finish` directory contains the finished project, which is what you will bui
 
 *Try what you'll build*
 
-The  `finish` directory in the root of this guide contains the finished events application. Feel free to give it a try before you proceed.
+The  `finish` directory in the root of this guide contains the finished security application. Feel free to give it a try before you proceed.
 
 To try out the application, first navigate to the `finish` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
 
@@ -120,8 +120,7 @@ Open the `server.xml file` located under `liberty/config/server.xml`. Notice how
 
 [source, xml, indent=0]
 ----
-include::finish/src/main/liberty/config/server.xml[tags=security]
-----
+f----
 
 Remove the login-config from the server.xml file and open the HelloServlet.java file located at `src/main/java/io/openliberty/guides/hello`. `HelloServlet` is a simple servlet that shows the message `Hello! How are you today?` if accessed. Add the `@BasicAuthenticationMechanismDefinition` to the HelloServlet.java file to configure Basic Authentication.
 
@@ -135,10 +134,57 @@ include::finish/src/main/java/io/openliberty/guides/hello/HelloServlet.java[tags
 == Implementing authorization
 Authorization determines whether a user has access to a certain role within the system. This is currently configured in the web.xml file under webapp/WEB-INF. 
 
-[source, xml, indent=0]
-----
-include::finish/src/main/webapp/WEB-INF/web.xml[tags=security]
-----
+```
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+    version="3.1">
+    <display-name>Hello Servlet</display-name>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+  <login-config id="LoginConfig">
+    <auth-method>BASIC</auth-method>
+    <realm-name>WebRealm</realm-name>
+  </login-config>
+
+   <security-role>
+    <role-name>admin</role-name>
+  </security-role>
+  <security-role>
+    <role-name>user</role-name>
+  </security-role>
+
+    <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>HelloServlet</web-resource-name>
+      <url-pattern>/servlet</url-pattern>
+      <url-pattern>/ServletSample/servlet</url-pattern>
+      <http-method>GET</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+      <role-name>user</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+    <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>AdminServlet</web-resource-name>
+      <url-pattern>/adminonly</url-pattern>
+      <url-pattern>/ServletSample/adminonly</url-pattern>
+
+      <http-method>GET</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+
+</web-app>
+```
 
 This can be achieved with the annotation `@ServletSecurity`. Remove the security-constraints and open the HelloServlet.java and add the following `@ServletSecurity` annotation to the class:
 
