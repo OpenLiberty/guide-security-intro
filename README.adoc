@@ -14,9 +14,9 @@
 :page-permalink: /guides/{projectid}
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-= Securing a web application.
+= Securing a web application
 
-Learn how to use appSecurity-3.0 to secure a web application.
+Learn how to secure a web application.
 
 // =================================================================================================
 // What you'll learn
@@ -239,7 +239,7 @@ Create the test class, `src/test/java/io/openliberty/guides/hello/it/SecurityTes
 
 [source, java, indent=0]
 ----
-include::finish/src/test/java/io/openliberty/guides/hello/it/SecurityTest.java[tags=security;!copyright]
+include::finish/src/test/java/it/io/openliberty/guides/servlet/SecurityTest.java[tags=security;!copyright]
 ----
 
 There are four tests in this class, `testCorrectAdmin()` accesses the AdminServlet using Bob's credentials and `testCorrectUser()` accesses the UserServlet using Alice's credentials which should both yield `200 OK` responses. `testIncorrectAuthorization()` accesses the AdminServlet using Alice's credentials which yields a `403 Forbidden` response and finally there is a test for incorrect credentials `testIncorrectUser()` which yields a `401 Unauthorized` response.
