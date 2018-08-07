@@ -22,7 +22,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <app.name>${project.artifactId}</app.name>
         <!-- tag::serverProperties[] -->
-        <testServerHttpPort>9080</testServerHttpPort>
+        <testServerHttpPort>9090</testServerHttpPort>
         <testServerHttpsPort>9443</testServerHttpsPort>
         <warContext>${app.name}</warContext>
         <!-- end::serverProperties[] -->
@@ -32,11 +32,6 @@
     <!-- end::properties[] -->
     <!-- tag::dependencies[] -->
     <dependencies>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>3.1.1</version>
-        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -49,6 +44,11 @@
             <artifactId>commons-httpclient</artifactId>
             <version>3.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.1.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

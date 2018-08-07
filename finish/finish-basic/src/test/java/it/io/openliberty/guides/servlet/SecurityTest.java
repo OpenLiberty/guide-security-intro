@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2017 IBM Corporation and others.
+ * Copyright (c) 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,8 +28,36 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import org.apache.http.client.params.ClientPNames;
+
+import javax.servlet.http.HttpServletResponse;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpMessage;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+
+
 public class SecurityTest {
     private Client client;
+    private HttpClient httpclient;
 
     private static String URL;
     private final String ADMIN_NAME = "bob:bobpwd";
@@ -56,10 +84,14 @@ public class SecurityTest {
     @Before
     public void setup(){
         client = ClientBuilder.newClient();
+        HttpParams httpParams = new BasicHttpParams();
+        httpParams.setParameter(ClientPNames.HANDLE_REDIRECTS, Boolean.FALSE);
+        httpclient = new DefaultHttpClient(httpParams);
     }
 
     @After 
     public void teardown() {
+        httpclient.getConnectionManager().shutdown();
         client.close();
     }
 
@@ -111,6 +143,31 @@ public class SecurityTest {
 
         return loginResponseValue;
 
+    }
+
+
+    public void testForm() throws Exception{
+        int expectedStatus = 200;
+        int actualStatus = executeFormLogin(httpclient, "http://localhost:9080/ServletSample/adminonly", "bob", "bobpwd");
+        System.out.println(actualStatus);
+        assertEquals(expectedStatus, actualStatus);
+
+    }
+
+    public int executeFormLogin(HttpClient httpclient, String url, String username, String password) throws Exception{
+        
+        HttpPost postMethod = new HttpPost(url);
+
+        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+        nvps.add(new BasicNameValuePair("j_username", username));
+        nvps.add(new BasicNameValuePair("j_password", password));
+        
+        postMethod.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+        HttpResponse response = httpclient.execute(postMethod);
+
+        int status = response.getStatusLine().getStatusCode();
+        return status;
     }
 
 }
