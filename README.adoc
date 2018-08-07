@@ -60,7 +60,7 @@ To try out the application, first navigate to the `finish` directory and then ru
 
 Next, point your browser to:
 
-`https://localhost:9080/ServletSample`
+`https://localhost:9090/ServletSample`
 
 The application can be accessed under two different roles:
 
@@ -77,7 +77,7 @@ The application can be accessed under two different roles:
 |user
 |===
 
-You can try out the authentication of the application by clicking the first link and signing in with either credentials from the Basic Registry and you can try the authorization by clicking the second link and signing in as Bob to view the AdminServlet. When you sign in as Alice, you will not have access to the AdminServlet.
+You can try out the authentication of the application by clicking the first link and signing in with either credentials from the Basic Registry. You can try the authorization by clicking the second link and signing in as Bob to view the AdminServlet. When you sign in as Alice, you will not have access to the AdminServlet.
 
 In order to sign in as different users, you must close the browser and re-open it at the same link.
 
@@ -93,22 +93,22 @@ Once you are done checking out the application, stop the Open Liberty server:
 
 Navigate to the  `start` directory to begin.
 
-The user registry is set up to define users and group information. To do this, you need to add the following `Basic Registry` into the server.xml file:
+The user registry is set up to define users and group information. To do this, you need to add the following `Basic Registry` into the `src/main/liberty/configserver.xml` file:
 
 [source, xml, indent=0]
 ----
 include::finish/src/main/liberty/config/server.xml[tags=security]
 ----
 
-Now that you've defined users and groups in the basic user registry for authentication. The names for the users and groups must be unique. In this application, there is a group called "admin" and another group called "user". 
+Now that you have defined users and groups in the basic user registry for authentication. The names for the users and groups must be unique. In this application, there is a group called "admin" and another group called "user".
 
-As you can see, the password is encoded here with Liberty's securityUtility command. Here, the application uses the xor encoding. There are two other supported encodings are well: hash and aes that can be used.
+The password is encoded with Liberty's securityUtility command. Here, the application uses the xor encoding. There are two other supported encodings are well: hash and aes that can be used.
 
 == Implementing authorization
 
 Authorization determines whether a user has access to a certain role within the system.
 
-This can be achieved with the annotation `@ServletSecurity`. Create the `HelloServlet` class in the `src/main/java/io/openliberty/guides/hello/HelloServlet.java` file:
+Authorization can be achieved with the annotation `@ServletSecurity`. Create the `HelloServlet` class in the `src/main/java/io/openliberty/guides/hello/HelloServlet.java` file:
 
 [source, java, indent=0]
 ----
@@ -117,30 +117,32 @@ include::finish/src/main/java/io/openliberty/guides/hello/HelloServlet.java[tags
 
 The roles "admin" and "user" are identical to the group names in the basic registry. They must be exactly the same for the mapping to work. They are declared under rolesAllowed so that the Hello Servlet can only be accessed by those two user groups.
 
-The same `@ServletSecurity` annotation is applied, except only "admin" roles are allowed. `AdminServlet` is a servlet that displays the message `Hello Admin! How are you today?` when accessed.
+Create the `AdminServlet` class in the `src/main/java/io/openliberty/guides/hello/AdminServlet.java` file. The same `@ServletSecurity` annotation is applied, except only "admin" roles are allowed. `AdminServlet` is a servlet that displays the message `Hello Admin! How are you today?` when accessed.
 
 [source, java, indent=0]
 ----
 include::finish/src/main/java/io/openliberty/guides/hello/AdminServlet.java[tags=security;!copyright]
 ----
 
-This specifies that even if a "user" such as Alice is signed in, they will not be able to access the Admin Servlet.
+The `@ServletSecurity` annotation specifies that even if a "user" such as Alice is signed in, they will not be able to access the Admin Servlet.
 
 == Implementing authentication
 
-Next, authentication is implemented in order to confirm the identity of the user. This application currently uses Basic Authentication. Basic Authentication is a simple method to authenticate a user with a username and password. The request is sent with an Authorization header that contains the word `Basic` followed by a base64-encoded string in the format `username:password`.
+Authentication is implemented in order to confirm the identity of the user. This application currently uses Basic Authentication, which is a simple method to authenticate a user with a username and password. The request is sent with an Authorization header that contains the word `Basic` followed by a base64-encoded string in the format `username:password`.
 
-Open the `HelloServlet` class in the `src/main/java/io/openliberty/guides/hello/HelloServlet.java` file. Notice the `@BasicAuthenticationMechanismDefinition` annotation in the class. The realm name is specified in the annotation as `webRealm`. 
+Open the `HelloServlet` class in the `src/main/java/io/openliberty/guides/hello/HelloServlet.java` file. 
 
 ADD CODE HERE (hard coded since the finish folder will have form)
 
-At this point, your application is secured using basic authentication. You can try running this now using the instructions from `Try What You'll Build` in the `start` directory. 
+Notice the `@BasicAuthenticationMechanismDefinition` annotation in the class. The realm name is specified in the annotation as `webRealm`, this maps to the same realm name defined in the Basic User Registry
+.
+At this point, your application is secured using basic authentication. You can try running this now using the instructions from `Try What You'll Build` in the `start` directory.
 
 The next type of authentication that will be implemented is Form Authentication. Form Authentication is an authentication mechanism where the user is able to fill in their login credentials using a form that the developer is able to edit. 
 
 It is more secure than Basic Authentication because logout functionality can be implemented and the user will be logged out automatically after a certain amount of time.
 
-Remove the `@BasicAuthenticationMechanismDefinition` and replace it with `@FormAuthenticationMechanismDefinition`.
+To configure Form Authentication, remove the `@BasicAuthenticationMechanismDefinition` and replace it with `@FormAuthenticationMechanismDefinition`.
 
 [source, java, indent=0]
 ----
@@ -150,29 +152,12 @@ include::finish/src/main/java/io/openliberty/guides/hello/HelloServlet.java[tags
 The `LoginToContinue` annotation allows the application to add specific login functionality to the `AuthenticationMechanism`. The elements in this annotation are the `errorPage` and the `loginPage`. These are resources that the caller will see depending on if they provide the correct credentials.
 
 
-
 // =================================================================================================
 // Building the application
 // =================================================================================================
 
 == Building the application
 include::{common-includes}/mvnbuild.adoc[]
-
-
-// =================================================================================================
-// Starting the application
-// =================================================================================================
-
-== Starting the application
-
-To see the new application in action, run the Maven `liberty:start-server` command from the `start` directory:
-
-[source]
-----
-$ mvn liberty:start-server
-----
-
-
 
 
 // =================================================================================================
@@ -197,4 +182,3 @@ include::finish/src/test/java/it/io/openliberty/guides/servlet/SecurityTest.java
 == Great work! You're done!
 
 include::{common-includes}/finish.adoc[]
-
