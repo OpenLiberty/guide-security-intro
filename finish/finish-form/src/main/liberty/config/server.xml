@@ -21,7 +21,7 @@
 
     <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"  host="*" />
 
-    <webApplication id="ServletSample" location="ServletSample-1.0-SNAPSHOT.war" contextRoot="${app.context.root}" />
+    <webApplication id="ServletSample" location="ServletSample.war" contextRoot="${app.context.root}" />
 
 <logging traceSpecification="com.ibm.ws.webcontainer.*=all:com.ibm.ws.security.javaeesec.*=all"
 traceFileName="trace.log"

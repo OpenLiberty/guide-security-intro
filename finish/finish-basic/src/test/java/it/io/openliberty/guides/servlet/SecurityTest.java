@@ -75,8 +75,7 @@ public class SecurityTest {
 
         // tag::URL[]
         String port = System.getProperty("liberty.test.port");
-        String war = System.getProperty("war.name");
-        URL = "http://localhost:" + port + "/" + war + "/";
+        URL = "http://localhost:" + port + "/" + "ServletSample/";
         // end::URL[]
         
     }

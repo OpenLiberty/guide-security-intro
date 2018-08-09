@@ -102,7 +102,7 @@ include::finish/src/main/liberty/config/server.xml[tags=security]
 
 Now that you have defined users and groups in the basic user registry for authentication. The names for the users and groups must be unique. In this application, there is a group called "admin" and another group called "user".
 
-The password is encoded with Liberty's securityUtility command. Here, the application uses the xor encoding. There are two other supported encodings are well: hash and aes that can be used.
+The password is encoded with Liberty's securityUtility command. The securityUtility is a command that supports plain text encryption and SSL certificate creation for Liberty. Here, the application uses the xor encoding. There are two other supported encodings are well: hash and aes that can be used.
 
 == Implementing authorization
 
@@ -130,9 +130,12 @@ The `@ServletSecurity` annotation specifies that even if a "user" such as Alice 
 
 Authentication is implemented in order to confirm the identity of the user. This application currently uses Basic Authentication, which is a simple method to authenticate a user with a username and password. The request is sent with an Authorization header that contains the word `Basic` followed by a base64-encoded string in the format `username:password`.
 
-Open the `HelloServlet` class in the `src/main/java/io/openliberty/guides/hello/HelloServlet.java` file. 
+Open the `AdminServlet` class in the `src/main/java/io/openliberty/guides/hello/AdminServlet.java` file. 
 
-ADD CODE HERE (hard coded since the finish folder will have form)
+[source, java, indent=0]
+----
+include::finish/src/main/java/io/openliberty/guides/example/AdminServlet.java[tags=security;!copyright]
+----
 
 Notice the `@BasicAuthenticationMechanismDefinition` annotation in the class. The realm name is specified in the annotation as `webRealm`, this maps to the same realm name defined in the Basic User Registry
 .
