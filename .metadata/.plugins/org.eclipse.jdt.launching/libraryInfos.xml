@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><libraryInfos>
+<libraryInfo home="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk" version="1.8.0_161">
+<bootpath>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\bin\compressedrefs\jclSC180\vm.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\se-service.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\cuda4j.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\math.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ibmorb.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ibmorbapi.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ibmcfw.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ibmpkcs.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ibmcertpathfw.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ibmjgssfw.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ibmjssefw.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ibmsaslfw.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ibmjcefw.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ibmjgssprovider.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ibmjsseprovider2.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ibmcertpathprovider.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\xmldsigfw.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\xml.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\charsets.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\resources.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\rt.jar"/>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\dataaccess.jar"/>
+</bootpath>
+<extensionDirs>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\ext"/>
+</extensionDirs>
+<endorsedDirs>
+<entry path="C:\Users\JUSTINEChen\ibm-java-sdk-80-win-x86_64\sdk\jre\lib\endorsed"/>
+</endorsedDirs>
+</libraryInfo>
+</libraryInfos>

@@ -31,238 +31,184 @@ import org.apache.http.params.HttpParams;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpMessage;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
 public class SecurityTest {
-    private Client client;
-    private HttpClient httpclient;
+  private Client client;
+  private HttpClient httpclient;
 
-    private static String URL;
-    private final String ADMIN_NAME = "bob:bobpwd";
-    private final String ADMIN_SERVLET = "adminonly";
+  private static String BASE_URL;
 
-    private final String USER_NAME = "alice:alicepwd";
-    private final String USER_SERVLET = "servlet";
+  private final String ADMIN_NAME = "bob";
+  private final String ADMIN_PASS = "bobpwd";
+  private final String ADMIN_SERVLET = "adminonly";
 
-    private final String INCORRECT_NAME = "carl:carlpwd";
- 
+  private final String USER_NAME = "alice";
+  private final String USER_PASS = "alicepwd";
+  private final String USER_SERVLET = "servlet";
 
- 
-    @BeforeClass
-    public static void init() {
+  private final String INCORRECT_NAME = "carl";
+  private final String INCORRECT_PASS = "carlpwd";
 
-        // tag::URL[]
-        String port = System.getProperty("liberty.test.port");
-        String war = System.getProperty("war.name");
-        // end::URL[]
-        
-    }
+  @BeforeClass
+  public static void init() {
 
-    @Before
-    public void setup(){
-        HttpParams httpParams = new BasicHttpParams();
-        httpParams.setParameter(ClientPNames.HANDLE_REDIRECTS, Boolean.FALSE);
-        httpclient = new DefaultHttpClient(httpParams);
-    }
+    // tag::URL[]
+    String port = System.getProperty("liberty.test.port");
+    BASE_URL = "http://localhost:" + port + "/" +  "ServletSample/";
 
-    @After 
-    public void teardown() {
-        httpclient.getConnectionManager().shutdown();
-    }
+    // end::URL[]
 
-    @Test
-    public void testSuite() throws Exception{
-        this.testForm();
+  }
 
-    }
+  @Before
+  public void setup() {
+    HttpParams httpParams = new BasicHttpParams();
+    httpParams.setParameter(ClientPNames.HANDLE_REDIRECTS, Boolean.FALSE);
+    // httpclient = new DefaultHttpClient(httpParams);
+    httpclient = new DefaultHttpClient();
+  }
 
-    //HttpClient httpclient, String url, String username, String password, boolean redirect, String description, String[] cookies
+  @After
+  public void teardown() {
+    httpclient.getConnectionManager().shutdown();
+  }
 
-    public void testForm() throws Exception{
-        int expectedStatus = 200;
-        String actualStatus = executeFormLogin(httpclient, "http://localhost:9090/ServletSample/adminonly", "bob", "bobpwd", false, null, null);
-        System.out.println(actualStatus);
-        assertEquals(0, 0);
+  @Test
+  public void testSuite() throws Exception {
+    this.testCorrectAdmin();
+    this.testCorrectUser();
+    this.testIncorrectUser();
 
-    }
+  }
 
-    // public int executeFormLogin(HttpClient httpclient, String url, String username, String password) throws Exception{
-        
-    //     HttpPost postMethod = new HttpPost(url);
+  public void testCorrectAdmin() throws Exception {
+    httpclient = new DefaultHttpClient();
 
-    //     List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-    //     nvps.add(new BasicNameValuePair("j_username", username));
-    //     nvps.add(new BasicNameValuePair("j_password", password));
-        
-    //     postMethod.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+    int expectedStatus = 200;
+    System.out.println(BASE_URL + ADMIN_SERVLET);
+    int actualStatus = executeFormLogin(httpclient,
+        BASE_URL + ADMIN_SERVLET, USER_NAME, USER_PASS);
+    httpclient.getConnectionManager().shutdown();
 
-    //     HttpResponse response = httpclient.execute(postMethod);
+    assertEquals(expectedStatus, actualStatus);
 
-    //     int status = response.getStatusLine().getStatusCode();
-    //     return status;
-    // }
+  }
 
+  public void testCorrectUser() throws Exception {
+    httpclient = new DefaultHttpClient();
 
-    protected Header getCookieHeader(HttpResponse response, String cookieName) {
+    int expectedStatus = 200; 
+    int actualStatus = executeFormLogin(httpclient, BASE_URL + USER_SERVLET, USER_NAME, USER_PASS);
+    httpclient.getConnectionManager().shutdown();
 
-        String methodName = "getCookie";
+    assertEquals(expectedStatus, actualStatus);
+  }
 
-        // Log.info(logClass, methodName, response.toString() + ", cookieName=" + cookieName);
+  public void testIncorrectUser() throws Exception {
+    httpclient = new DefaultHttpClient();
 
-        Header[] setCookieHeaders = response.getHeaders("Set-Cookie");
+    int expectedStatus = 403;
+    int actualStatus = executeFormLogin(httpclient, BASE_URL + USER_SERVLET, INCORRECT_NAME, INCORRECT_PASS);
+    httpclient.getConnectionManager().shutdown();
 
-        if (setCookieHeaders == null) {
+    assertEquals(expectedStatus, actualStatus);
+  }
 
-            fail("There must be Set-Cookie headers.");
+  public void printPage(HttpResponse response) throws Exception{
+      // System.out.println(response.getStatus());
+      BufferedReader br = new BufferedReader(new InputStreamReader((InputStream) response.getEntity().getContent()));
+      List<String> result = new ArrayList<String>();
+      try {
+        String input;
+        while ((input = br.readLine()) != null){
+          System.out.println(input);
 
+          result.add(input);
         }
-
-        for (Header header : setCookieHeaders) {
-
-            // Log.info(logClass, methodName, "Header: " + header);
-
-            for (HeaderElement e : header.getElements()) {
-
-                if (e.getName().equals(cookieName)) {
-
-                    return header;
-
-                }
-
-            }
-
-        }
-
-        fail("Set-Cookie for " + cookieName + " not found.");
-
-        return null;
-
+        br.close();
+      } catch (IOException e){
+        e.printStackTrace();
+        fail();
+      }
     }
 
+  // public int executeFormLogin(HttpClient httpclient, String url, String
+  // username, String password) throws Exception{
 
-    public void assertCookie(String cookieHeaderString, boolean secure, boolean httpOnly) {
+  // HttpPost postMethod = new HttpPost(url);
 
-        assertTrue("The Path parameter must be set.", cookieHeaderString.contains("Path=/"));
+  // List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+  // nvps.add(new BasicNameValuePair("j_username", username));
+  // nvps.add(new BasicNameValuePair("j_password", password));
 
-        assertEquals("The Secure parameter must" + (secure == true ? "" : " not" + " be set."), secure, cookieHeaderString.contains("Secure"));
+  // postMethod.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 
-        assertEquals("The HttpOnly parameter must" + (httpOnly == true ? "" : " not" + " be set."), httpOnly, cookieHeaderString.contains("HttpOnly"));
+  // HttpResponse response = httpclient.execute(postMethod);
+  // System.out.println("Page: " + url + "\n" + "Username: " + username);
+  // printPage(response); 
 
-    }
+  // int status = response.getStatusLine().getStatusCode();
+  // return status;
+  // }
 
-        public String executeFormLogin(HttpClient httpclient, String url, String username, String password, boolean redirect, String description, String[] cookies) throws Exception {
-
+ public String executeFormLogin(HttpClient httpclient, String url, String username, String password, boolean redirect, String description, String[] cookies) throws Exception {
         String methodName = "executeFormLogin";
-
         // Log.info(logClass, methodName, "Submitting Login form (POST) =  " + url + " username =" + username + " password=" + password + " description=" + description);
-
-
 
         HttpPost postMethod = new HttpPost(url);
 
-
-
         List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-
         nvps.add(new BasicNameValuePair("j_username", username));
-
         nvps.add(new BasicNameValuePair("j_password", password));
-
         if (description != null)
-
             nvps.add(new BasicNameValuePair("j_description", description));
-
-
 
         postMethod.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 
-
-
         HttpResponse response = httpclient.execute(postMethod);
 
-        System.out.println("RESPONSE RESULT");
-        System.out.println(response.getStatusLine().getStatusCode());
-
-
-
         // Log.info(logClass, methodName, "postMethod.getStatusCode():  " + response.getStatusLine().getStatusCode());
-
         // Log.info(logClass, methodName, "postMethod response: " + response.toString());
-
-
 
         EntityUtils.consume(response.getEntity());
 
-
-
         String location = "No Redirect";
-
         if (redirect) {
-
             // Verify redirect to servlet
-
             int status = response.getStatusLine().getStatusCode();
-
             assertTrue("Form login did not result in redirect: " + status, status == HttpServletResponse.SC_MOVED_TEMPORARILY);
-
             Header header = response.getFirstHeader("Location");
 
-
-
             location = header.getValue();
-
             // Log.info(logClass, methodName, "Redirect location:  " + location);
-
             // Log.info(logClass, methodName, "Modified Redirect location:  " + location);
-
         } else {
-
             // Verify we got a 200 from the servlet
-
             int status = response.getStatusLine().getStatusCode();
-
             assertTrue("Form login did not result in redirect: " + status, status == HttpServletResponse.SC_OK);
-
         }
-
         if (cookies != null) {
-
             for(String cookie : cookies) {
-
                 Header cookieHeader = getCookieHeader(response, cookie);
-
                 assertCookie(cookieHeader.toString(), false, true);
-
             }
-
         }
-
         return location;
-
     }
 
-
-
 }
-
 
 // end::security[]
