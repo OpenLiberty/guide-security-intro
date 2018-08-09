@@ -9,7 +9,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
- // end::copyright[]
+// end::copyright[]
 // tag::security[]
 package io.openliberty.guides.hello;
 
@@ -21,47 +21,39 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.annotation.security.RolesAllowed;
-import javax.annotation.security.DeclareRoles;
-
-import  javax.servlet.annotation.ServletSecurity;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.HttpConstraint;
-
 
 import javax.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
 import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
 
+@FormAuthenticationMechanismDefinition(loginToContinue = @LoginToContinue(
+  errorPage = "/error.html", loginPage = "/login.html", useForwardToLogin = true,
+  useForwardToLoginExpression = ""))
 
-@FormAuthenticationMechanismDefinition(
-    loginToContinue = @LoginToContinue(
-        errorPage="/error.html", 
-        loginPage="/login.html", 
-        useForwardToLogin=true, 
-        useForwardToLoginExpression=""))
+@WebServlet(urlPatterns = "/servlet")
 
-@WebServlet(urlPatterns="/servlet")
+@ServletSecurity(value = @HttpConstraint(rolesAllowed = { "admin", "user" }))
 
-@ServletSecurity(
-    value = @HttpConstraint(
-            rolesAllowed = {
-                "admin", "user"
-            }))
-            
 public class HelloServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getWriter().append("Hello! How are you today?\n");
-    }
+  /**
+   * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+   *      response)
+   */
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    response.getWriter().append("Hello! How are you today?\n");
+  }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
+  /**
+   * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+   *      response)
+   */
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    doGet(request, response);
+  }
 }
 // end::security[]

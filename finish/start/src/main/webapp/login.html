@@ -1,6 +1,7 @@
+<html>
 <!-- tag::comment[] -->
 <!--
-  Copyright (c) 2017 IBM Corporation and others.
+  Copyright (c) 2018 IBM Corporation and others.
   All rights reserved. This program and the accompanying materials
   are made available under the terms of the Eclipse Public License v1.0
   which accompanies this distribution, and is available at
@@ -10,14 +11,23 @@
       IBM Corporation - initial API and implementation
 -->
 <!-- end::comment[] -->
-<html>
+<title> Security Guide Form Login </title>
 <body>
-<h2>Welcome to the Security App</h2>  
+<h2>Form Login</h2>
+<FORM METHOD=POST ACTION="j_security_check">
 <p>
-<a href="servlet">Click here</a> to get the servlet if you are an admin or a user.
-<br />
-<br />
-<a href="adminonly">Click here</a> to get the servlet if you are an admin only.
-</p>    
+<BR>
+Username 
+<input type="text" size="20" name="j_username">
+</p>
+<p>
+Password 
+<input type="password" size="20" name="j_password" autocomplete="off">
+<BR>
+<BR>
+<input type="submit" name="login" value="Login">
+</p>
+
+</form>
 </body>
 </html>
