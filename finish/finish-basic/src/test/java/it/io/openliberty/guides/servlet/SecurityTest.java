@@ -83,14 +83,10 @@ public class SecurityTest {
     @Before
     public void setup(){
         client = ClientBuilder.newClient();
-        HttpParams httpParams = new BasicHttpParams();
-        httpParams.setParameter(ClientPNames.HANDLE_REDIRECTS, Boolean.FALSE);
-        httpclient = new DefaultHttpClient(httpParams);
     }
 
     @After 
     public void teardown() {
-        httpclient.getConnectionManager().shutdown();
         client.close();
     }
 
@@ -125,12 +121,32 @@ public class SecurityTest {
         assertEquals(expectedResponseStatus, actualResponseStatus);
     }
 
+        //Helper function - to be removed
+     //Reads the page given the response
+        public void printPage(Response response){
+                    System.out.println(response.getStatus());
+                 BufferedReader br = new BufferedReader(new InputStreamReader((InputStream) response.getEntity()));
+        List<String> result = new ArrayList<String>();
+        try {
+            String input;
+            while ((input = br.readLine()) != null){
+                System.out.println(input);
+
+                result.add(input);
+            }
+            br.close();
+        } catch (IOException e){
+            e.printStackTrace();
+            fail();
+        }
+        }
+
 
     public int logIn(String usernameAndPassword, String servlet){
         String authHeader = "Basic "
             + java.util.Base64.getEncoder()
                               .encodeToString(usernameAndPassword.getBytes());
-
+        System.out.println("Basic AUTH to " + "http://localhost:9080/ServletSample/" + servlet + "\n Response code: ");
         Response response = client.target("http://localhost:9080/ServletSample/" + servlet)
                                          .request(MediaType.APPLICATION_JSON)
                                          .header("Authorization",
@@ -138,35 +154,11 @@ public class SecurityTest {
                                          .get();
 
         int loginResponseValue = response.getStatus();
+        printPage(response);
         response.close();
 
         return loginResponseValue;
 
-    }
-
-
-    public void testForm() throws Exception{
-        int expectedStatus = 200;
-        int actualStatus = executeFormLogin(httpclient, "http://localhost:9080/ServletSample/adminonly", "bob", "bobpwd");
-        System.out.println(actualStatus);
-        assertEquals(expectedStatus, actualStatus);
-
-    }
-
-    public int executeFormLogin(HttpClient httpclient, String url, String username, String password) throws Exception{
-        
-        HttpPost postMethod = new HttpPost(url);
-
-        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-        nvps.add(new BasicNameValuePair("j_username", username));
-        nvps.add(new BasicNameValuePair("j_password", password));
-        
-        postMethod.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-
-        HttpResponse response = httpclient.execute(postMethod);
-
-        int status = response.getStatusLine().getStatusCode();
-        return status;
     }
 
 }
