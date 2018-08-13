@@ -2,11 +2,11 @@
 <!-- tag::whole[] -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-<!--     <parent>
+    <parent>
         <groupId>net.wasdev.wlp.maven.parent</groupId>
         <artifactId>liberty-maven-app-parent</artifactId>
         <version>2.0</version>
-    </parent> -->
+    </parent>
     <!-- Add the rest of the POM below here. -->
     <!-- tag::coordinates[] -->
     <groupId>io.openliberty.guides</groupId>
@@ -22,7 +22,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <app.name>${project.artifactId}</app.name>
         <!-- tag::serverProperties[] -->
-        <testServerHttpPort>9080</testServerHttpPort>
+        <testServerHttpPort>9090</testServerHttpPort>
         <testServerHttpsPort>9443</testServerHttpsPort>
         <warContext>${app.name}</warContext>
         <!-- end::serverProperties[] -->
@@ -99,11 +99,6 @@
             <artifactId>javax.json</artifactId>
             <version>1.0.4</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>4.4.10</version>
         </dependency>
         <!-- end::dependencies_test[] -->
     </dependencies>

@@ -5,7 +5,8 @@
         <feature>appSecurity-3.0</feature>
     </featureManager>
 
-        <basicRegistry id="basic" realm="myRealm">
+    <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"  host="*" />
+            <basicRegistry id="basic" realm="myRealm">
      <user name="bob" password="bobpwd" />  <!-- bobpwd -->
      <user name="alice" password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
 
@@ -19,14 +20,6 @@
      </group>
  </basicRegistry>
 
-    <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"  host="*" />
-
-    <webApplication id="ServletSample" location="ServletSample.war" contextRoot="${app.context.root}" />
-
-<logging traceSpecification="com.ibm.ws.webcontainer.*=all:com.ibm.ws.security.javaeesec.*=all"
-traceFileName="trace.log"
-maxFileSize="20"
-maxFiles="10"
-traceFormat="BASIC" /> 
+    <webApplication location="ServletSample.war" contextRoot="${app.context.root}" />
 </server>
 <!-- end::security[] -->
