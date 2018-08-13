@@ -5,8 +5,8 @@
         <feature>appSecurity-3.0</feature>
     </featureManager>
 
-    <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"  host="*" />
-            <basicRegistry id="basic" realm="myRealm">
+
+    <basicRegistry id="basic" realm="myRealm">
      <user name="bob" password="bobpwd" />  <!-- bobpwd -->
      <user name="alice" password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
 
@@ -18,8 +18,13 @@
          <member name="bob" />
          <member name="alice" />
      </group>
- </basicRegistry>
+   </basicRegistry>
 
-    <webApplication location="ServletSample.war" contextRoot="${app.context.root}" />
+   <keyStore id="defaultKeyStore" password="secret" />
+
+   <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
+
+   <webApplication location="security-intro.war" contextRoot="/"/>
+
 </server>
 <!-- end::security[] -->
