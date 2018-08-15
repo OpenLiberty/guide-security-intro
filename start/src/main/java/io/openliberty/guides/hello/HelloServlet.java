@@ -28,11 +28,15 @@ import  javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.HttpConstraint;
 
 
-import javax.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
-import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
-
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
 
 @WebServlet(urlPatterns="/servlet")
+
+@ServletSecurity(
+    value = @HttpConstraint(
+            rolesAllowed = {
+                "admin", "user"
+            }))
             
 public class HelloServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
