@@ -92,10 +92,9 @@ public class SecurityTest {
 
     @Test
     public void testSuite(){
-        this.testCorrectAdmin();
-        this.testCorrectUser();
-        this.testIncorrectAuthorization();
-        this.testIncorrectUser();
+        // this.testCorrectAdmin();
+        // this.testCorrectUser();
+        // this.testIncorrectUser();
     }
 
     public void testCorrectAdmin(){
@@ -147,8 +146,8 @@ public class SecurityTest {
         String authHeader = "Basic "
             + java.util.Base64.getEncoder()
                               .encodeToString(usernameAndPassword.getBytes());
-        System.out.println("Basic AUTH to " + "http://localhost:9080/ServletSample/" + servlet + "\n Response code: ");
-        Response response = client.target("http://localhost:9080/ServletSample/" + servlet)
+        System.out.println("Basic AUTH to " + "http://localhost:9080/" + servlet + "\n Response code: ");
+        Response response = client.target("http://localhost:9080/" + servlet)
                                          .request(MediaType.APPLICATION_JSON)
                                          .header("Authorization",
                                              authHeader)
@@ -163,4 +162,3 @@ public class SecurityTest {
     }
 
 }
-// end::security[]
