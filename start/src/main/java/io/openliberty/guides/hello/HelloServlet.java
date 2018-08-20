@@ -28,16 +28,15 @@ import  javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.HttpConstraint;
 
 
-import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
+import javax.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
+import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
 
 @WebServlet(urlPatterns="/servlet")
+@FormAuthenticationMechanismDefinition(loginToContinue = @LoginToContinue(
+  errorPage = "/error.html", loginPage = "/login.html"))
+@ServletSecurity(value = @HttpConstraint(rolesAllowed = { "user", "admin" }))
 
-@ServletSecurity(
-    value = @HttpConstraint(
-            rolesAllowed = {
-                "admin", "user"
-            }))
-            
+
 public class HelloServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -45,7 +44,7 @@ public class HelloServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getWriter().append("Hello! How are you today?\n");
+        response.getWriter().append("Hello User! How are you today?\n");
     }
 
     /**
