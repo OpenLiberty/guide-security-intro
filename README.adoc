@@ -112,30 +112,18 @@ The password is encoded with Liberty's `securityUtility` command. The securityUt
 
 == Implementing authentication
 
-Authentication is implemented in order to confirm the identity of the user. This application currently uses Basic Authentication, which is a simple method to authenticate a user with a username and password.
-The request is sent with an Authorization header that contains the word `Basic` followed by a base64-encoded string in the format `username:password`.
-
-Open the `AdminServlet` class in the `src/main/java/io/openliberty/guides/hello/AdminServlet.java` file.
-
-[source, java, indent=0]
-----
-include::finish/src/main/java/io/openliberty/guides/example/AdminServlet.java[tags=security;!copyright]
-----
-
-Notice the `@BasicAuthenticationMechanismDefinition` annotation in the class. The realm name is specified in the annotation as `webRealm`, this maps to the same realm name defined in the Basic User Registry
-.
-At this point, your application is secured using basic authentication. You can try running this now using the instructions from `Try What You'll Build` in the `start` directory.
-
-The next type of authentication that will be implemented is Form Authentication. Form Authentication is an authentication mechanism where the user is able to fill in their login credentials using a form that the developer is able to edit.
-
+Authentication is implemented in order to confirm the identity of the user.
+Form Authentication is an authentication mechanism where the user is able to fill in their login credentials using a form that the developer is able to edit.
 It is more secure than Basic Authentication because logout functionality can be implemented and the user will be logged out automatically after a certain amount of time.
 
-To configure Form Authentication, remove the `@BasicAuthenticationMechanismDefinition` and replace it with `@FormAuthenticationMechanismDefinition`.
-
+Open the `HelloServlet` class in the `src/main/java/io/openliberty/guides/hello/HelloServlet.java` file.
 [source, java, indent=0]
 ----
 include::finish/src/main/java/io/openliberty/guides/hello/HelloServlet.java[tags=security;!copyright]
 ----
+
+Notice the `@FormAuthenticationMechanismDefinition` annotation in the class. The realm name is specified in the annotation as `webRealm`, this maps to the same realm name defined in the Basic User Registry.
+At this point, your application is secured using form authentication. You can try running this now using the instructions from `Try What You'll Build` in the `start` directory.
 
 The `LoginToContinue` annotation allows the application to add specific login functionality to the `AuthenticationMechanism`. The elements in this annotation are the `errorPage` and the `loginPage`. These are resources that the caller will see depending on if they provide the correct credentials.
 

@@ -20,4 +20,22 @@
 <a href="adminonly">Click here</a> to get the servlet if you are an admin only.
 </p>    
 </body>
+ <style>
+             #logoutButton {
+          width: 100%;
+          border-bottom: 1px solid black;
+          padding-bottom: 2em;
+          margin-bottom: 1em;
+      }
+    </style>
+
+    <body>
+      <br />     <br />
+          <h:panelGroup id="logoutButton" layout="block">
+        <FORM METHOD="POST" ACTION="ibm_security_logout" NAME="logout">
+          <input type="submit" name="logout" value="Log Out" />
+          <input type="HIDDEN" name="logoutExitPage" value="/" />
+        </FORM>
+    </h:panelGroup>
+    </body>
 </html>
