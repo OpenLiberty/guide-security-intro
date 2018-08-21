@@ -11,31 +11,21 @@
  *******************************************************************************/
  // end::copyright[]
 // tag::security[]
-package io.openliberty.guides.hello;
+package io.openliberty.guides.ui;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import  javax.servlet.annotation.ServletSecurity;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.HttpConstraint;
-
-import javax.annotation.security.RolesAllowed;
-import javax.annotation.security.DeclareRoles;
-
-import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
-import javax.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
-import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
-
 import javax.servlet.RequestDispatcher;
 
 
 @WebServlet(urlPatterns="/application")
-@ServletSecurity(value = @HttpConstraint(rolesAllowed = { "admin" }))
+@ServletSecurity(value = @HttpConstraint(rolesAllowed = { "admin" }, transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL))
 
 
 public class ApplicationServlet extends HttpServlet {
@@ -47,7 +37,7 @@ public class ApplicationServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // response.getWriter().append("Hello Admin! How are you today?\n");
+
         RequestDispatcher view = request.getRequestDispatcher("application.jsf");
         view.forward(request, response);
 
