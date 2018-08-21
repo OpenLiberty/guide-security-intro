@@ -16,7 +16,6 @@
         <!-- Dependencies -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <version.shared.keystore>0.0.1-SNAPSHOT</version.shared.keystore>
 
         <!-- Optional Microservice Configuration -->
         <backend.hostname>localhost</backend.hostname>
