@@ -1,0 +1,28 @@
+<!-- Copyright (c) 2018 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+
+    Contributors:
+    IBM Corporation - initial API and implementation
+-->
+<!-- tag::sec[] -->
+<server description="Backend server">
+    <featureManager>
+        <feature>ssl-1.0</feature>
+        <feature>jaxrs-2.1</feature>
+        <feature>jsonp-1.1</feature>
+        <feature>cdi-2.0</feature>
+    </featureManager>
+
+    <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS" password="secret" />
+
+    <!-- The HTTP ports that the application will use. -->
+    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="${http.port}" httpsPort="${https.port}"/>
+
+    <!-- The application containing the user and login endpoints. -->
+    <webApplication location="${app.name}" contextRoot="/" />
+
+</server>
+<!-- end::sec[] -->
