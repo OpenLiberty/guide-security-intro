@@ -17,34 +17,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
+import javax.faces.view.ViewScoped;
 
 import io.openliberty.guides.ui.models.SystemModel;
 import io.openliberty.guides.ui.util.ServiceUtils;
 
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import java.io.Serializable;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import javax.annotation.security.RolesAllowed;
-import javax.annotation.security.DeclareRoles;
-
-import  javax.servlet.annotation.ServletSecurity;
-import javax.servlet.annotation.HttpConstraint;
-
-
-import javax.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
-import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
-
-
-@ManagedBean
+@Named
 @ViewScoped
-public class ApplicationBean {
+public class ApplicationBean implements Serializable {
 
   private String hostname;
 
