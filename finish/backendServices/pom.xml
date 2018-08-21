@@ -103,52 +103,7 @@
                             </resources>
                         </configuration>
                     </execution>
-                    <!-- Copy the keystore to integration tests for HTTPS -->
-                    <execution>
-                        <id>copy-keystore-to-integration-test</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/test-classes/truststore</outputDirectory>
-                            <overwrite>true</overwrite>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}/liberty/wlp/usr/servers/${server.name}/resources/security</directory>
-                                    <includes>
-                                        <include>keystore.jceks</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <!-- Copy the keystore that Liberty will use -->
-                    <execution>
-                        <id>copy-keystore-to-liberty</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifact>
-                                    <groupId>io.openliberty.guides</groupId>
-                                    <artifactId>resources</artifactId>
-                                    <type>jar</type>
-                                    <overWrite>false</overWrite>
-                                    <outputDirectory>${project.build.directory}/liberty/wlp/usr/servers/${server.name}/resources/security</outputDirectory>
-                                    <includes>keystore.jceks</includes>
-                                </artifact>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
+
                 </executions>
             </plugin>
 
