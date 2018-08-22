@@ -193,7 +193,7 @@ The same `@ServletSecurity` annotation is applied, except only `admin` roles are
 include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ApplicationServlet.java[tags=security;!copyright]
 ----
 
-The `rolesAllowed` annotation specifies that if a non-admin user such as `alice` signed in, she will not be able to access the `ApplicationServlet`.
+The `rolesAllowed` annotation specifies that if a non-admin user such as alice signed in, she will not be able to access the `ApplicationServlet`.
 
 
 // =================================================================================================
@@ -225,35 +225,6 @@ include::{common-includes}/mvncompile.adoc[]
 // Testing the application
 // =================================================================================================
 
-== Testing the application
-
-Create the test class, `src/test/java/io/openliberty/guides/hello/it/SecurityTest.java`.
-
-
-[source, java, indent=0]
-----
-include::finish/src/test/java/it/io/openliberty/guides/servlet/SecurityTest.java[tags=security;!copyright]
-----
-
-
-include::{common-includes}/mvnverify.adoc[]
-
-[source, role="no_copy"]
-----
--------------------------------------------------------
- T E S T S
--------------------------------------------------------
-Running it.io.openliberty.guides.jwt.InventoryEndpointTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.434 sec - in it.io.openliberty.guides.jwt.InventoryEndpointTest
-Running it.io.openliberty.guides.jwt.JwtTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.117 sec - in it.io.openliberty.guides.jwt.JwtTest
-Running it.io.openliberty.guides.jwt.SystemEndpointTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 sec - in it.io.openliberty.guides.jwt.SystemEndpointTest
-
-Results :
-
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
-----
 
 // =================================================================================================
 // Great work! You're done!
