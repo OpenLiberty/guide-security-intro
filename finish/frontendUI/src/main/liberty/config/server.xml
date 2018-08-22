@@ -1,4 +1,4 @@
-<!-- tag::jwt[] -->
+<!-- tag::security[] -->
 <server description="Sample Liberty server">
 
     <featureManager>
@@ -16,17 +16,21 @@
     <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS" password="secret" />
 
     <basicRegistry id="basic" realm="WebRealm">
-        <user name="bob" password="{xor}PTA9Lyg7" />  <!-- bobpwd -->
+        <user name="bob" password="{aes}APCNjAKClAZjd6hWKYnqJvSFvi1/xZerjush0+jFE9Dl" />  <!-- bobpwd    {xor}PTA9Lyg7-->
         <user name="alice" password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
         <user name="carl" password="{xor}PD4tMy8oOw==" />   <!-- carlpwd -->
 
-        <group name="myAdmins">
+        <group name="Manager">
             <member name="bob" />
         </group>
 
-        <group name="myUsers">
-            <member name="bob" />
+        <group name="TeamLead">
+            <member name="carl" />
+        </group>
+
+        <group name="Employee">
             <member name="alice" />
+            <member name="bob" />
             <member name="carl" />
         </group>
     </basicRegistry>
@@ -35,14 +39,15 @@
                  name="${application.name}" context-root="/">
         <application-bnd>
             <security-role name="admin">
-                <group name="myAdmins" />
+                <group name="Manager" />
+                <group name="TeamLead" />
             </security-role>
             <security-role name="user">
-                <group name="myUsers" />
+                <group name="Employee" />
             </security-role>
         </application-bnd>
     </application>
 
 
 </server>
-<!-- end::jwt[] -->
+<!-- end::security[] -->
