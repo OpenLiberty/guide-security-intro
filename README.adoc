@@ -5,53 +5,48 @@
 //
 // Contributors:
 //   IBM Corporation
-:projectid: microprofile-security
+:projectid: security-intro
 :page-layout: guide
 :page-duration: 30 minutes
-:page-releasedate: 2017-12-11
-:page-description: Learn how to use the
+:page-releasedate: 2018-08-11
+:page-description: Learn how to secure a web application through authentication and authorization.
 :page-tags: ['REST', 'MicroProfile', 'Security', 'CDI']
+:page-related-guides: ['microprofile-jwt', 'cdi-intro']
 :page-permalink: /guides/{projectid}
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 = Securing a web application
 
-Learn how to secure a web application through form authentication and authorization.
+Learn how to secure a web application through authentication and authorization.
 
 // =================================================================================================
 // What you'll learn
 // =================================================================================================
 
 == What you'll learn
-You will learn how to secure a web application by performing authentication and authorization.
+You will learn how to secure a web application by performing authentication and authorization using Security 1.0 feature in the Java EE 8 specification.
 
-Authentication confirms the identity of the user. The most common type of authentication is through basic authentication or form authentication using user name and password.
-Both basic authentication and form authentication do not protect login credentials through the HTTP response.
+Security 1.0 provides capability to configure the basic, form or custom form authentication mechanism using annotations in the servlet.
+It also provides a SecurityContext API for programmatic security checks for both web and enterprise beans resources.
 
-This application demonstrates form authentication, which is slightly more secured. A log out functionality will be implemented and there is also an automatic log out after a certain amount of time of inactivity.
-Authorization determines whether a user has access to a specific role within the system. This application specifies two roles: Administrator and User.
+The application that you will be working with is an `inventory` service, which stores the information about various JVMs that run on different systems.
+Whenever a request is made to the inventory service to retrieve the JVM system properties of a particular host, the inventory service communicates with the `system` service on that host to get these system properties.
+The code for the backend services are provided for you, and you will wrap these services by a security layer that performs proper authentication and authorization.
 
-The application itself allows users and admins to access servlets. Administrators have access to both servlets, the `HelloServlet` and the `AdminServlet`. Whereas the user will only have access to the `HelloServlet`.
+You will learn how to implement form authentication. Authentication confirms the identity of the user through verifying the user name and password.
+While you will also add the authorization functionality. Authorization determines whether a user has access to a specific role within the system. This application specifies two roles: Administrator and User.
+
+The application itself will allow users and admins to access servlets. Administrators have access to both servlets, the `ProfileServlet` and the `ApplicationServlet`. Whereas the user will only have access to the `ProfileServlet`.
 
 
 // =================================================================================================
-== Getting Started
+// Getting Started
 // =================================================================================================
 
+include::{common-includes}/gitclone.adoc[]
 
-The fastest way to work through this guide is to clone the Git repository and use the projects that are provided inside:
 
-[subs="attributes"]
-----
-git clone https://github.com/openliberty/guide-{projectid}.git
-cd guide-{projectid}
-----
-
-The `start` directory contains the starting project that you will build upon.
-
-The `finish` directory contains the finished project, which is what you will build.
-
-*Try what you'll build*
+=== Try what you'll build
 
 The  `finish` directory in the root of this guide contains the finished security application with form authentication. Feel free to give it a try before you proceed.
 
@@ -63,7 +58,7 @@ Next, point your browser to:
 
 `https://localhost:9080`
 
-The application can be accessed under two different roles:
+The basic registry is provided with the following user information credentials:
 
 .Basic Registry
 |===
@@ -76,11 +71,19 @@ The application can be accessed under two different roles:
 |alice
 |alicepwd
 |user
+
+|carl
+|carlpwd
+|admin
 |===
 
-You can try out the authentication of the application by clicking the first link and signing in with either credentials from the Basic Registry. You can try the authorization by clicking the second link and signing in as Bob to view the AdminServlet. When you sign in as Alice, you will not have access to the AdminServlet.
+You can check user profiles by clicking the first link and signing in with one of the credentials from the Basic Registry.
+You can go back to the main page to log out and switch account.
 
-In order to sign in as different users, you must close the browser and re-open it at the same link.
+You can access to the `inventory` service data by clicking the second link and signing in as either Bob or Carl.
+When you sign in as Alice, you will be blocked and a message will display `Error 403: AuthorizationFailed`.
+
+In order to sign in as different users, you must log out first.
 
 Once you are done checking out the application, stop the Open Liberty server:
 `mvn liberty:stop-server`
@@ -92,19 +95,37 @@ Once you are done checking out the application, stop the Open Liberty server:
 // =================================================================================================
 == Configuring a user registry
 
-Navigate to the  `start` directory to begin.
+Navigate to the  `start/frontendUI` directory to begin. You won't modify any code in the `backendServices` directory in this guide.
 
-The user registry is set up to define users and group information. To do this, you need to add the following `Basic Registry` into the `src/main/liberty/configserver.xml` file:
+The user registry is set up to define users and group information. To do this, you need to add the following configurations into the `src/main/liberty/config/server.xml` file:
 
 [source, xml, indent=0]
 ----
-include::finish/src/main/liberty/config/server.xml[tags=security]
+include::finish/frontendUI/src/main/liberty/config/server.xml[tags=security]
 ----
 
-Now that you have defined users and groups in the basic user registry for authentication. The names for the users and groups must be unique. In this application, there is a group called "admin" and another group called "user".
+Now that you have defined users and groups in the basic user registry for authentication. The names for the users and groups must be unique.
+In this application, there are three groups: `Employee`, `TeamLead` and `Manager`.
 
-The password is encoded with Liberty's `securityUtility` command. The securityUtility is a command that supports plain text encryption and SSL certificate creation for Liberty. Here, the application uses the xor encoding. There are two other supported encodings are well: hash and aes that can be used.
+Within the `<application-bnd>` tags, you can assign two different authorization roles to these groups: `admin` and `user`.
+A role can be mapped to a user, a group, or a special subject. The two types of special subject are `EVERYONE` and `ALL_AUTHENTICATED_USERS`.
+When a role is mapped to the `EVERYONE` special subject, there is no security because everyone is allowed access and you are not prompted to enter credentials.
+When a role is mapped to the `ALL_AUTHENTICATED_USERS` special subject, then any user who is authenticated by the application server can access the protected resource.
 
+=== Encrypting password using securityUtility
+
+The password is encoded with Liberty's `securityUtility` command. The `securityUtility` is a command that supports plain text encryption and SSL certificate creation for Liberty.
+
+Navigate to `liberty/wlp/bin` in the Liberty server source code you downloaded, and run:
+```
+./securityUtility encode --encoding=xor alicepwd
+
+./securityUtility encode --encoding=xor carlpwd
+```
+Here, `alice` and `carl` use the xor encoding for their passwords. While `bob` uses aes encryption with an encrypting key from `bootstrapProperties` predefined in the `pom.xml` file.
+```
+./securityUtility encode --encoding=aes --key=mykey bobpwd
+```
 
 // =================================================================================================
 //
@@ -112,20 +133,30 @@ The password is encoded with Liberty's `securityUtility` command. The securityUt
 
 == Implementing authentication
 
-Authentication is implemented in order to confirm the identity of the user.
-Form Authentication is an authentication mechanism where the user is able to fill in their login credentials using a form that the developer is able to edit.
-It is more secure than Basic Authentication because logout functionality can be implemented and the user will be logged out automatically after a certain amount of time.
+Form Authentication is an authentication mechanism where the user is able to fill in their login credentials using a form that the developers create.
+JavaEE 8 provides a more convenient way to authenticate a user by calling the built-in `j_security_check` action from the login form.
+The `login.html` and `error.html` pages are provided for you under the `src/main/webapp` directory.
 
-Open the `HelloServlet` class in the `src/main/java/io/openliberty/guides/hello/HelloServlet.java` file.
+In order to enable form authentication, create the `ProfileServlet` class in the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file.
 [source, java, indent=0]
 ----
-include::finish/src/main/java/io/openliberty/guides/hello/HelloServlet.java[tags=security;!copyright]
+include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ProfileServlet.java[tags=security;!copyright]
 ----
 
-Notice the `@FormAuthenticationMechanismDefinition` annotation in the class. The realm name is specified in the annotation as `webRealm`, this maps to the same realm name defined in the Basic User Registry.
-At this point, your application is secured using form authentication. You can try running this now using the instructions from `Try What You'll Build` in the `start` directory.
+Notice the `@FormAuthenticationMechanismDefinition` annotation in the class. The same thing can be expressed as configurations in the `web.xml`:
+```
+<login-config>
+   <auth-method>FORM</auth-method>
+   <form-login-config>
+       <form-login-page>/login.html</form-login-page>
+       <form-error-page>/error.html</form-error-page>
+    </form-login-config>
+</login-config>
+```
+At this point, your application is secured using form authentication. Users will not see the content of the servlet until they provide the correct credentials.
 
-The `LoginToContinue` annotation allows the application to add specific login functionality to the `AuthenticationMechanism`. The elements in this annotation are the `errorPage` and the `loginPage`. These are resources that the caller will see depending on if they provide the correct credentials.
+The `@LoginToContinue` annotation allows the application to add specific login functionality to the `AuthenticationMechanism`.
+The annotation links the two pages that are required for the form authentication mechanism. The pages are the `errorPage` and the `loginPage`.
 
 
 // =================================================================================================
@@ -134,34 +165,61 @@ The `LoginToContinue` annotation allows the application to add specific login fu
 
 == Implementing authorization
 
-Authorization determines whether a user has access to a certain role within the system.
+Authorization determines whether a user has the role to access to certain resources within the system.
 
-Authorization can be achieved with the annotation `@ServletSecurity`. Create the `HelloServlet` class in the `src/main/java/io/openliberty/guides/hello/HelloServlet.java` file:
-
-[source, java, indent=0]
-----
-include::finish/src/main/java/io/openliberty/guides/hello/HelloServlet.java[tags=security;!copyright]
-----
-
-The roles "admin" and "user" are identical to the group names in the basic registry. They must be exactly the same for the mapping to work. They are declared under rolesAllowed so that the Hello Servlet can only be accessed by those two user groups.
-
-Create the `AdminServlet` class in the `src/main/java/io/openliberty/guides/hello/AdminServlet.java` file. The same `@ServletSecurity` annotation is applied, except only "admin" roles are allowed. `AdminServlet` is a servlet that displays the message `Hello Admin! How are you today?` when accessed.
+Authorization can be achieved with the annotation `@ServletSecurity`.
+Open the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file:
 
 [source, java, indent=0]
 ----
-include::finish/src/main/java/io/openliberty/guides/hello/AdminServlet.java[tags=security;!copyright]
+include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ProfileServlet.java[tags=security;!copyright]
 ----
 
-The `@ServletSecurity` annotation specifies that even if a "user" such as Alice is signed in, they will not be able to access the Admin Servlet.
+Note the `@HttpConstraint` annotation, it defines all the security constraints for each servlet resource.
+`admin` and `user` are roles you defined in the `server.xml`. They are declared under `rolesAllowed` so that the profile can be accessed by authenticated accounts with these two roles.
+`transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL` indicates that all user data must be encrypted by the transport.
+
+The Security 1.0 specification also defines a common SecurityContext API that can be used to perform some common programmatic security related operations.
+You can get access to the container provided `SecurityContext` by using CDI injection and call the appropriate methods.
+
+`securityContext.isCallerInRole("admin")` returns a boolean that indicates if the current authenticated account is an `admin` or not.
+`securityContext.getCallerPrincipal().getName()` returns the user name of the current authenticated account.
+
+Create the `ApplicationServlet` class in the `src/main/java/io/openliberty/guides/ui/ApplicationServlet.java` file.
+The same `@ServletSecurity` annotation is applied, except only `admin` roles are allowed. `ApplicationServlet` is a servlet that displays the `inventory` service data when accessed.
+
+[source, java, indent=0]
+----
+include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ApplicationServlet.java[tags=security;!copyright]
+----
+
+The `rolesAllowed` annotation specifies that if a non-admin user such as `alice` signed in, she will not be able to access the `ApplicationServlet`.
 
 
 // =================================================================================================
-// Building the application
+// Building and running the application
 // =================================================================================================
 
-== Building the application
 include::{common-includes}/mvnbuild.adoc[]
 
+Use the following endpoint to choose the information you want to see:
+
+* `http://localhost:9090/`
+
+Use one of the following credentials to log in:
+
+|===
+| *Username* | *Password* | *Role*
+| bob | bobpwd | admin, user
+| alice | alicepwd | user
+| carl | carlpwd | admin, user
+|===
+
+If you choose to see the profile, once authenticated, you can see your name and role.
+
+If you choose to see application information, once you log in, `admin` can see some basic information retrieved from the back end services.
+Remember that if you log in as a user without the `admin` role, you are blocked because you do not have permission.
+include::{common-includes}/mvncompile.adoc[]
 
 // =================================================================================================
 // Testing the application
@@ -178,10 +236,34 @@ include::finish/src/test/java/it/io/openliberty/guides/servlet/SecurityTest.java
 ----
 
 
-=== Running the tests
+include::{common-includes}/mvnverify.adoc[]
 
+[source, role="no_copy"]
+----
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.jwt.InventoryEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.434 sec - in it.io.openliberty.guides.jwt.InventoryEndpointTest
+Running it.io.openliberty.guides.jwt.JwtTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.117 sec - in it.io.openliberty.guides.jwt.JwtTest
+Running it.io.openliberty.guides.jwt.SystemEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 sec - in it.io.openliberty.guides.jwt.SystemEndpointTest
 
+Results :
+
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+----
+
+// =================================================================================================
+// Great work! You're done!
+// =================================================================================================
 
 == Great work! You're done!
+
+You learned how to use JavaEE Security-1.0 to authenticate and authorize users to secure your web application.
+
+Next, you can try the related MicroProfile-JWT guide. It demonstrates technologies to secure backend services and expand on what you built here.
+
 
 include::{common-includes}/finish.adoc[]

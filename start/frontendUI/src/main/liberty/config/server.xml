@@ -1,4 +1,4 @@
-<!-- tag::security[] -->
+<!-- tag::jwt[] -->
 <server description="Sample Liberty server">
 
     <featureManager>
@@ -50,4 +50,4 @@
 
 
 </server>
-<!-- end::security[] -->
+<!-- end::jwt[] -->
