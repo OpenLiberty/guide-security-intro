@@ -24,9 +24,9 @@ Learn how to secure a web application through authentication and authorization.
 // =================================================================================================
 
 == What you'll learn
-You will learn how to secure a web application by performing authentication and authorization using Security 1.0 feature in the Java EE 8 specification.
+You will learn how to secure a web application by performing authentication and authorization using Security feature in the Java EE 8 specification.
 
-Security 1.0 provides capability to configure the basic, form or custom form authentication mechanism using annotations in the servlet.
+The security feature in Java EE provides capability to configure the basic, form or custom form authentication mechanism using annotations in the servlet.
 It also provides a SecurityContext API for programmatic security checks for both web and enterprise beans resources.
 
 The application that you will be working with is an `inventory` service, which stores the information about various JVMs that run on different systems.
@@ -56,25 +56,28 @@ To try out the application, first navigate to the `finish` directory and then ru
 
 Next, point your browser to:
 
-`https://localhost:9080`
+`http://localhost:9090`
 
 The basic registry is provided with the following user information credentials:
 
 .Basic Registry
 |===
-|Username |Password|Role
+|Username |Password|Role |Group
 
 |bob
 |bobpwd
-|admin
+|admin, user
+|Manager, Employee
 
 |alice
 |alicepwd
 |user
+|Employee
 
 |carl
 |carlpwd
-|admin
+|admin, user
+|TeamLead, Employee
 |===
 
 You can check user profiles by clicking the first link and signing in with one of the credentials from the Basic Registry.
@@ -134,7 +137,7 @@ Here, `alice` and `carl` use the xor encoding for their passwords. While `bob` u
 == Implementing authentication
 
 Form Authentication is an authentication mechanism where the user is able to fill in their login credentials using a form that the developers create.
-JavaEE 8 provides a more convenient way to authenticate a user by calling the built-in `j_security_check` action from the login form.
+Java EE provides a more convenient way to authenticate a user by calling the built-in `j_security_check` action from the login form.
 The `login.html` and `error.html` pages are provided for you under the `src/main/webapp` directory.
 
 In order to enable form authentication, create the `ProfileServlet` class in the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file.
@@ -179,7 +182,7 @@ Note the `@HttpConstraint` annotation, it defines all the security constraints f
 `admin` and `user` are roles you defined in the `server.xml`. They are declared under `rolesAllowed` so that the profile can be accessed by authenticated accounts with these two roles.
 `transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL` indicates that all user data must be encrypted by the transport.
 
-The Security 1.0 specification also defines a common SecurityContext API that can be used to perform some common programmatic security related operations.
+The Security specification also defines a common SecurityContext API that can be used to perform some common programmatic security related operations.
 You can get access to the container provided `SecurityContext` by using CDI injection and call the appropriate methods.
 
 `securityContext.isCallerInRole("admin")` returns a boolean that indicates if the current authenticated account is an `admin` or not.
@@ -208,11 +211,24 @@ Use the following endpoint to choose the information you want to see:
 
 Use one of the following credentials to log in:
 
+.Basic Registry
 |===
-| *Username* | *Password* | *Role*
-| bob | bobpwd | admin, user
-| alice | alicepwd | user
-| carl | carlpwd | admin, user
+|Username |Password|Role |Group
+
+|bob
+|bobpwd
+|admin, user
+|Manager, Employee
+
+|alice
+|alicepwd
+|user
+|Employee
+
+|carl
+|carlpwd
+|admin, user
+|TeamLead, Employee
 |===
 
 If you choose to see the profile, once authenticated, you can see your name and role.
@@ -232,7 +248,7 @@ include::{common-includes}/mvncompile.adoc[]
 
 == Great work! You're done!
 
-You learned how to use JavaEE Security-1.0 to authenticate and authorize users to secure your web application.
+You learned how to use Java EE Security feature to authenticate and authorize users to secure your web application.
 
 Next, you can try the related MicroProfile-JWT guide. It demonstrates technologies to secure backend services and expand on what you built here.
 
