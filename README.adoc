@@ -33,8 +33,8 @@ The application that you will be working with is an `inventory` service, which s
 Whenever a request is made to the inventory service to retrieve the JVM system properties of a particular host, the inventory service communicates with the `system` service on that host to get these system properties.
 The code for the backend services are provided for you, and you will wrap these services by a security layer that performs proper authentication and authorization.
 
-You will learn how to implement form authentication. Authentication confirms the identity of the user through verifying the user name and password.
-While you will also add the authorization functionality. Authorization determines whether a user has access to a specific role within the system. This application specifies two roles: Administrator and User.
+You will learn how to implement form authentication. Authentication confirms the identity of the user by verifying a user name and password.
+You will also learn how to assign permissions to different roles. Authorization determines whether a user has access to a specific role within the system. This application specifies two roles: Administrator and User.
 
 The application itself will allow users and admins to access servlets. Administrators have access to both servlets, the `ProfileServlet` and the `ApplicationServlet`. Whereas the user will only have access to the `ProfileServlet`.
 
@@ -64,15 +64,15 @@ The basic registry is provided with the following user information credentials:
 |===
 |Username |Password|Role |Group
 
-|bob
-|bobpwd
-|admin, user
-|Manager, Employee
-
 |alice
 |alicepwd
 |user
 |Employee
+
+|bob
+|bobpwd
+|admin, user
+|Manager, Employee
 
 |carl
 |carlpwd
@@ -81,12 +81,10 @@ The basic registry is provided with the following user information credentials:
 |===
 
 You can check user profiles by clicking the first link and signing in with one of the credentials from the Basic Registry.
-You can go back to the main page to log out and switch account.
+You can go back to the main page to log out and switch accounts.
 
-You can access to the `inventory` service data by clicking the second link and signing in as either Bob or Carl.
-When you sign in as Alice, you will be blocked and a message will display `Error 403: AuthorizationFailed`.
-
-In order to sign in as different users, you must log out first.
+You can access to the `inventory` service data by clicking the second link and signing in as either bob or carl.
+When you sign in as alice, you will be blocked and a message will display `Error 403: AuthorizationFailed`.
 
 Once you are done checking out the application, stop the Open Liberty server:
 `mvn liberty:stop-server`
@@ -98,26 +96,27 @@ Once you are done checking out the application, stop the Open Liberty server:
 // =================================================================================================
 == Configuring a user registry
 
-Navigate to the  `start/frontendUI` directory to begin. You won't modify any code in the `backendServices` directory in this guide.
+Navigate to the  `start/frontendUI` directory to begin. You will not modify any code in the `backendServices` directory in this guide.
 
-The user registry is set up to define users and group information. To do this, you need to add the following configurations into the `src/main/liberty/config/server.xml` file:
+You need to set up the user registry to define users and group information. To do this, add the following configurations into the `src/main/liberty/config/server.xml` file:
 
 [source, xml, indent=0]
 ----
 include::finish/frontendUI/src/main/liberty/config/server.xml[tags=security]
 ----
 
-Now that you have defined users and groups in the basic user registry for authentication. The names for the users and groups must be unique.
-In this application, there are three groups: `Employee`, `TeamLead` and `Manager`.
+When you set up the basic user registry for authentication, the names for the users and groups must be unique.
 
-Within the `<application-bnd>` tags, you can assign two different authorization roles to these groups: `admin` and `user`.
+In this application, there are three groups: `Employee`, `TeamLead` and `Manager`.
+Within the `<application-bnd>` tags, two different authorization roles are assigned to these groups: `admin` and `user`.
+
 A role can be mapped to a user, a group, or a special subject. The two types of special subject are `EVERYONE` and `ALL_AUTHENTICATED_USERS`.
 When a role is mapped to the `EVERYONE` special subject, there is no security because everyone is allowed access and you are not prompted to enter credentials.
 When a role is mapped to the `ALL_AUTHENTICATED_USERS` special subject, then any user who is authenticated by the application server can access the protected resource.
 
-=== Encrypting password using securityUtility
+=== Encrypting passwords using securityUtility
 
-The password is encoded with Liberty's `securityUtility` command. The `securityUtility` is a command that supports plain text encryption and SSL certificate creation for Liberty.
+The passwords assigned to the accounts in the basic registry is encoded with Liberty's `securityUtility` command. The `securityUtility` is a command that supports plain text encryption and SSL certificate creation for Liberty.
 
 Navigate to `liberty/wlp/bin` in the Liberty server source code you downloaded, and run:
 ```
@@ -156,10 +155,10 @@ Notice the `@FormAuthenticationMechanismDefinition` annotation in the class. The
     </form-login-config>
 </login-config>
 ```
-At this point, your application is secured using form authentication. Users will not see the content of the servlet until they provide the correct credentials.
-
 The `@LoginToContinue` annotation allows the application to add specific login functionality to the `AuthenticationMechanism`.
 The annotation links the two pages that are required for the form authentication mechanism. The pages are the `errorPage` and the `loginPage`.
+
+At this point, your application is secured using form authentication. Users will not see the content of the servlet until they provide the correct credentials.
 
 
 // =================================================================================================
@@ -168,9 +167,9 @@ The annotation links the two pages that are required for the form authentication
 
 == Implementing authorization
 
-Authorization determines whether a user has the role to access to certain resources within the system.
+Authorization determines whether a user has the role required to access certain resources within the system.
 
-Authorization can be achieved with the annotation `@ServletSecurity`.
+Authorization can be achieved with the `@ServletSecurity` annotation.
 Open the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file:
 
 [source, java, indent=0]
@@ -179,22 +178,23 @@ include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ProfileServlet
 ----
 
 Note the `@HttpConstraint` annotation, it defines all the security constraints for each servlet resource.
-`admin` and `user` are roles you defined in the `server.xml`. They are declared under `rolesAllowed` so that the profile can be accessed by authenticated accounts with these two roles.
-`transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL` indicates that all user data must be encrypted by the transport.
+The `admin` and `user` are roles you defined in the `server.xml` configuration file. They are declared under `rolesAllowed` so that the profile can be accessed by authenticated accounts with these two roles.
+The `transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL` configuration indicates that all user data must be encrypted by the transport.
 
 The Security specification also defines a common SecurityContext API that can be used to perform some common programmatic security related operations.
 You can get access to the container provided `SecurityContext` by using CDI injection and call the appropriate methods.
 
-`securityContext.isCallerInRole("admin")` returns a boolean that indicates if the current authenticated account is an `admin` or not.
-`securityContext.getCallerPrincipal().getName()` returns the user name of the current authenticated account.
+The method `securityContext.isCallerInRole("admin")` returns a boolean that indicates if the current authenticated account is an `admin` or not.
+The method `securityContext.getCallerPrincipal().getName()` returns the user name of the current authenticated account.
 
 Create the `ApplicationServlet` class in the `src/main/java/io/openliberty/guides/ui/ApplicationServlet.java` file.
-The same `@ServletSecurity` annotation is applied, except only `admin` roles are allowed. `ApplicationServlet` is a servlet that displays the `inventory` service data when accessed.
 
 [source, java, indent=0]
 ----
 include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ApplicationServlet.java[tags=security;!copyright]
 ----
+
+The `ApplicationServlet` is a servlet that displays the `inventory` service data when accessed. The same `@ServletSecurity` annotation is applied, except only `admin` roles are allowed.
 
 The `rolesAllowed` annotation specifies that if a non-admin user such as alice signed in, she will not be able to access the `ApplicationServlet`.
 
@@ -205,9 +205,7 @@ The `rolesAllowed` annotation specifies that if a non-admin user such as alice s
 
 include::{common-includes}/mvnbuild.adoc[]
 
-Use the following endpoint to choose the information you want to see:
-
-* `http://localhost:9090/`
+Use the `http://localhost:9090/` endpoint to choose the information you want to see.
 
 Use one of the following credentials to log in:
 
@@ -215,21 +213,22 @@ Use one of the following credentials to log in:
 |===
 |Username |Password|Role |Group
 
-|bob
-|bobpwd
-|admin, user
-|Manager, Employee
-
 |alice
 |alicepwd
 |user
 |Employee
+
+|bob
+|bobpwd
+|admin, user
+|Manager, Employee
 
 |carl
 |carlpwd
 |admin, user
 |TeamLead, Employee
 |===
+
 
 If you choose to see the profile, once authenticated, you can see your name and role.
 

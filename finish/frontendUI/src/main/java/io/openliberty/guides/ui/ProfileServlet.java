@@ -45,7 +45,6 @@ public class ProfileServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // Example 1: Is the caller is one of the 2 roles: admin, user
       PrintWriter pw = response.getWriter();
 
       if (securityContext.isCallerInRole("admin")) {
@@ -55,7 +54,6 @@ public class ProfileServlet extends HttpServlet {
         pw.write("User has role 'user'"  + "\n");
       }
 
-      // Example 2: What is the caller principal name
       String contextName = null;
       if (securityContext.getCallerPrincipal() != null) {
           contextName = securityContext.getCallerPrincipal().getName();
