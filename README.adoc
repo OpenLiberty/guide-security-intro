@@ -232,7 +232,7 @@ Use one of the following credentials to log in:
 
 If you choose to see the profile, once authenticated, you can see your name and role.
 
-If you choose to see application information, once you log in, `admin` can see some basic information retrieved from the back end services.
+If you choose to see application information, once you log in, `admin` can see some basic information retrieved from the backend services.
 Remember that if you log in as a user without the `admin` role, you are blocked because you do not have permission.
 include::{common-includes}/mvncompile.adoc[]
 
