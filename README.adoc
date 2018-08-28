@@ -52,7 +52,9 @@ The  `finish` directory in the root of this guide contains the finished security
 
 To try out the application, first navigate to the `finish` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
 
-`mvn install liberty:start-server`
+```
+mvn install liberty:start-server
+```
 
 Next, point your browser to:
 
@@ -87,7 +89,9 @@ You can access to the `inventory` service data by clicking the second link and s
 When you sign in as alice, you will be blocked and a message will display `Error 403: AuthorizationFailed`.
 
 Once you are done checking out the application, stop the Open Liberty server:
-`mvn liberty:stop-server`
+```
+mvn liberty:stop-server
+```
 
 
 
@@ -124,7 +128,10 @@ Navigate to `liberty/wlp/bin` in the Liberty server source code you downloaded, 
 
 ./securityUtility encode --encoding=xor carlpwd
 ```
-Here, `alice` and `carl` use the xor encoding for their passwords. While `bob` uses aes encryption with an encrypting key from `bootstrapProperties` predefined in the `pom.xml` file.
+Here, `alice` and `carl` use the XOR encoding for their passwords. While `bob` uses Advanced Encryption Standard(AES) encryption.
+You need to specify a key string to be used when you encode by using AES encryption. This string is hashed to produce an encryption key that is used to encrypt and decrypt the password.
+The key string can be provided from `bootstrapProperties` in the `pom.xml` file.
+
 ```
 ./securityUtility encode --encoding=aes --key=mykey bobpwd
 ```
@@ -137,7 +144,7 @@ Here, `alice` and `carl` use the xor encoding for their passwords. While `bob` u
 
 Form Authentication is an authentication mechanism where the user is able to fill in their login credentials using a form that the developers create.
 Java EE provides a more convenient way to authenticate a user by calling the built-in `j_security_check` action from the login form.
-The `login.html` and `error.html` pages are provided for you under the `src/main/webapp` directory.
+The `login.html` and `error.html` pages are provided for you under the `src/main/webapp` directory. These are two frontend files that provide the login form and error page.
 
 In order to enable form authentication, create the `ProfileServlet` class in the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file.
 [source, java, indent=0]
@@ -165,7 +172,7 @@ At this point, your application is secured using form authentication. Users will
 //
 // =================================================================================================
 
-== Implementing authorization
+== Adding authorization
 
 Authorization determines whether a user has the role required to access certain resources within the system.
 
@@ -182,7 +189,7 @@ The `admin` and `user` are roles you defined in the `server.xml` configuration f
 The `transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL` configuration indicates that all user data must be encrypted by the transport.
 
 The Security specification also defines a common SecurityContext API that can be used to perform some common programmatic security related operations.
-You can get access to the container provided `SecurityContext` by using CDI injection and call the appropriate methods.
+You can get access to the information of the authenticated account by calling the appropriate methods from the `SecurityContext` API.
 
 The method `securityContext.isCallerInRole("admin")` returns a boolean that indicates if the current authenticated account is an `admin` or not.
 The method `securityContext.getCallerPrincipal().getName()` returns the user name of the current authenticated account.
