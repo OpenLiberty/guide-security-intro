@@ -24,7 +24,7 @@ Learn how to secure a web application through authentication and authorization.
 // =================================================================================================
 
 == What you'll learn
-You will learn how to secure a web application by performing authentication and authorization using Security feature in the Java EE 8 specification.
+You will learn how to secure a web application by performing authentication and authorization using the Security feature in the Java EE 8 specification.
 
 The security feature in Java EE provides capability to configure the basic, form or custom form authentication mechanism using annotations in the servlet.
 It also provides a SecurityContext API for programmatic security checks for both web and enterprise beans resources.
@@ -129,8 +129,8 @@ Navigate to `liberty/wlp/bin` in the Liberty server source code you downloaded, 
 ./securityUtility encode --encoding=xor carlpwd
 ```
 Here, `alice` and `carl` use the XOR encoding for their passwords. While `bob` uses Advanced Encryption Standard(AES) encryption.
-You need to specify a key string to be used when you encode by using AES encryption. This string is hashed to produce an encryption key that is used to encrypt and decrypt the password.
-The key string can be provided from `bootstrapProperties` in the `pom.xml` file.
+You need to specify a key string to be used when you encode using AES encryption. This string is hashed to produce an encryption key that is used to encrypt and decrypt the password.
+The key string is provided from the `bootstrapProperties` in the `pom.xml` file.
 
 ```
 ./securityUtility encode --encoding=aes --key=mykey bobpwd
