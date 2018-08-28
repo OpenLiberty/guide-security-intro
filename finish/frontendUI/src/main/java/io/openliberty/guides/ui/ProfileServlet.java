@@ -45,22 +45,20 @@ public class ProfileServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // Example 1: Is the caller is one of the three roles: admin, user and demo
       PrintWriter pw = response.getWriter();
 
-      boolean role = securityContext.isCallerInRole("admin");
-      pw.write("User has role 'admin': " + role + "\n");
+      if (securityContext.isCallerInRole("admin")) {
+        pw.write("User has role 'admin'" + "\n");
+      }
+      else if (securityContext.isCallerInRole("user")){
+        pw.write("User has role 'user'"  + "\n");
+      }
 
-      role = securityContext.isCallerInRole("user");
-      pw.write("User has role 'user': " + role + "\n");
-
-
-      // Example 2: What is the caller principal name
       String contextName = null;
       if (securityContext.getCallerPrincipal() != null) {
           contextName = securityContext.getCallerPrincipal().getName();
       }
-      response.getWriter().write("context username: " + contextName + "\n");
+      pw.write("Username: " + contextName + "\n");
 
 
     }
