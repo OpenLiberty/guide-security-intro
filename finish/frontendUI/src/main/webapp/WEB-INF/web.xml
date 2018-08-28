@@ -22,33 +22,33 @@
       <param-value>false</param-value>
     </context-param>
 
-<!--
-  Copyright (c) 2018 IBM Corp.
+    <!--
+      Copyright (c) 2018 IBM Corp.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0
+         http://www.apache.org/licenses/LICENSE-2.0
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
--->
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
     <!-- WebAppJSF: Faces Servlet -->
-<servlet>
-  <servlet-name>Faces Servlet</servlet-name>
-  <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-  <load-on-startup>1</load-on-startup>
-</servlet>
+    <servlet>
+      <servlet-name>Faces Servlet</servlet-name>
+      <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+    </servlet>
 
-<!-- WebAppJSF: Faces Servlet Mapping -->
-<servlet-mapping>
-  <servlet-name>Faces Servlet</servlet-name>
-  <url-pattern>*.jsf</url-pattern>
-</servlet-mapping>
+    <!-- WebAppJSF: Faces Servlet Mapping -->
+    <servlet-mapping>
+      <servlet-name>Faces Servlet</servlet-name>
+      <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
 
     <welcome-file-list>
         <welcome-file>index.jsf</welcome-file>
@@ -56,26 +56,24 @@
 
 
     <!-- SECURITY ROLES -->
-  <security-role>
-    <role-name>admin</role-name>
-  </security-role>
+    <security-role>
+      <role-name>admin</role-name>
+    </security-role>
 
-  <security-role>
-    <role-name>user</role-name>
-  </security-role>
-
-<!-- SECURITY CONSTRAINTS -->
-<security-constraint>
-    <web-resource-collection>
-      <web-resource-name>ViewProperties</web-resource-name>
-      <url-pattern>/application.jsf</url-pattern>
-      <http-method>GET</http-method>
-    </web-resource-collection>
-    <auth-constraint>
+    <security-role>
       <role-name>user</role-name>
-    </auth-constraint>
-  </security-constraint>
+    </security-role>
 
-
+    <!-- SECURITY CONSTRAINTS -->
+    <security-constraint>
+      <web-resource-collection>
+        <web-resource-name>ViewProperties</web-resource-name>
+        <url-pattern>/application.jsf</url-pattern>
+        <http-method>GET</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+        <role-name>user</role-name>
+      </auth-constraint>
+    </security-constraint>
 
 </web-app>

@@ -10,7 +10,6 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::jwt[]
 package io.openliberty.guides.ui;
 
 import java.util.Collections;
@@ -30,6 +29,8 @@ import java.io.Serializable;
 @Named
 @ViewScoped
 public class ApplicationBean implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private String hostname;
 
@@ -73,7 +74,4 @@ public class ApplicationBean implements Serializable {
       ServiceUtils.addSystem(hostname);
     }
   }
-
-
 }
-// end::jwt[]
