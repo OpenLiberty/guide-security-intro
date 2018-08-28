@@ -10,7 +10,6 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::jwt[]
 package io.openliberty.guides.ui.util;
 
 import java.io.StringReader;
@@ -107,4 +106,3 @@ public class ServiceUtils {
     return jReader.readObject();
   }
 }
-// end::jwt[]
