@@ -58,7 +58,7 @@ public class ProfileServlet extends HttpServlet {
       if (securityContext.getCallerPrincipal() != null) {
           contextName = securityContext.getCallerPrincipal().getName();
       }
-      response.getWriter().write("Username: " + contextName + "\n");
+      pw.write("Username: " + contextName + "\n");
 
 
     }
