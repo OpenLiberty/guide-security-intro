@@ -111,7 +111,7 @@ include::finish/frontendUI/src/main/liberty/config/server.xml[tags=security]
 
 When you set up the basic user registry for authentication, the names for the users and groups must be unique.
 
-In this application, there are three groups: `Employee`, `TeamLead` and `Manager`.
+In this application, there are three groups: `Employee`, `TeamLead` and `Manager`. Groups can be assigned to different access roles.
 Within the `<application-bnd>` tags, two different authorization roles are assigned to these groups: `admin` and `user`.
 
 A role can be mapped to a user, a group, or a special subject. The two types of special subject are `EVERYONE` and `ALL_AUTHENTICATED_USERS`.
