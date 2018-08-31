@@ -25,7 +25,8 @@ import javax.servlet.RequestDispatcher;
 
 
 @WebServlet(urlPatterns="/application")
-@ServletSecurity(value = @HttpConstraint(rolesAllowed = { "admin" }, transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL))
+@ServletSecurity(value = @HttpConstraint(rolesAllowed = { "admin" },
+transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL))
 
 
 public class ApplicationServlet extends HttpServlet {
@@ -36,7 +37,8 @@ public class ApplicationServlet extends HttpServlet {
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
 
         RequestDispatcher view = request.getRequestDispatcher("application.jsf");
         view.forward(request, response);
@@ -46,7 +48,8 @@ public class ApplicationServlet extends HttpServlet {
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
         doGet(request, response);
     }
 }

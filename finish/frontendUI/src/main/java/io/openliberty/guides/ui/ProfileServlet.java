@@ -31,7 +31,8 @@ import javax.inject.Inject;
 @WebServlet(urlPatterns="/profile")
 @FormAuthenticationMechanismDefinition(loginToContinue = @LoginToContinue(
   errorPage = "/error.html", loginPage = "/login.html"))
-@ServletSecurity(value = @HttpConstraint(rolesAllowed = { "user", "admin" }, transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL))
+@ServletSecurity(value = @HttpConstraint(rolesAllowed = { "user", "admin" },
+transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL))
 
 
 public class ProfileServlet extends HttpServlet {
@@ -43,7 +44,8 @@ public class ProfileServlet extends HttpServlet {
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
 
       PrintWriter pw = response.getWriter();
 
@@ -66,7 +68,8 @@ public class ProfileServlet extends HttpServlet {
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
         doGet(request, response);
     }
 }

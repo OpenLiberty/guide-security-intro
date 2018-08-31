@@ -128,7 +128,7 @@ Navigate to `liberty/wlp/bin` in the Liberty server source code you downloaded, 
 
 ./securityUtility encode --encoding=xor carlpwd
 ```
-Here, `alice` and `carl` use the XOR encoding for their passwords. While `bob` uses Advanced Encryption Standard(AES) encryption.
+Here, `alice` and `carl` use the XOR encoding for their passwords. While `bob` uses Advanced Encryption Standard (AES) encryption.
 You need to specify a key string to be used when you encode using AES encryption. This string is hashed to produce an encryption key that is used to encrypt and decrypt the password.
 The key string is provided from the `bootstrapProperties` in the `pom.xml` file.
 
@@ -246,6 +246,62 @@ Remember that if you log in as a user without the `admin` role, you are blocked 
 // =================================================================================================
 // Testing the application
 // =================================================================================================
+
+== Testing the application
+
+Now you can write the `SecurityTest` class to test that you can access with different user accounts.
+
+Create a test class in the `frontendUI/src/test/java/it/io/openliberty/guides/security/SecurityTest.java` file like the following:
+
+[source, java, indent=0]
+----
+include::finish/frontendUI/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=test]
+----
+
+
+
+In the `setup()` step before test cases, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `admin` role.
+This authorization header is added when the test client sends a HTTP `GET` request to a secure service to retrieve information.
+
+Each test case tries to first assert that with a valid authorization header, it can get a `Status.OK` code from the response.
+The test fails if the response returns a `Status.FORBIDDEN` message, which means the authorization header is invalid.
+
+After each test confirms that the response code is correct, each test gets the content from the designated endpoint and compares the result with its expected value.
+
+Create a test class for the JWT service in the `backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java` file:
+
+[source, java, indent=0]
+----
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[tags=test]
+----
+
+In the `setup()` step of the `JwtTest` test, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.
+The authorization header is added when the test client sends a HTTP `GET` request to a secure JWT service.
+
+* The `testJWTGetName()` test accesses the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token and to verify
+whether the user name is the same as the `TESTUSER` user name.
+
+* The `testJWTGetCustomClaim()` test accesses the `https://localhost:5051/inventory/jwt/customClaim` endpoint. Because this service is secured and only accessible to users who have the `admin` role,
+the test asserts that the current test user with the `user` role is forbidden from accessing it.
+
+include::{common-includes}/mvnverify.adoc[]
+
+[source, role="no_copy"]
+----
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.security.SecurityTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.78 sec - in it.io.openliberty.guides.security.SecurityTest
+
+Results :
+
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+
+----
+
+To see whether the tests detect a failure, remove the authorization header generation in the `setup()` method of the `InventoryEndpointTest.java` file.
+Rerun the Maven build. You see that a test failure occurs.
 
 
 // =================================================================================================
