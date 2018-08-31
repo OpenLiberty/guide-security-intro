@@ -50,7 +50,8 @@ public class ServiceUtils {
   }
 
   public static JsonObject addSystem(String hostname) {
-    String invUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, INVENTORY_HOSTS + "/" + hostname);
+    String invUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT,
+        INVENTORY_HOSTS + "/" + hostname);
     return getJsonFromUrl(invUrl);
   }
 

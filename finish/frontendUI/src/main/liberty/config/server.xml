@@ -14,10 +14,12 @@
       id="defaultHttpEndpoint" />
 
     <!-- The keystore for SSL is built using the maven keytool plugin -->
-    <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS" password="secret" />
+    <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS"
+      password="secret" />
 
     <basicRegistry id="basic" realm="WebRealm">
-        <user name="bob" password="{aes}APCNjAKClAZjd6hWKYnqJvSFvi1/xZerjush0+jFE9Dl" />  <!-- bobpwd -->
+        <user name="bob" password="{aes}APCNjAKClAZjd6hWKYnqJvSFvi1/xZerjush0+jFE9Dl" />
+        <!-- bobpwd -->
         <user name="alice" password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
         <user name="carl" password="{xor}PD4tMy8oOw==" />   <!-- carlpwd -->
 
@@ -48,6 +50,6 @@
             </security-role>
         </application-bnd>
     </application>
-    
+
 </server>
 <!-- end::security[] -->

@@ -9,7 +9,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
- // end::copyright[]
+// end::copyright[]
 // tag::security[]
 package io.openliberty.guides.ui;
 
@@ -27,47 +27,48 @@ import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
 import javax.security.enterprise.SecurityContext;
 import javax.inject.Inject;
 
-
-@WebServlet(urlPatterns="/profile")
+@WebServlet(urlPatterns = "/profile")
 @FormAuthenticationMechanismDefinition(loginToContinue = @LoginToContinue(
   errorPage = "/error.html", loginPage = "/login.html"))
-@ServletSecurity(value = @HttpConstraint(rolesAllowed = { "user", "admin" }, transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL))
-
+@ServletSecurity(value = @HttpConstraint(rolesAllowed = { "user", "admin" },
+  transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL))
 
 public class ProfileServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-   @Inject
-   private SecurityContext securityContext;
+  @Inject
+  private SecurityContext securityContext;
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  /**
+   * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+   *      response)
+   */
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
 
-      PrintWriter pw = response.getWriter();
+    PrintWriter pw = response.getWriter();
 
-      if (securityContext.isCallerInRole("admin")) {
-        pw.write("User has role 'admin'" + "\n");
-      }
-      else if (securityContext.isCallerInRole("user")){
-        pw.write("User has role 'user'"  + "\n");
-      }
-
-      String contextName = null;
-      if (securityContext.getCallerPrincipal() != null) {
-          contextName = securityContext.getCallerPrincipal().getName();
-      }
-      pw.write("Username: " + contextName + "\n");
-
-
+    if (securityContext.isCallerInRole("admin")) {
+      pw.write("User has role 'admin'" + "\n");
+    } else if (securityContext.isCallerInRole("user")) {
+      pw.write("User has role 'user'" + "\n");
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+    String contextName = null;
+    if (securityContext.getCallerPrincipal() != null) {
+      contextName = securityContext.getCallerPrincipal().getName();
     }
+    pw.write("Username: " + contextName + "\n");
+
+  }
+
+  /**
+   * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+   *      response)
+   */
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    doGet(request, response);
+  }
 }
 // end::security[]
