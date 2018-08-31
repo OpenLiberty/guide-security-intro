@@ -11,7 +11,7 @@
         <warfile.name>security-intro</warfile.name>
 
         <!-- Liberty Server -->
-        <version.liberty>LATEST</version.liberty>
+        <version.liberty>RELEASE</version.liberty>
 
         <!-- Dependencies -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

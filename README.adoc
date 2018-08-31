@@ -64,7 +64,7 @@ mvn install liberty:start-server
 ```
 
 Next, point your browser to:
-
+// Use https://localhost:9091/ when ServletSecurity.TransportGuarantee.CONFIDENTIAL is enabled in 18003!!!!
 `http://localhost:9090`
 
 The basic registry is provided with the following user information credentials:
@@ -232,6 +232,7 @@ The `rolesAllowed` annotation specifies that if a non-admin user such as alice s
 
 include::{common-includes}/mvnbuild.adoc[]
 
+// Use https://localhost:9091/ when ServletSecurity.TransportGuarantee.CONFIDENTIAL is enabled in 18003!!!!
 Use the `http://localhost:9090/` endpoint to choose the information you want to see.
 
 Use one of the following credentials to log in:
