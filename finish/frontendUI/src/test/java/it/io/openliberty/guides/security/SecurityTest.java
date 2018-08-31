@@ -62,30 +62,30 @@ public class SecurityTest {
 
   @Test
   public void testAuthenticationFail() throws Exception {
-    executeGetRequestFormCreds(httpclient, urlHttp + "/profile", "bob",
+    executeRequestFormAuth(httpclient, urlHttp + "/profile", "bob",
         "wrongpassword", HttpServletResponse.SC_OK, "Security Login Error");
   }
 
   @Test
   public void testAuthenticationSucceed() throws Exception {
-    executeGetRequestFormCreds(httpclient, urlHttp + "/profile", "bob", "bobpwd",
+    executeRequestFormAuth(httpclient, urlHttp + "/profile", "bob", "bobpwd",
         HttpServletResponse.SC_OK, "Username: bob");
   }
 
   @Test
   public void testAuthorizationForAdmin() throws Exception {
-    executeGetRequestFormCreds(httpclient, urlHttp + "/application", "bob", "bobpwd",
+    executeRequestFormAuth(httpclient, urlHttp + "/application", "bob", "bobpwd",
         HttpServletResponse.SC_OK, "Application Page");
   }
 
   @Test
   public void testAuthorizationForUser() throws Exception {
-    executeGetRequestFormCreds(httpclient, urlHttp + "/application", "alice",
+    executeRequestFormAuth(httpclient, urlHttp + "/application", "alice",
         "alicepwd", HttpServletResponse.SC_FORBIDDEN,
         "Error 403: AuthorizationFailed");
   }
 
-  protected void executeGetRequestFormCreds(DefaultHttpClient httpClient,
+  protected void executeRequestFormAuth(DefaultHttpClient httpClient,
       String resourceUrl, String userid, String password, int expectedStatusCode,
       String expectedContent) throws Exception {
     // Send servlet query to get form login page.

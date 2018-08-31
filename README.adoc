@@ -249,7 +249,7 @@ Remember that if you log in as a user without the `admin` role, you are blocked 
 
 == Testing the application
 
-Now you can write the `SecurityTest` class to test that you can access with different user accounts.
+Now you can write the `SecurityTest` class to test that you can access different servlets with form authentication and authorization.
 
 Create a test class in the `frontendUI/src/test/java/it/io/openliberty/guides/security/SecurityTest.java` file like the following:
 
@@ -258,31 +258,26 @@ Create a test class in the `frontendUI/src/test/java/it/io/openliberty/guides/se
 include::finish/frontendUI/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=test]
 ----
 
+There are four test cases. The `testAuthenticationFail()` case tests a invalid user authentication,
+while the `testAuthenticationSucceed()` case tests a successful authentication process.
 
+The `testAuthorizationForAdmin()` and `testAuthorizationForUser()` cases verify
+that only administrator account such as bob can access the application servlet to
+view the backend data. However, a normal user like alice can only see an `Error 403: AuthorizationFailed`
+error message.
 
-In the `setup()` step before test cases, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `admin` role.
-This authorization header is added when the test client sends a HTTP `GET` request to a secure service to retrieve information.
+The `executeRequestFormAuth()` method contains the main logic of testing form authentication.
 
-Each test case tries to first assert that with a valid authorization header, it can get a `Status.OK` code from the response.
-The test fails if the response returns a `Status.FORBIDDEN` message, which means the authorization header is invalid.
+First, it calls `helper.getFormLoginPage()` to send the servlet query to get the form login page.
 
-After each test confirms that the response code is correct, each test gets the content from the designated endpoint and compares the result with its expected value.
+Then, `helper.executeFormLogin()` gets invoked to execute form login and get the redirect location.
 
-Create a test class for the JWT service in the `backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java` file:
+After that, `helper.accessPage()` method is called to redirect the application to the assigned page, ensure it is the original servlet request and return the right response.
 
-[source, java, indent=0]
-----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[tags=test]
-----
+In the end, the `executeRequestFormAuth()` method processes the response from an http invocation, such as validating the status code and extracting the response entity.
 
-In the `setup()` step of the `JwtTest` test, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.
-The authorization header is added when the test client sends a HTTP `GET` request to a secure JWT service.
+The detailed implementation of the helper functions are provided for you in the `frontendUI/src/test/java/it/io/openliberty/guides/security/util/TestUtils.java` file.
 
-* The `testJWTGetName()` test accesses the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token and to verify
-whether the user name is the same as the `TESTUSER` user name.
-
-* The `testJWTGetCustomClaim()` test accesses the `https://localhost:5051/inventory/jwt/customClaim` endpoint. Because this service is secured and only accessible to users who have the `admin` role,
-the test asserts that the current test user with the `user` role is forbidden from accessing it.
 
 include::{common-includes}/mvnverify.adoc[]
 
@@ -300,7 +295,7 @@ Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
 
 ----
 
-To see whether the tests detect a failure, remove the authorization header generation in the `setup()` method of the `InventoryEndpointTest.java` file.
+To see whether the tests detect a failure, you can change some input arguments in any of the test cases.
 Rerun the Maven build. You see that a test failure occurs.
 
 
