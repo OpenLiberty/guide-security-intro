@@ -10,7 +10,6 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::jwt[]
 package io.openliberty.guides.ui;
 
 import java.util.Collections;
@@ -31,8 +30,9 @@ import java.io.Serializable;
 @ViewScoped
 public class ApplicationBean implements Serializable {
 
-  private String hostname;
+  private static final long serialVersionUID = 1L;
 
+  private String hostname;
 
   public String getOs() {
 
@@ -56,7 +56,8 @@ public class ApplicationBean implements Serializable {
 
     if (ServiceUtils.invOk()) {
       JsonArray systems = ServiceUtils.getInventory().getJsonArray("systems");
-      return systems.stream().map(s -> new SystemModel((JsonObject) s)).collect(Collectors.toList());
+      return systems.stream().map(s -> new SystemModel((JsonObject) s))
+                    .collect(Collectors.toList());
     }
 
     return Collections.emptyList();
@@ -73,7 +74,4 @@ public class ApplicationBean implements Serializable {
       ServiceUtils.addSystem(hostname);
     }
   }
-
-
 }
-// end::jwt[]

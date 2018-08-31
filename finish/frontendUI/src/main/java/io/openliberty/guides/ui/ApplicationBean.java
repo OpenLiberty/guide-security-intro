@@ -34,7 +34,6 @@ public class ApplicationBean implements Serializable {
 
   private String hostname;
 
-
   public String getOs() {
 
     if (ServiceUtils.responseOk()) {
@@ -57,7 +56,8 @@ public class ApplicationBean implements Serializable {
 
     if (ServiceUtils.invOk()) {
       JsonArray systems = ServiceUtils.getInventory().getJsonArray("systems");
-      return systems.stream().map(s -> new SystemModel((JsonObject) s)).collect(Collectors.toList());
+      return systems.stream().map(s -> new SystemModel((JsonObject) s))
+                    .collect(Collectors.toList());
     }
 
     return Collections.emptyList();

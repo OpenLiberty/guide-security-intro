@@ -64,6 +64,16 @@
             <version>1</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpclient</artifactId>
+          <version>4.3.6</version>
+        </dependency>
 
     </dependencies>
 
@@ -156,6 +166,64 @@
                     </bootstrapProperties>
                 </configuration>
             </plugin>
+
+            <!-- Integration test execution setup. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.19.1</version>
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>**/it/**/*.java</include>
+                            </includes>
+                            <systemPropertyVariables>
+                                <liberty.test.hostname>${frontend.hostname}</liberty.test.hostname>
+                                <liberty.test.port>${frontend.http.port}</liberty.test.port>
+                                <liberty.test.ssl.port>${frontend.https.port}</liberty.test.ssl.port>
+                                <liberty.backend.service.hostname>${backend.hostname}</liberty.backend.service.hostname>
+                                <liberty.backend.service.ssl.port>${backend.https.port}</liberty.backend.service.ssl.port>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>verify-results</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <summaryFile>${project.build.directory}/test-reports/security-intro/failsafe-summary.xml</summaryFile>
+                    <reportsDirectory>${project.build.directory}/test-reports/security-intro</reportsDirectory>
+                </configuration>
+            </plugin>
+
+            <!-- Dep to run integration tests. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <id>default-test</id>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/it/**</exclude>
+                            </excludes>
+                            <reportsDirectory>${project.build.directory}/test-reports/unit</reportsDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 </project>
