@@ -24,9 +24,6 @@
         <testServerHttpsPort>9443</testServerHttpsPort>
         <package.file>${project.build.directory}/${app.name}.zip</package.file>
         <packaging.type>usr</packaging.type>
-
-        <!-- TO REMOVE -->
-        <test.repository>http://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/wasliberty-open-liberty/</test.repository>
     </properties>
 
     <dependencyManagement>
@@ -216,6 +213,4 @@
         </plugins>
     </build>
 
-    <!-- TO REMOVE -->
-    <repositories><repository><id>maven-repository</id><name>Test repo</name><url>${test.repository}</url></repository></repositories>
 </project>
