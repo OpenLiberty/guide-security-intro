@@ -37,9 +37,7 @@ an editable form for users to fill in and submit in order to log in to the syste
 You will also learn how to assign permissions to different roles. This application specifies two roles: Administrator and User.
 
 The application itself will allow users and admins to access servlets.
-The `ProfileServlet` servlet simply displays user information such as the name and role for the currently authenticated user.
-//Maybe change the name of `ApplicationServlet`
-The `ApplicationServlet` servlet is a frontend interface for the backend inventory service, it communicates with the backend services and display data that are retrieved from the backend.
+The `ProfileServlet` and `AdminServlet` simply display user information such as the name and role for the currently authenticated user.
 
 Administrators have access to both servlets, the `ProfileServlet` and the `ApplicationServlet`. Whereas the user will only have access to the `ProfileServlet`.
 
@@ -105,7 +103,7 @@ mvn liberty:stop-server
 // =================================================================================================
 == Configuring a user registry
 
-Navigate to the  `start/frontendUI` directory to begin. You will not modify any code in the `backendServices` directory in this guide.
+Navigate to the  `start` directory to begin. You will not modify any code in the `backendServices` directory in this guide.
 
 You need to set up the user registry to define users and group information. User registries store user account information, such as user name and password, that can be accessed during authentication.
 
@@ -113,7 +111,7 @@ To do this, add the following configurations into the `src/main/liberty/config/s
 
 [source, xml, indent=0]
 ----
-include::finish/frontendUI/src/main/liberty/config/server.xml[tags=security]
+include::finish/src/main/liberty/config/server.xml[tags=security]
 ----
 
 On the Open Liberty server, you can use a basic user registry to defining the users and groups information.
@@ -154,6 +152,11 @@ The key string is provided from the `bootstrapProperties` in the `pom.xml` file.
 ./securityUtility encode --encoding=aes --key=mykey bobpwd
 ```
 
+The encryption key can be provided to the server by defining the variable `wlp.password.encryption.key` and setting the value to the key. 
+Setting this variable, overrides the default key that is generated. This property is set in a configuration file that should only contain this single property declaration. 
+The configuration file itself is saved outside of the configuration directory for the server, this ensures that the file containing your key is not included when running the the server dump or package command.
+In this application, the configuration file is saved under `src/main/liberty/config` as `pwdEncryptionKey.xml`.
+
 // =================================================================================================
 //
 // =================================================================================================
@@ -167,7 +170,7 @@ The `login.html` and `error.html` pages are provided for you under the `src/main
 In order to enable form authentication, create the `UserServlet` class in the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file.
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ProfileServlet.java[tags=security;!copyright]
+include::finish/src/main/java/io/openliberty/guides/ui/ProfileServlet.java[tags=security;!copyright]
 ----
 
 Notice the `@FormAuthenticationMechanismDefinition` annotation in the class. The same thing can be expressed as configurations in the `web.xml`:
@@ -199,27 +202,26 @@ Open the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file:
 
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ProfileServlet.java[tags=security;!copyright]
+include::finish/src/main/java/io/openliberty/guides/ui/ProfileServlet.java[tags=security;!copyright]
 ----
 
 Note the `@HttpConstraint` annotation, it defines all the security constraints for each servlet resource.
 The `admin` and `user` are roles you defined in the `server.xml` configuration file. They are declared under `rolesAllowed` so that the profile can be accessed by authenticated accounts with these two roles.
-The `transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL` configuration indicates that all user data must be encrypted by the transport.
-
+The transport guarantee defines the data protection requirements that must be satisfied by the transport. In this case, the transport guarantee is set to the CONFIDENTIAL configuration which specifies that all user data must be encrypted during transport. This ensures that the browser gets redirected from `http` to an `https` link automatically.
 The Security specification also defines a common SecurityContext API that can be used to perform some common programmatic security related operations.
 You can get access to the information of the authenticated account by calling the appropriate methods from the `SecurityContext` API.
 
 The method `securityContext.isCallerInRole("admin")` returns a boolean that indicates if the current authenticated account is an `admin` or not.
 The method `securityContext.getCallerPrincipal().getName()` returns the user name of the current authenticated account.
 
-Create the `ApplicationServlet` class in the `src/main/java/io/openliberty/guides/ui/ApplicationServlet.java` file.
+Create the `AdminServlet` class in the `src/main/java/io/openliberty/guides/ui/AdminServlet.java` file.
 
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ApplicationServlet.java[tags=security;!copyright]
+include::finish/src/main/java/io/openliberty/guides/ui/AdminServlet.java[tags=security;!copyright]
 ----
 
-The `ApplicationServlet` is a servlet that displays the `inventory` service data when accessed. The same `@ServletSecurity` annotation is applied, except only `admin` roles are allowed.
+The `AdminServlet` is a servlet that displays the `inventory` service data when accessed. The same `@ServletSecurity` annotation is applied, except only `admin` roles are allowed.
 
 The `rolesAllowed` annotation specifies that if a non-admin user such as alice signed in, she will not be able to access the `ApplicationServlet`.
 
@@ -270,11 +272,11 @@ Remember that if you log in as a user without the `admin` role, you are blocked 
 
 Now you can write the `SecurityTest` class to test that you can access different servlets with form authentication and authorization.
 
-Create a test class in the `frontendUI/src/test/java/it/io/openliberty/guides/security/SecurityTest.java` file like the following:
+Create a test class in the `src/test/java/it/io/openliberty/guides/security/SecurityTest.java` file like the following:
 
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=test]
+include::finish/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=test]
 ----
 
 There are four test cases. The `testAuthenticationFail()` case tests a invalid user authentication,
@@ -295,7 +297,7 @@ After that, `helper.accessPage()` method is called to redirect the application t
 
 In the end, the `executeRequestFormAuth()` method processes the response from an http invocation, such as validating the status code and extracting the response entity.
 
-The detailed implementation of the helper functions are provided for you in the `frontendUI/src/test/java/it/io/openliberty/guides/security/util/TestUtils.java` file.
+The detailed implementation of the helper functions are provided for you in the `src/test/java/it/io/openliberty/guides/security/util/TestUtils.java` file.
 
 
 include::{common-includes}/mvnverify.adoc[]
