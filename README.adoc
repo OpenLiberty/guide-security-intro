@@ -26,7 +26,7 @@ Learn how to secure a web application through authentication and authorization.
 == What you'll learn
 You will learn how to secure a web application by performing authentication and authorization using the Security feature in the Java EE 8 specification.
 
-Authentication confirms the identity of the user by verifying a user name and password. While authorization determines whether a user has access to a specific role within the system.
+Authentication confirms the identity of the user by verifying a user name and password. While authorization determines whether a user has access to a specific servlet.
 
 The security feature in Java EE provides capability to configure the basic, form or custom form authentication mechanism using annotations in the servlet.
 It also provides a SecurityContext API for programmatic security checks for both web and enterprise beans resources.
@@ -85,11 +85,11 @@ The basic registry is provided with the following user information credentials:
 |TeamLead, Employee
 |===
 
-You can check user profiles by clicking the first link and signing in with one of the credentials from the Basic Registry.
+You can check user profiles by clicking the first or second link and signing in with one of the credentials from the Basic Registry.
 You can go back to the main page to log out and switch accounts.
 
-You can access to the `inventory` service data by clicking the second link and signing in as either bob or carl.
-When you sign in as alice, you will be blocked and a message will display `Error 403: AuthorizationFailed`.
+Notice that only admin user, Bob, = can access the second link to the `AdminServlet`.
+When you sign in as Alice, you will be blocked and a message will display `Error 403: AuthorizationFailed`.
 
 Once you are done checking out the application, stop the Open Liberty server:
 ```
@@ -195,7 +195,7 @@ At this point, your application is secured using form authentication. Users will
 
 == Adding authorization
 
-Authorization determines whether a user has the role required to access certain resources within the system.
+Authorization determines whether a user has the role required to access the `AdminServlet`.
 
 Authorization can be achieved with the `@ServletSecurity` annotation.
 Open the `src/main/java/io/openliberty/guides/ui/UserServlet.java` file:
