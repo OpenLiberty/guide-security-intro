@@ -111,6 +111,7 @@ public class SecurityTest {
     boolean expectLoginFail, int expectedCode, String expectedContent) 
     throws Exception {
 
+    // Use HttpClient to execute the testUrl by HTTP
     URI url = new URI(urlHttp + testUrl);
     HttpGet getMethod = new HttpGet(url);
     HttpClientBuilder clientBuilder = HttpClientBuilder.create();
@@ -120,11 +121,14 @@ public class SecurityTest {
       RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build());
     HttpClient client = clientBuilder.build();
     HttpResponse response = client.execute(getMethod);
+
+    // The response should return the login.html
     String loginBody = EntityUtils.toString(response.getEntity(), "UTF-8");
     assertTrue(
       "The login.html was not redirected", 
       loginBody.contains("j_security_check"));
 
+    // Use j_security_check to login
     HttpPost postMethod = new HttpPost(urlHttps + "/j_security_check");
     List<NameValuePair> nvps = new ArrayList<NameValuePair>();
     nvps.add(new BasicNameValuePair("j_username", userid ));
@@ -135,6 +139,7 @@ public class SecurityTest {
       "Expected " + HttpServletResponse.SC_FOUND + " status code for login",
       HttpServletResponse.SC_FOUND, response.getStatusLine().getStatusCode());
 
+    // Return if expect the login should fail
     if (expectLoginFail) {
       String location = response.getFirstHeader("Location").getValue();
       assertTrue(
@@ -143,12 +148,15 @@ public class SecurityTest {
       return;
     }
 
+    // Use HttpClient to execute the testUrl by HTTPS
     url = new URI(urlHttps + testUrl);
     getMethod = new HttpGet(url);
     response = client.execute(getMethod);
     assertEquals(
       "Expected " + expectedCode + " status code for login",
       expectedCode, response.getStatusLine().getStatusCode());
+    
+    // Check the content of the response returned
     String actual = EntityUtils.toString(response.getEntity(), "UTF-8");
     assertTrue(
       "The url " + testUrl + 
