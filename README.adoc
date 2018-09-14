@@ -37,9 +37,9 @@ an editable form for users to fill in and submit in order to log in to the syste
 You will also learn how to assign permissions to different roles. This application specifies two roles: Administrator and User.
 
 The application itself will allow users and admins to access servlets.
-The `ProfileServlet` and `AdminServlet` simply display user information such as the name and role for the currently authenticated user.
+The `UserServlet` and `AdminServlet` simply display user information such as the name and role for the currently authenticated user.
 
-Administrators have access to both servlets, the `ProfileServlet` and the `ApplicationServlet`. Whereas the user will only have access to the `ProfileServlet`.
+Administrators have access to both servlets, the `UserServlet` and the `AdminServlet`. Whereas the user will only have access to the `UserServlet`.
 
 // =================================================================================================
 // Getting Started
@@ -167,10 +167,10 @@ Form Authentication is an authentication mechanism where the user is able to fil
 Java EE provides a more convenient way to authenticate a user by calling the built-in `j_security_check` action from the login form.
 The `login.html` and `error.html` pages are provided for you under the `src/main/webapp` directory. These are two frontend files that provide the login form and error page.
 
-In order to enable form authentication, create the `UserServlet` class in the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file.
+In order to enable form authentication, create the `UserServlet` class in the `src/main/java/io/openliberty/guides/ui/UserServlet.java` file.
 [source, java, indent=0]
 ----
-include::finish/src/main/java/io/openliberty/guides/ui/ProfileServlet.java[tags=security;!copyright]
+include::finish/src/main/java/io/openliberty/guides/ui/UserServlet.java[tags=security;!copyright]
 ----
 
 Notice the `@FormAuthenticationMechanismDefinition` annotation in the class. The same thing can be expressed as configurations in the `web.xml`:
@@ -198,11 +198,11 @@ At this point, your application is secured using form authentication. Users will
 Authorization determines whether a user has the role required to access certain resources within the system.
 
 Authorization can be achieved with the `@ServletSecurity` annotation.
-Open the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file:
+Open the `src/main/java/io/openliberty/guides/ui/UserServlet.java` file:
 
 [source, java, indent=0]
 ----
-include::finish/src/main/java/io/openliberty/guides/ui/ProfileServlet.java[tags=security;!copyright]
+include::finish/src/main/java/io/openliberty/guides/ui/UserServlet.java[tags=security;!copyright]
 ----
 
 Note the `@HttpConstraint` annotation, it defines all the security constraints for each servlet resource.
@@ -223,7 +223,7 @@ include::finish/src/main/java/io/openliberty/guides/ui/AdminServlet.java[tags=se
 
 The `AdminServlet` is a servlet that displays the `inventory` service data when accessed. The same `@ServletSecurity` annotation is applied, except only `admin` roles are allowed.
 
-The `rolesAllowed` annotation specifies that if a non-admin user such as alice signed in, she will not be able to access the `ApplicationServlet`.
+The `rolesAllowed` annotation specifies that if a non-admin user such as alice signed in, she will not be able to access the `AdminServlet`.
 
 
 // =================================================================================================
