@@ -31,10 +31,6 @@ Authentication confirms the identity of the user by verifying a user name and pa
 The security feature in Java EE provides capability to configure the basic, form or custom form authentication mechanism using annotations in the servlet.
 It also provides a SecurityContext API for programmatic security checks for both web and enterprise beans resources.
 
-The application that you will be working with is an `inventory` service, which stores the information about various JVMs that run on different systems.
-Whenever a request is made to the inventory service to retrieve the JVM system properties of a particular host, the inventory service communicates with the `system` service on that host to get these system properties.
-The code for the backend services are provided for you, and you will wrap these services by a security layer that performs proper authentication and authorization.
-
 You will learn how to implement form authentication. While basic authentication is only a pop up window for users to fill in their names and password, form authentication provides
 an editable form for users to fill in and submit in order to log in to the system. Form authentication is more common and user-friendly in real life applications.
 
@@ -42,6 +38,7 @@ You will also learn how to assign permissions to different roles. This applicati
 
 The application itself will allow users and admins to access servlets.
 The `ProfileServlet` servlet simply displays user information such as the name and role for the currently authenticated user.
+//Maybe change the name of `ApplicationServlet`
 The `ApplicationServlet` servlet is a frontend interface for the backend inventory service, it communicates with the backend services and display data that are retrieved from the backend.
 
 Administrators have access to both servlets, the `ProfileServlet` and the `ApplicationServlet`. Whereas the user will only have access to the `ProfileServlet`.
@@ -66,6 +63,7 @@ mvn install liberty:start-server
 Next, point your browser to:
 // Use https://localhost:9091/ when ServletSecurity.TransportGuarantee.CONFIDENTIAL is enabled in 18003!!!!
 `http://localhost:9090`
+As you can see, the browser gets redirected from `http` to an `https` link automatically.
 
 The basic registry is provided with the following user information credentials:
 
@@ -166,7 +164,7 @@ Form Authentication is an authentication mechanism where the user is able to fil
 Java EE provides a more convenient way to authenticate a user by calling the built-in `j_security_check` action from the login form.
 The `login.html` and `error.html` pages are provided for you under the `src/main/webapp` directory. These are two frontend files that provide the login form and error page.
 
-In order to enable form authentication, create the `ProfileServlet` class in the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file.
+In order to enable form authentication, create the `UserServlet` class in the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file.
 [source, java, indent=0]
 ----
 include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ProfileServlet.java[tags=security;!copyright]
