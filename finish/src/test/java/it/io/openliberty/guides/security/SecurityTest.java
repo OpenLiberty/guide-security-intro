@@ -81,28 +81,21 @@ public class SecurityTest {
 
   @Test
   public void testAuthenticationFail() throws Exception {
-    executeURL("/user", "bob", "wrongpassword", true, -1, "Don't care");
+    executeURL("/", "bob", "wrongpassword", true, -1, "Don't care");
     System.out.println("testAuthenticationFail passed!");
   }
 
   @Test
-  public void testAuthenticationSucceed() throws Exception {
-    executeURL("/user", "bob", "bobpwd", false, 
-      HttpServletResponse.SC_OK, "UserServlet");
-    System.out.println("testAuthenticationSucceed passed!");
-  }
-
-  @Test
   public void testAuthorizationForAdmin() throws Exception {
-    executeURL("/admin", "bob", "bobpwd", false, 
-      HttpServletResponse.SC_OK, "AdminServlet");
+    executeURL("/", "bob", "bobpwd", false, 
+      HttpServletResponse.SC_OK, "admin, user");
     System.out.println("testAuthorizationForAdmin passed!");
   }
 
   @Test
   public void testAuthorizationForUser() throws Exception {
-    executeURL("/admin", "alice", "alicepwd", false, 
-      HttpServletResponse.SC_FORBIDDEN, "Error 403: AuthorizationFailed");
+    executeURL("/", "alice", "alicepwd", false, 
+      HttpServletResponse.SC_OK, "<title>User</title>");
     System.out.println("testAuthorizationForUser passed!");
   }
 
@@ -125,8 +118,9 @@ public class SecurityTest {
     // The response should return the login.html
     String loginBody = EntityUtils.toString(response.getEntity(), "UTF-8");
     assertTrue(
-      "The login.html was not redirected", 
-      loginBody.contains("j_security_check"));
+  	  "Not redirected to home.html", 
+  	  loginBody.contains("window.location.assign"));
+    String[] redirect = loginBody.split("'");
 
     // Use j_security_check to login
     HttpPost postMethod = new HttpPost(urlHttps + "/j_security_check");
@@ -148,8 +142,8 @@ public class SecurityTest {
       return;
     }
 
-    // Use HttpClient to execute the testUrl by HTTPS
-    url = new URI(urlHttps + testUrl);
+    // Use HttpClient to execute the redirected url
+    url = new URI(urlHttps + redirect[1]);
     getMethod = new HttpGet(url);
     response = client.execute(getMethod);
     assertEquals(
@@ -159,9 +153,13 @@ public class SecurityTest {
     // Check the content of the response returned
     String actual = EntityUtils.toString(response.getEntity(), "UTF-8");
     assertTrue(
+ 	  "The actual content did not contain the userid \"" + userid + 
+ 	  "\". It was:\n" + actual,
+      actual.contains(userid));
+    assertTrue(
       "The url " + testUrl + 
       " did not return the expected content \"" + expectedContent + "\"" +
-      "The actual content was: \"" + actual + "\".", 
+      "The actual content was:\n" + actual, 
       actual.contains(expectedContent));
   }
 

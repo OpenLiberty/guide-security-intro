@@ -12,26 +12,8 @@
 // end::copyright[]
 package io.openliberty.guides.ui;
 
-import java.io.PrintWriter;
-
 public class Utils {
-
   public static final String ADMIN = "admin";
   public static final String USER = "user";
-  public static final String UNKNOWN = "unknown";
-  
-  public static void contructHTML(PrintWriter pw, String title, String role, String contextName) {
-    pw.write("<html>");
-    pw.write("<title>" + title + "</title>");
-    pw.write("<h2>" + title + "</h2>");
-    pw.write("<body>");
-    pw.write("Username: " + contextName + "<br/>");
-    if (role != null)
-    	pw.write("Role: " + role + "<br/>");
-    pw.write("<br/><a href=\"/\">Home</a>");
-    pw.write("</body>");
-    pw.write("</html>");
-  }
-
 }
 
