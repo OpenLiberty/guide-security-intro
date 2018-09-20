@@ -99,6 +99,13 @@ public class SecurityTest {
     System.out.println("testAuthorizationForUser passed!");
   }
 
+  @Test
+  public void testAuthorizationFailed() throws Exception {
+    executeURL("/", "david", "davidpwd", false, 
+      HttpServletResponse.SC_FORBIDDEN, "Error 403: AuthorizationFailed");
+    System.out.println("testAuthorizationFailed passed!");
+  }
+
   private void executeURL(
     String testUrl, String userid, String password,
     boolean expectLoginFail, int expectedCode, String expectedContent) 
@@ -118,8 +125,8 @@ public class SecurityTest {
     // The response should return the login.html
     String loginBody = EntityUtils.toString(response.getEntity(), "UTF-8");
     assertTrue(
-  	  "Not redirected to home.html", 
-  	  loginBody.contains("window.location.assign"));
+      "Not redirected to home.html", 
+      loginBody.contains("window.location.assign"));
     String[] redirect = loginBody.split("'");
 
     // Use j_security_check to login
@@ -149,12 +156,17 @@ public class SecurityTest {
     assertEquals(
       "Expected " + expectedCode + " status code for login",
       expectedCode, response.getStatusLine().getStatusCode());
-    
+
+    // Return if not SC_OK
+    if (expectedCode != HttpServletResponse.SC_OK) {
+    	return;
+    }
+
     // Check the content of the response returned
     String actual = EntityUtils.toString(response.getEntity(), "UTF-8");
     assertTrue(
- 	  "The actual content did not contain the userid \"" + userid + 
- 	  "\". It was:\n" + actual,
+      "The actual content did not contain the userid \"" + userid + 
+      "\". It was:\n" + actual,
       actual.contains(userid));
     assertTrue(
       "The url " + testUrl + 
