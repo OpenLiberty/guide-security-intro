@@ -100,10 +100,10 @@ public class SecurityTest {
   }
 
   @Test
-  public void testAuthorizationFailed() throws Exception {
+  public void testAuthorizationFail() throws Exception {
     executeURL("/", "david", "davidpwd", false, 
       HttpServletResponse.SC_FORBIDDEN, "Error 403: AuthorizationFailed");
-    System.out.println("testAuthorizationFailed passed!");
+    System.out.println("testAuthorizationFail passed!");
   }
 
   private void executeURL(
