@@ -298,7 +298,10 @@ The `testAuthorizationForAdmin()` and `testAuthorizationForUser()` cases verify
 that only administrator account such as bob can access the `admin` page. However, a normal user like alice can only access the `user` page.
 
 The `executeURL()` method contains the main logic of testing form authentication.
-[Describe how the tests work here]
+
+First, the method uses an HttpClient to execute the URL that is passed in by HTTP. After hitting this URL, the response should return the login.html.
+Next, we use Java EE's `j_security_check`, as mentioned above, to login. If the test was meant to fail, the method checks whether or not the response page is the `error.html` page. 
+Otherwise, the method executes the redirected URL and checks the contents of the redirected response to see if they match the correct `admin` or `user` page.
 
 include::{common-includes}/mvnverify.adoc[]
 
