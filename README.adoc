@@ -37,7 +37,7 @@ an editable form for users to fill in and submit in order to log in to the syste
 You will also learn how to assign permissions to different roles. This application specifies two roles: Administrator and User.
 
 The application itself will allow users and admins to access pages.
-The `user` page and `admin` pages display user information. Both pages will show the name of the currently authenticated user and the admin page will also show the role of the user.
+The `user` and `admin` pages display user information. Both pages will show the name of the currently authenticated user and the admin page will also show the role of the user.
 
 // =================================================================================================
 // Getting Started
