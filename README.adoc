@@ -61,7 +61,7 @@ mvn install liberty:start-server
 Next, point your browser to:
 // Use https://localhost:9091/ when ServletSecurity.TransportGuarantee.CONFIDENTIAL is enabled in 18003!!!!
 `http://localhost:9080`
-As you can see, the browser gets redirected from `http` to an `https` link automatically.
+As you can see, the browser gets redirected from `http` to an `https` link automatically, this is accomplished through the transport guaranteed that will be mentioned later on in the guide.
 
 The basic registry is provided with the following user information credentials:
 
@@ -170,12 +170,12 @@ In this application, the configuration file is saved under `src/main/liberty/con
 
 Form Authentication is an authentication mechanism where the user is able to fill in their login credentials using a form that the developers create.
 Java EE provides a more convenient way to authenticate a user by calling the built-in `j_security_check` action from the login form.
-The `login.html` and `error.html` pages are provided for you under the `src/main/webapp` directory. These are two frontend files that provide the login form and error page.
+The `welcome.html` and `error.html` pages are provided for you under the `src/main/webapp` directory. These are two frontend files that provide the login form and error page.
 
-In order to enable form authentication, create the `UserServlet` class in the `src/main/java/io/openliberty/guides/ui/UserServlet.java` file.
+In order to enable form authentication, create the `HomeServlet` class in the `src/main/java/io/openliberty/guides/ui/HomeServlet.java` file.
 [source, java, indent=0]
 ----
-include::finish/src/main/java/io/openliberty/guides/ui/UserServlet.java[tags=security;!copyright]
+include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=security;!copyright]
 ----
 
 Notice the `@FormAuthenticationMechanismDefinition` annotation in the class. The same thing can be expressed as configurations in the `web.xml`:
@@ -212,23 +212,25 @@ include::finish/src/main/java/io/openliberty/guides/ui/UserServlet.java[tags=sec
 
 Note the `@HttpConstraint` annotation, it defines all the security constraints for each servlet resource.
 The `admin` and `user` are roles you defined in the `server.xml` configuration file. They are declared under `rolesAllowed` so that the profile can be accessed by authenticated accounts with these two roles.
-The transport guarantee defines the data protection requirements that must be satisfied by the transport. In this case, the transport guarantee is set to the CONFIDENTIAL configuration which specifies that all user data must be encrypted during transport. This ensures that the browser gets redirected from `http` to an `https` link automatically.
+
+The transport guarantee defines the data protection requirements that must be satisfied by the transport. In this case, the transport guarantee is set to the `CONFIDENTIAL` configuration which specifies that all user data must be encrypted during transport. 
+This ensures that the browser gets redirected from `http` to an `https` link automatically.
 The Security specification also defines a common SecurityContext API that can be used to perform some common programmatic security related operations.
 You can get access to the information of the authenticated account by calling the appropriate methods from the `SecurityContext` API.
 
-The method `securityContext.isCallerInRole("admin")` returns a boolean that indicates if the current authenticated account is an `admin` or not.
-The method `securityContext.getCallerPrincipal().getName()` returns the user name of the current authenticated account.
+The method `securityContext.isCallerInRole(Utils.ADMIN)` returns a boolean that indicates if the current authenticated account is an `admin` or not.
+The method `securityContext.isCallerInRole(Utils.USER)` returns a boolean that indicates if the current authenticated account is an `user` or not.
 
-Create the `AdminServlet` class in the `src/main/java/io/openliberty/guides/ui/AdminServlet.java` file.
-
+Open the `src/main/webapp/WEB-INF/web.xml` file:
 [source, java, indent=0]
 ----
-include::finish/src/main/java/io/openliberty/guides/ui/AdminServlet.java[tags=security;!copyright]
+include::finish/src/main/webapp/WEB-INF/web.xml[tags=security;!copyright]
 ----
 
-The `AdminServlet` is a servlet that displays the `inventory` service data when accessed. The same `@ServletSecurity` annotation is applied, except only `admin` roles are allowed.
-
-The `rolesAllowed` annotation specifies that if a non-admin user such as alice signed in, she will not be able to access the `AdminServlet`.
+Note the `security-constraint` that is specified for the `admin` and `user` pages. 
+This constraint specifies url-patterns that are restricted to users that belong in certain roles.
+The url under `url-pattern` is mapped to whichever role is specified under `role-name`. 
+This role name must match the roles defined in the `server.xml` when configuring the user registry.
 
 
 // =================================================================================================
@@ -238,7 +240,7 @@ The `rolesAllowed` annotation specifies that if a non-admin user such as alice s
 include::{common-includes}/mvnbuild.adoc[]
 
 // Use https://localhost:9091/ when ServletSecurity.TransportGuarantee.CONFIDENTIAL is enabled in 18003!!!!
-Use the `http://localhost:9090/` endpoint to choose the information you want to see.
+Use the `http://localhost:9080/` endpoint to choose the information you want to see.
 
 Use one of the following credentials to log in:
 
@@ -260,6 +262,11 @@ Use one of the following credentials to log in:
 |carlpwd
 |admin, user
 |TeamLead, Employee
+
+|david
+|davidpwd
+|
+|PartTime
 |===
 
 
@@ -288,21 +295,10 @@ There are four test cases. The `testAuthenticationFail()` case tests a invalid u
 while the `testAuthenticationSucceed()` case tests a successful authentication process.
 
 The `testAuthorizationForAdmin()` and `testAuthorizationForUser()` cases verify
-that only administrator account such as bob can access to the admin. However, a normal user like alice can only see an `Error 403: AuthorizationFailed`
-error message.
+that only administrator account such as bob can access the `admin` page. However, a normal user like alice can only access the `user` page.
 
-The `executeRequestFormAuth()` method contains the main logic of testing form authentication.
-
-First, it calls `helper.getFormLoginPage()` to send the servlet query to get the form login page.
-
-Then, `helper.executeFormLogin()` gets invoked to execute form login and get the redirect location.
-
-After that, `helper.accessPage()` method is called to redirect the application to the assigned page, ensure it is the original servlet request and return the right response.
-
-In the end, the `executeRequestFormAuth()` method processes the response from an http invocation, such as validating the status code and extracting the response entity.
-
-The detailed implementation of the helper functions are provided for you in the `src/test/java/it/io/openliberty/guides/security/util/TestUtils.java` file.
-
+The `executeURL()` method contains the main logic of testing form authentication.
+[Describe how the tests work here]
 
 include::{common-includes}/mvnverify.adoc[]
 
