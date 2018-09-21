@@ -89,7 +89,7 @@ The Identity Store is provided with the following user information credentials:
 |PartTime
 |===
 
-You can access the application pages by signing in to the `Home Servlet` with one of the credentials from the Identity Store . 
+You can access the application pages by signing in to the `HomeServlet` with one of the credentials from the Identity Store . 
 
 Notice that when you sign in as Bob or Carl, the browser redirects to the `admin` page and you can view their names as well as their role as `admin`.
 When you sign in as Alice, you can only view Alice's name. Furthermore, there is a person named David that belongs to a group called `PartTime` but has no role. 
