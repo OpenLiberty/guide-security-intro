@@ -2,8 +2,9 @@
 <server description="Sample Liberty server">
 
   <featureManager>
-    <feature>servlet-4.0</feature>
     <feature>appSecurity-3.0</feature>
+    <feature>jsf-2.3</feature>
+    <feature>servlet-4.0</feature>
   </featureManager>
 
   <httpEndpoint id="defaultHttpEndpoint"
@@ -19,42 +20,6 @@
   <!-- The keystore for SSL is built using the maven keytool plugin -->
   <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS"
     password="${wlp.password.encryption.key}"/>
-
-  <basicRegistry id="basic" realm="WebRealm">
-    <user name="bob"
-      password="{aes}ALLB9chb345H2MFrjM9HaEdoRG43WHc4bcMgWH0oS2GY" /> <!-- bobpwd -->
-    <user name="alice"
-      password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
-    <user name="carl"
-      password="{xor}PD4tMy8oOw==" />   <!-- carlpwd -->
-
-    <group name="Manager">
-      <member name="bob" />
-    </group>
-
-    <group name="TeamLead">
-      <member name="carl" />
-    </group>
-
-    <group name="Employee">
-      <member name="alice" />
-      <member name="bob" />
-      <member name="carl" />
-    </group>
-  </basicRegistry>
-
-  <application location="${application.name}" type="war" id="${application.name}"
-               name="${application.name}" context-root="/">
-    <application-bnd>
-      <security-role name="admin">
-        <group name="Manager" />
-        <group name="TeamLead" />
-      </security-role>
-      <security-role name="user">
-        <group name="Employee" />
-      </security-role>
-    </application-bnd>
-  </application>
 
 </server>
 <!-- end::security[] -->

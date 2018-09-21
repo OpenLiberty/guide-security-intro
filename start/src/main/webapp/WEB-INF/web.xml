@@ -19,8 +19,53 @@
       limitations under the License.
     -->
 
+    <!-- WebAppJSF: Faces Servlet -->
+    <servlet>
+      <servlet-name>Faces Servlet</servlet-name>
+      <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- WebAppJSF: Faces Servlet Mapping -->
+    <servlet-mapping>
+      <servlet-name>Faces Servlet</servlet-name>
+      <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+      <welcome-file>/index.html</welcome-file>
     </welcome-file-list>
 
+    <!-- SECURITY ROLES FOR JSF -->
+    <security-role>
+      <role-name>admin</role-name>
+    </security-role>
+
+    <security-role>
+      <role-name>user</role-name>
+    </security-role>
+
+    <!-- SECURITY CONSTRAINTS FOR JSF -->
+    <security-constraint>
+      <web-resource-collection>
+        <web-resource-name>ViewProperties</web-resource-name>
+        <url-pattern>/admin.jsf</url-pattern>
+        <http-method>GET</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+        <role-name>admin</role-name>
+      </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+      <web-resource-collection>
+        <web-resource-name>ViewProperties</web-resource-name>
+        <url-pattern>/user.jsf</url-pattern>
+        <http-method>GET</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+        <role-name>user</role-name>
+      </auth-constraint>
+    </security-constraint>
+    
 </web-app>
