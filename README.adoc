@@ -138,7 +138,7 @@ It mainly protects user credentials from internal attacks, such as information l
 
 The passwords assigned to the accounts in identity store is encoded with Liberty's `securityUtility` command. The `securityUtility` is a command that supports plain text encryption and SSL certificate creation for Liberty.
 
-Navigate to `liberty/wlp/bin` in the Liberty server source code you downloaded, and run the following if you have a macOS/Linux machine:
+Navigate to `liberty/wlp/bin` in the Liberty server source code you downloaded, and run the following:
 ```
 ./securityUtility encode --encoding=xor alicepwd
 
