@@ -37,7 +37,7 @@ an editable form for users to fill in and submit in order to log in to the syste
 You will also learn how to assign permissions to different roles. This application specifies two roles: Administrator and User.
 
 The application itself will allow users and admins to access pages.
-The `user` page and `admin` page simply display user information. The `user` and `admin` pages show the name and role for the currently authenticated user.
+The `user` page and `admin` pages display user information. Both pages will show the name of the currently authenticated user and the admin page will also show the role of the user.
 
 Administrators have access to both pages, the `user` page and the `admin` page. Whereas the user will only have access to the `user` page.
 
@@ -60,7 +60,7 @@ mvn install liberty:start-server
 
 Next, point your browser to:
 // Use https://localhost:9091/ when ServletSecurity.TransportGuarantee.CONFIDENTIAL is enabled in 18003!!!!
-`http://localhost:9090`
+`http://localhost:9080`
 As you can see, the browser gets redirected from `http` to an `https` link automatically.
 
 The basic registry is provided with the following user information credentials:
@@ -83,13 +83,18 @@ The basic registry is provided with the following user information credentials:
 |carlpwd
 |admin, user
 |TeamLead, Employee
+
+|david
+|davidpwd
+|
+|PartTime
 |===
 
-You can check user profiles by clicking the first or second link and signing in with one of the credentials from the Basic Registry.
-You can go back to the main page to log out and switch accounts.
+You can access the application pages by signing in to the `Welcome Servlet` with one of the credentials from the Basic Registry. 
 
-Notice that only admin user, Bob, = can access the second link to the `AdminServlet`.
-When you sign in as Alice, you will be blocked and a message will display `Error 403: AuthorizationFailed`.
+Notice that when you sign in as Bob or Carl, the browser redirects to the `admin` page and you can view their names as well as their role as `admin`.
+When you sign in as Alice, you can only view Alice's name. Furthermore, there is a person named David that belongs to a group called `PartTime` but has no role. 
+When you sign in as David, you will be blocked and a message will display `Error 403: AuthorizationFailed`.
 
 Once you are done checking out the application, stop the Open Liberty server:
 ```
@@ -119,7 +124,7 @@ In real life, you will probably connect to a database that stores the user accou
 
 When you set up the basic user registry for authentication, the names for the users and groups must be unique.
 
-In this application, there are three groups: `Employee`, `TeamLead` and `Manager`. Groups can be assigned to different access roles.
+In this application, there are four groups: `Employee`, `TeamLead`, `Manager` and `PartTime`. Groups can be assigned to different access roles.
 Within the `<application-bnd>` tags, two different authorization roles are assigned to these groups: `admin` and `user`.
 
 A role can be mapped to a user, a group, or a special subject. The two types of special subject are `EVERYONE` and `ALL_AUTHENTICATED_USERS`.
