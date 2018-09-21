@@ -146,7 +146,6 @@ Navigate to `liberty/wlp/bin` in the Liberty server source code you downloaded, 
 
 Here, `alice` and `carl` use the XOR encoding for their passwords. While `bob` uses Advanced Encryption Standard (AES) encryption.
 You need to specify a key string to be used when you encode using AES encryption. This string is hashed to produce an encryption key that is used to encrypt and decrypt the password.
-The key string is provided from the `bootstrapProperties` in the `pom.xml` file.
 
 ```
 ./securityUtility encode --encoding=aes --key=mykey bobpwd
