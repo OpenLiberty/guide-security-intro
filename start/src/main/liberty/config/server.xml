@@ -1,0 +1,25 @@
+<!-- tag::security[] -->
+<server description="Sample Liberty server">
+
+  <featureManager>
+    <feature>appSecurity-3.0</feature>
+    <feature>jsf-2.3</feature>
+    <feature>servlet-4.0</feature>
+  </featureManager>
+
+  <httpEndpoint id="defaultHttpEndpoint"
+    httpPort="${server.http.port}"
+    httpsPort="${server.https.port}" />
+
+  <!--
+    It is recommended to store the wlp.password.encryption.key property
+    in a file outside the server configuration directory.
+  -->
+  <include location="${pwd.encryption.key.location}"/>
+
+  <!-- The keystore for SSL is built using the maven keytool plugin -->
+  <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS"
+    password="${wlp.password.encryption.key}"/>
+
+</server>
+<!-- end::security[] -->
