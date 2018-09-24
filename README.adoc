@@ -26,25 +26,18 @@ Learn how to secure a web application through authentication and authorization.
 == What you'll learn
 You will learn how to secure a web application by performing authentication and authorization using the Security feature in the Java EE 8 specification.
 
-Authentication confirms the identity of the user by verifying a user name and password. While authorization determines whether a user has access to a specific role within the system.
+Authentication confirms the identity of the user by verifying a user name and password. While authorization determines whether a user has access to a specific servlet.
 
 The security feature in Java EE provides capability to configure the basic, form or custom form authentication mechanism using annotations in the servlet.
 It also provides a SecurityContext API for programmatic security checks for both web and enterprise beans resources.
-
-The application that you will be working with is an `inventory` service, which stores the information about various JVMs that run on different systems.
-Whenever a request is made to the inventory service to retrieve the JVM system properties of a particular host, the inventory service communicates with the `system` service on that host to get these system properties.
-The code for the backend services are provided for you, and you will wrap these services by a security layer that performs proper authentication and authorization.
 
 You will learn how to implement form authentication. While basic authentication is only a pop up window for users to fill in their names and password, form authentication provides
 an editable form for users to fill in and submit in order to log in to the system. Form authentication is more common and user-friendly in real life applications.
 
 You will also learn how to assign permissions to different roles. This application specifies two roles: Administrator and User.
 
-The application itself will allow users and admins to access servlets.
-The `ProfileServlet` servlet simply displays user information such as the name and role for the currently authenticated user.
-The `ApplicationServlet` servlet is a frontend interface for the backend inventory service, it communicates with the backend services and display data that are retrieved from the backend.
-
-Administrators have access to both servlets, the `ProfileServlet` and the `ApplicationServlet`. Whereas the user will only have access to the `ProfileServlet`.
+The application itself will allow users and admins to access pages.
+The `user` and `admin` pages display user information. Both pages will show the name of the currently authenticated user and the admin page will also show the role of the user.
 
 // =================================================================================================
 // Getting Started
@@ -65,11 +58,13 @@ mvn install liberty:start-server
 
 Next, point your browser to:
 // Use https://localhost:9091/ when ServletSecurity.TransportGuarantee.CONFIDENTIAL is enabled in 18003!!!!
-`http://localhost:9090`
+`http://localhost:9080`
+As you can see, the browser gets redirected from `http` to an `https` link automatically, this is accomplished through the transport guarantee that will be mentioned later on in the guide.
 
-The basic registry is provided with the following user information credentials:
+The Identity Store is provided with the following user information credentials:
 
-.Basic Registry
+[#identitystoretable]
+.Identity Store
 |===
 |Username |Password|Role |Group
 
@@ -87,13 +82,18 @@ The basic registry is provided with the following user information credentials:
 |carlpwd
 |admin, user
 |TeamLead, Employee
+
+|david
+|davidpwd
+|
+|PartTime
 |===
 
-You can check user profiles by clicking the first link and signing in with one of the credentials from the Basic Registry.
-You can go back to the main page to log out and switch accounts.
+You can access the application pages by signing in to the `HomeServlet` with one of the credentials from the Identity Store . 
 
-You can access to the `inventory` service data by clicking the second link and signing in as either bob or carl.
-When you sign in as alice, you will be blocked and a message will display `Error 403: AuthorizationFailed`.
+Notice that when you sign in as Bob or Carl, the browser redirects to the `admin` page and you can view their names as well as their role as `admin`.
+When you sign in as Alice, you can only view Alice's name. Furthermore, there is a person named David that belongs to a group called `PartTime` but has no role. 
+When you sign in as David, you will be blocked and a message will display `Error 403: AuthorizationFailed`.
 
 Once you are done checking out the application, stop the Open Liberty server:
 ```
@@ -105,25 +105,26 @@ mvn liberty:stop-server
 // =================================================================================================
 //
 // =================================================================================================
-== Configuring a user registry
+== Configuring the Identity Store
 
-Navigate to the  `start/frontendUI` directory to begin. You will not modify any code in the `backendServices` directory in this guide.
+Navigate to the  `start` directory to begin.
 
-You need to set up the user registry to define users and group information. User registries store user account information, such as user name and password, that can be accessed during authentication.
+You need to set up the Identity Store to define users and group information. Identity Stores store user account information, such as user name and password, that can be accessed during authentication.
+Typically, applications would use an external registry that could be configured with Lightweight Directory Access Protocol (LDAP). However, we will be using `Basic User Registry` as a simple example of an identity store for the purposes of this guide.
 
 To do this, add the following configurations into the `src/main/liberty/config/server.xml` file:
 
 [source, xml, indent=0]
 ----
-include::finish/frontendUI/src/main/liberty/config/server.xml[tags=security]
+include::finish/src/main/liberty/config/server.xml[tags=security]
 ----
 
-On the Open Liberty server, you can use a basic user registry to defining the users and groups information.
+On the Open Liberty server, you can use a `Basic User Registry` as an identity store, to define the users and groups information.
 In real life, you will probably connect to a database that stores the user account information.
 
-When you set up the basic user registry for authentication, the names for the users and groups must be unique.
+When you set up the `Basic User Registry for authentication, the names for the users and groups must be unique.
 
-In this application, there are three groups: `Employee`, `TeamLead` and `Manager`. Groups can be assigned to different access roles.
+In this application, there are four groups: `Employee`, `TeamLead`, `Manager` and `PartTime`. Groups can be assigned to different access roles.
 Within the `<application-bnd>` tags, two different authorization roles are assigned to these groups: `admin` and `user`.
 
 A role can be mapped to a user, a group, or a special subject. The two types of special subject are `EVERYONE` and `ALL_AUTHENTICATED_USERS`.
@@ -135,26 +136,25 @@ When a role is mapped to the `ALL_AUTHENTICATED_USERS` special subject, then any
 You need to encrypt the passwords so that they will not appear as plain text in the `server.xml` file, or, in the database in real life.
 It mainly protects user credentials from internal attacks, such as information leaking from the inside of an organization.
 
-The passwords assigned to the accounts in the basic registry is encoded with Liberty's `securityUtility` command. The `securityUtility` is a command that supports plain text encryption and SSL certificate creation for Liberty.
+The passwords assigned to the accounts in identity store is encoded with Liberty's `securityUtility` command. The `securityUtility` is a command that supports plain text encryption and SSL certificate creation for Liberty.
 
-Navigate to `liberty/wlp/bin` in the Liberty server source code you downloaded, and run the following if you have a macOS/Linux machine:
+Navigate to `liberty/wlp/bin` in the Liberty server source code you downloaded, and run the following:
 ```
 ./securityUtility encode --encoding=xor alicepwd
 
-./securityUtility encode --encoding=xor carlpwd
-```
-If you have a Windows machine, the forward slash needs to be replaced by a backward slash, such as:
-```
-.\securityUtility encode --encoding=xor alicepwd
 ```
 
 Here, `alice` and `carl` use the XOR encoding for their passwords. While `bob` uses Advanced Encryption Standard (AES) encryption.
 You need to specify a key string to be used when you encode using AES encryption. This string is hashed to produce an encryption key that is used to encrypt and decrypt the password.
-The key string is provided from the `bootstrapProperties` in the `pom.xml` file.
 
 ```
 ./securityUtility encode --encoding=aes --key=mykey bobpwd
 ```
+
+The encryption key can be provided to the server by defining the variable `wlp.password.encryption.key` and setting the value to the key. 
+Setting this variable, overrides the default key that is generated. This property is set in a configuration file. 
+The configuration file itself is saved outside of the configuration directory for the server, this ensures that the file containing your key is not included when running the the server dump or package command.
+In this application, the configuration file is saved under `src/main/liberty/config` as `pwdEncryptionKey.xml`.
 
 // =================================================================================================
 //
@@ -164,29 +164,19 @@ The key string is provided from the `bootstrapProperties` in the `pom.xml` file.
 
 Form Authentication is an authentication mechanism where the user is able to fill in their login credentials using a form that the developers create.
 Java EE provides a more convenient way to authenticate a user by calling the built-in `j_security_check` action from the login form.
-The `login.html` and `error.html` pages are provided for you under the `src/main/webapp` directory. These are two frontend files that provide the login form and error page.
+The `welcome.html` and `error.html` pages are provided for you under the `src/main/webapp` directory. These are two frontend files that provide the login form and error page.
 
-In order to enable form authentication, create the `ProfileServlet` class in the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file.
+In order to enable form authentication, create the `HomeServlet` class in the `src/main/java/io/openliberty/guides/ui/HomeServlet.java` file.
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ProfileServlet.java[tags=security;!copyright]
+include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=homeservlet;!copyright]
 ----
 
-Notice the `@FormAuthenticationMechanismDefinition` annotation in the class. The same thing can be expressed as configurations in the `web.xml`:
-```
-<login-config>
-   <auth-method>FORM</auth-method>
-   <form-login-config>
-       <form-login-page>/login.html</form-login-page>
-       <form-error-page>/error.html</form-error-page>
-    </form-login-config>
-</login-config>
-```
+Notice the `@FormAuthenticationMechanismDefinition` annotation in the class. 
 The `@LoginToContinue` annotation allows the application to add specific login functionality to the `AuthenticationMechanism`.
 The annotation links the two pages that are required for the form authentication mechanism. The pages are the `errorPage` and the `loginPage`.
 
-At this point, your application is secured using form authentication. Users will not see the content of the servlet until they provide the correct credentials.
-
+At this point, your application is secured using form authentication.
 
 // =================================================================================================
 //
@@ -194,37 +184,35 @@ At this point, your application is secured using form authentication. Users will
 
 == Adding authorization
 
-Authorization determines whether a user has the role required to access certain resources within the system.
+Authorization determines whether a user has the role required to access to whichever secondary page the `HomeServlet` will redirect them to.
 
 Authorization can be achieved with the `@ServletSecurity` annotation.
-Open the `src/main/java/io/openliberty/guides/ui/ProfileServlet.java` file:
+Open the `src/main/java/io/openliberty/guides/ui/UserBean.java` file:
 
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ProfileServlet.java[tags=security;!copyright]
+include::finish/src/main/java/io/openliberty/guides/ui/UserBean.java[tags=security;!copyright]
 ----
 
 Note the `@HttpConstraint` annotation, it defines all the security constraints for each servlet resource.
 The `admin` and `user` are roles you defined in the `server.xml` configuration file. They are declared under `rolesAllowed` so that the profile can be accessed by authenticated accounts with these two roles.
-The `transportGuarantee=ServletSecurity.TransportGuarantee.CONFIDENTIAL` configuration indicates that all user data must be encrypted by the transport.
 
+The transport guarantee defines the data protection requirements that must be satisfied by the transport. In this case, the transport guarantee is set to the `CONFIDENTIAL` configuration which specifies that all user data must be encrypted during transport. 
+This ensures that the browser gets redirected from `http` to an `https` link automatically.
 The Security specification also defines a common SecurityContext API that can be used to perform some common programmatic security related operations.
 You can get access to the information of the authenticated account by calling the appropriate methods from the `SecurityContext` API.
 
-The method `securityContext.isCallerInRole("admin")` returns a boolean that indicates if the current authenticated account is an `admin` or not.
-The method `securityContext.getCallerPrincipal().getName()` returns the user name of the current authenticated account.
+The method `securityContext.isCallerInRole(Utils.ADMIN)` returns a boolean that indicates if the current authenticated account is an `admin` or not.
+The method `securityContext.isCallerInRole(Utils.USER)` returns a boolean that indicates if the current authenticated account is an `user` or not.
 
-Create the `ApplicationServlet` class in the `src/main/java/io/openliberty/guides/ui/ApplicationServlet.java` file.
-
+Open the `src/main/webapp/WEB-INF/web.xml` file:
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/ApplicationServlet.java[tags=security;!copyright]
+include::finish/src/main/webapp/WEB-INF/web.xml[tags=security;!copyright]
 ----
 
-The `ApplicationServlet` is a servlet that displays the `inventory` service data when accessed. The same `@ServletSecurity` annotation is applied, except only `admin` roles are allowed.
-
-The `rolesAllowed` annotation specifies that if a non-admin user such as alice signed in, she will not be able to access the `ApplicationServlet`.
-
+Note the `security-constraint` that is specified for the `admin` and `user` pages. 
+Since these pages are `Java Server Faces`, their security constraint is define in the `src/main/webapp/WEB-INF/web.xml` file.
 
 // =================================================================================================
 // Building and running the application
@@ -233,36 +221,9 @@ The `rolesAllowed` annotation specifies that if a non-admin user such as alice s
 include::{common-includes}/mvnbuild.adoc[]
 
 // Use https://localhost:9091/ when ServletSecurity.TransportGuarantee.CONFIDENTIAL is enabled in 18003!!!!
-Use the `http://localhost:9090/` endpoint to choose the information you want to see.
+Use the `http://localhost:9080/` endpoint to choose the information you want to see.
 
-Use one of the following credentials to log in:
-
-.Basic Registry
-|===
-|Username |Password|Role |Group
-
-|alice
-|alicepwd
-|user
-|Employee
-
-|bob
-|bobpwd
-|admin, user
-|Manager, Employee
-
-|carl
-|carlpwd
-|admin, user
-|TeamLead, Employee
-|===
-
-
-If you choose to see the profile, once authenticated, you can see your name and role.
-
-If you choose to see application information, once you log in, `admin` can see some basic information retrieved from the backend services.
-Remember that if you log in as a user without the `admin` role, you are blocked because you do not have permission.
-
+Use one of the credentials from the <<identitystore>> to log in.
 
 // =================================================================================================
 // Testing the application
@@ -272,33 +233,24 @@ Remember that if you log in as a user without the `admin` role, you are blocked 
 
 Now you can write the `SecurityTest` class to test that you can access different servlets with form authentication and authorization.
 
-Create a test class in the `frontendUI/src/test/java/it/io/openliberty/guides/security/SecurityTest.java` file like the following:
+Create a test class in the `src/test/java/it/io/openliberty/guides/security/SecurityTest.java` file like the following:
 
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=test]
+include::finish/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=test]
 ----
 
 There are four test cases. The `testAuthenticationFail()` case tests a invalid user authentication,
-while the `testAuthenticationSucceed()` case tests a successful authentication process.
+while the `testAuthorizationFail()` case tests a user that exists in the Identity Store but is not authorized to access the application.
 
 The `testAuthorizationForAdmin()` and `testAuthorizationForUser()` cases verify
-that only administrator account such as bob can access the application servlet to
-view the backend data. However, a normal user like alice can only see an `Error 403: AuthorizationFailed`
-error message.
+that only administrator account such as bob can access the `admin` page. However, a normal user like alice can only access the `user` page.
 
-The `executeRequestFormAuth()` method contains the main logic of testing form authentication.
+The `executeURL()` method contains the main logic of testing form authentication.
 
-First, it calls `helper.getFormLoginPage()` to send the servlet query to get the form login page.
-
-Then, `helper.executeFormLogin()` gets invoked to execute form login and get the redirect location.
-
-After that, `helper.accessPage()` method is called to redirect the application to the assigned page, ensure it is the original servlet request and return the right response.
-
-In the end, the `executeRequestFormAuth()` method processes the response from an http invocation, such as validating the status code and extracting the response entity.
-
-The detailed implementation of the helper functions are provided for you in the `frontendUI/src/test/java/it/io/openliberty/guides/security/util/TestUtils.java` file.
-
+First, the method uses an HttpClient to execute the URL that is passed in by HTTP. After hitting this URL, the response should return the login page.
+Next, we use Java EE's `j_security_check`, as mentioned above, to login. If the test was meant to fail, the method checks whether or not the response page is the error page. 
+Otherwise, the method executes the redirected URL and checks the contents of the redirected response to see if they match the correct `admin` or `user` page.
 
 include::{common-includes}/mvnverify.adoc[]
 
