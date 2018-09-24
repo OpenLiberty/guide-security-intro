@@ -15,13 +15,13 @@ package io.openliberty.guides.ui;
 
 import java.io.Serializable;
 
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.security.enterprise.SecurityContext;
 
 @Named("userBean")
-@ViewScoped
+@RequestScoped
 
 public class UserBean implements Serializable {
 	

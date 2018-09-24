@@ -152,7 +152,7 @@ You need to specify a key string to be used when you encode using AES encryption
 ```
 
 The encryption key can be provided to the server by defining the variable `wlp.password.encryption.key` and setting the value to the key. 
-Setting this variable, overrides the default key that is generated. This property is set in a configuration file that should only contain this single property declaration. 
+Setting this variable, overrides the default key that is generated. This property is set in a configuration file. 
 The configuration file itself is saved outside of the configuration directory for the server, this ensures that the file containing your key is not included when running the the server dump or package command.
 In this application, the configuration file is saved under `src/main/liberty/config` as `pwdEncryptionKey.xml`.
 
@@ -187,11 +187,11 @@ At this point, your application is secured using form authentication.
 Authorization determines whether a user has the role required to access to whichever secondary page the `HomeServlet` will redirect them to.
 
 Authorization can be achieved with the `@ServletSecurity` annotation.
-Open the `src/main/java/io/openliberty/guides/ui/UserServlet.java` file:
+Open the `src/main/java/io/openliberty/guides/ui/UserBean.java` file:
 
 [source, java, indent=0]
 ----
-include::finish/src/main/java/io/openliberty/guides/ui/UserServlet.java[tags=security;!copyright]
+include::finish/src/main/java/io/openliberty/guides/ui/UserBean.java[tags=security;!copyright]
 ----
 
 Note the `@HttpConstraint` annotation, it defines all the security constraints for each servlet resource.
