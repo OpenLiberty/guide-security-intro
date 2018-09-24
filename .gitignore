@@ -11,3 +11,5 @@ start/.gitignore
 temp/
 finish-*/OA
 finish copy
+.DS_Store
+README.html
