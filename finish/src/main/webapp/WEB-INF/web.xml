@@ -48,7 +48,7 @@
     <!-- SECURITY CONSTRAINTS FOR JSF -->
     <security-constraint>
       <web-resource-collection>
-        <web-resource-name>ViewProperties</web-resource-name>
+        <web-resource-name>AdminViewProperties</web-resource-name>
         <url-pattern>/admin.jsf</url-pattern>
         <http-method>GET</http-method>
       </web-resource-collection>
@@ -59,7 +59,7 @@
 
     <security-constraint>
       <web-resource-collection>
-        <web-resource-name>ViewProperties</web-resource-name>
+        <web-resource-name>UserViewProperties</web-resource-name>
         <url-pattern>/user.jsf</url-pattern>
         <http-method>GET</http-method>
       </web-resource-collection>
