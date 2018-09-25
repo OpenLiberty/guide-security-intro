@@ -2,8 +2,9 @@
 <server description="Sample Liberty server">
 
   <featureManager>
-    <feature>servlet-4.0</feature>
     <feature>appSecurity-3.0</feature>
+    <feature>jsf-2.3</feature>
+    <feature>servlet-4.0</feature>
   </featureManager>
 
   <httpEndpoint id="defaultHttpEndpoint"
@@ -27,6 +28,8 @@
       password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
     <user name="carl"
       password="{xor}PD4tMy8oOw==" />   <!-- carlpwd -->
+    <user name="david"
+      password="{xor}Oz4pNjsvKDs=" />   <!-- davidpwd -->
 
     <group name="Manager">
       <member name="bob" />
@@ -40,6 +43,10 @@
       <member name="alice" />
       <member name="bob" />
       <member name="carl" />
+    </group>
+    
+    <group name="PartTime">
+      <member name="david" />
     </group>
   </basicRegistry>
 
