@@ -10,51 +10,47 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::security[]
+// tag::homeservlet[]
 package io.openliberty.guides.ui;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+
+import javax.inject.Inject;
+import javax.security.enterprise.SecurityContext;
+import javax.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
+import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.HttpConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.annotation.ServletSecurity;
-import javax.servlet.annotation.HttpConstraint;
-import javax.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
-import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
-import javax.security.enterprise.SecurityContext;
-import javax.inject.Inject;
 
-@WebServlet(urlPatterns = "/user")
+@WebServlet(urlPatterns = "/home")
 @FormAuthenticationMechanismDefinition(loginToContinue = @LoginToContinue(
-  errorPage = "/error.html", loginPage = "/login.html"))
+  errorPage = "/error.html", loginPage = "/welcome.html"))
 @ServletSecurity(value = @HttpConstraint(rolesAllowed = { "user", "admin" },
   transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL))
 
-public class UserServlet extends HttpServlet {
+public class HomeServlet extends HttpServlet {
 
   private static final long serialVersionUID = 1L;
 
   @Inject
   private SecurityContext securityContext;
-
+  
   /**
    * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
    *      response)
    */
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
-    PrintWriter pw = response.getWriter();
-	String contextName = Utils.UNKNOWN;
-
-    if (securityContext.getCallerPrincipal() != null) {
-      contextName = securityContext.getCallerPrincipal().getName();
-    }
-
-	Utils.contructHTML(pw, this.getClass().getSimpleName(), null, contextName);
+    if (securityContext.isCallerInRole(Utils.ADMIN)) {
+        response.sendRedirect("/admin.jsf");
+  	} else if  (securityContext.isCallerInRole(Utils.USER)) {
+  	  response.sendRedirect("/user.jsf");
+  	}
   }
 
   /**
@@ -66,4 +62,4 @@ public class UserServlet extends HttpServlet {
     doGet(request, response);
   }
 }
-// end::security[]
+// end::homeservlet[]
