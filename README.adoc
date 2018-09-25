@@ -118,9 +118,6 @@ include::finish/src/main/liberty/config/server.xml[tags=security]
 ----
 
 On the Open Liberty server, you can use a `Basic User Registry` as an identity store, to define the users and groups information.
-In real life, you will probably connect to a database that stores the user account information.
-
-When you set up the `Basic User Registry for authentication, the names for the users and groups must be unique.
 
 In this application, there are four groups: `Employee`, `TeamLead`, `Manager` and `PartTime`. Groups can be assigned to different access roles.
 Within the `<application-bnd>` tags, two different authorization roles are assigned to these groups: `admin` and `user`.
