@@ -203,7 +203,7 @@ The method `securityContext.isCallerInRole(Utils.ADMIN)` returns a boolean that 
 The method `securityContext.isCallerInRole(Utils.USER)` returns a boolean that indicates if the current authenticated account is an `user` or not.
 
 Open the `src/main/webapp/WEB-INF/web.xml` file:
-[source, java, indent=0]
+[source, xml, indent=0]
 ----
 include::finish/src/main/webapp/WEB-INF/web.xml[tags=security;!copyright]
 ----
