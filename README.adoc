@@ -55,9 +55,10 @@ mvn install liberty:start-server
 ```
 
 Next, point your browser to:
-// Use https://localhost:9091/ when ServletSecurity.TransportGuarantee.CONFIDENTIAL is enabled in 18003!!!!
 `http://localhost:9080`
-As you can see, the browser gets redirected from `http` to an `https` link automatically, this is accomplished through the transport guarantee that will be mentioned later on in the guide.
+As you can see, the browser gets redirected from `http` to an `https` link automatically while `index.html` switches to the `HomeServlet`, this is accomplished through the transport guarantee defined in the `HomeServlet`. 
+Because the `HomeServlet` also specifies the loginPage and errorPage attributes of the annotation @LoginToContinue in @FormAuthenticationMechanismDefinition, the login `welcome.html` is prompted for authentication.
+
 
 The Identity Store is provided with the following user information credentials:
 
@@ -87,7 +88,7 @@ The Identity Store is provided with the following user information credentials:
 |PartTime
 |===
 
-You can access the application pages by signing in to the `HomeServlet` with one of the credentials from the Identity Store . 
+Now you can sign in to the `HomeServlet` with one of the credentials from the Identity Store. 
 
 Notice that when you sign in as Bob or Carl, the browser redirects to the `admin` page and you can view their names as well as their role as `admin`.
 When you sign in as Alice, you can only view Alice's name. Furthermore, there is a person named David that belongs to a group called `PartTime` but has no role. 
