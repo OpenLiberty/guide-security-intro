@@ -48,9 +48,9 @@ public class HomeServlet extends HttpServlet {
       throws ServletException, IOException {
     if (securityContext.isCallerInRole(Utils.ADMIN)) {
         response.sendRedirect("/admin.jsf");
-  	} else if  (securityContext.isCallerInRole(Utils.USER)) {
-  	  response.sendRedirect("/user.jsf");
-  	}
+    } else if  (securityContext.isCallerInRole(Utils.USER)) {
+      response.sendRedirect("/user.jsf");
+    }
   }
 
   /**
