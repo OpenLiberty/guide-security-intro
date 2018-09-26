@@ -183,11 +183,11 @@ At this point, your application is secured using form authentication.
 Authorization determines whether a user has the role required to access to whichever secondary page the `HomeServlet` will redirect them to.
 
 Authorization can be achieved with the `@ServletSecurity` annotation.
-Open the `src/main/java/io/openliberty/guides/ui/UserBean.java` file:
+Open the `src/main/java/io/openliberty/guides/ui/HomeServlet.java` file:
 
 [source, java, indent=0]
 ----
-include::finish/src/main/java/io/openliberty/guides/ui/UserBean.java[tags=userbean;!copyright]
+include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=homeservlet;!copyright]
 ----
 
 Note the `@HttpConstraint` annotation, it defines all the security constraints for each servlet resource.
