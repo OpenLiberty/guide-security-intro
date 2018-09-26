@@ -187,7 +187,7 @@ Open the `src/main/java/io/openliberty/guides/ui/HomeServlet.java` file:
 
 [source, java, indent=0]
 ----
-include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=homeservlet;!copyright]
+include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=homeservlet]
 ----
 
 Note the `@HttpConstraint` annotation, it defines all the security constraints for each servlet resource.
@@ -203,9 +203,9 @@ The method `securityContext.isCallerInRole(Utils.ADMIN)` returns a boolean that 
 The method `securityContext.isCallerInRole(Utils.USER)` returns a boolean that indicates if the current authenticated account is an `user` or not.
 
 Open the `src/main/webapp/WEB-INF/web.xml` file:
-[source, xml, indent=0]
+[source, xml]
 ----
-include::finish/src/main/webapp/WEB-INF/web.xml[tags=security;!copyright]
+include::finish/src/main/webapp/WEB-INF/web.xml[tags=security]
 ----
 
 Note that the `security-constraint` is used to restrict the access of different resources. The `user.jsf` and `admin.jsf` pages can only be accessed by whoever has user or admin roles respectively.
@@ -273,3 +273,4 @@ Next, you can try the related MicroProfile-JWT guide. It demonstrates technologi
 
 
 include::{common-includes}/finish.adoc[]
+
