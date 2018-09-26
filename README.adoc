@@ -217,7 +217,7 @@ include::{common-includes}/mvnbuild.adoc[]
 // Use https://localhost:9091/ when ServletSecurity.TransportGuarantee.CONFIDENTIAL is enabled in 18003!!!!
 Use the `http://localhost:9080/` endpoint choose the information you want to see.
 
-Use one of the credentials from the `Identity Store` above to log in.
+Use one of the credentials from the above table `Identity Store` to log in.
 
 // =================================================================================================
 // Testing the application
