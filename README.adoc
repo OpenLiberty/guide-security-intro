@@ -187,7 +187,11 @@ Open the `src/main/java/io/openliberty/guides/ui/HomeServlet.java` file:
 
 [source, java, indent=0]
 ----
+<<<<<<< HEAD
 include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=homeservlet;!copyright]
+=======
+include::finish/src/main/java/io/openliberty/guides/ui/UserBean.java[tags=userbean;!copyright]
+>>>>>>> upstream/master
 ----
 
 Note the `@HttpConstraint` annotation, it defines all the security constraints for each servlet resource.
