@@ -205,7 +205,7 @@ The method `securityContext.isCallerInRole(Utils.USER)` returns a boolean that i
 Open the `src/main/webapp/WEB-INF/web.xml` file:
 [source, xml]
 ----
-include::finish/src/main/webapp/WEB-INF/web.xml[tags=**;]
+include::finish/src/main/webapp/WEB-INF/web.xml[tags=security]
 ----
 
 Note that the `security-constraint` is used to restrict the access of different resources. The `user.jsf` and `admin.jsf` pages can only be accessed by whoever has user or admin roles respectively.
