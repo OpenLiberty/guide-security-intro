@@ -17,16 +17,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpResponse;
@@ -48,35 +42,11 @@ public class SecurityTest {
   private static String urlHttp;
   private static String urlHttps;
 
-  private void trustAll() throws Exception {
-          SSLContext sslContext = SSLContext.getInstance("SSL");
-          sslContext.init(
-            null, 
-            new TrustManager[] {
-              new X509TrustManager() {
-                  @Override
-                    public void checkClientTrusted(X509Certificate[] arg0, String arg1)
-                      throws CertificateException {}
-
-                  @Override
-                    public void checkServerTrusted(X509Certificate[] arg0, String arg1)
-                      throws CertificateException {}
-
-                    public X509Certificate[] getAcceptedIssuers() {
-                        return null;
-                    }
-              }
-            },
-            new SecureRandom());
-          SSLContext.setDefault(sslContext);
-          HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
-  }
-
   @Before
   public void setup() throws Exception {
     urlHttp = "http://localhost:" + System.getProperty("liberty.test.port");
     urlHttps = "https://localhost:" + System.getProperty("liberty.test.ssl.port");
-    trustAll();
+    TestUtils.trustAll();
   }
 
   @Test
@@ -101,7 +71,7 @@ public class SecurityTest {
 
   @Test
   public void testAuthorizationFail() throws Exception {
-    executeURL("/", "david", "davidpwd", false, 
+    executeURL("/", "dave", "davepwd", false, 
       HttpServletResponse.SC_FORBIDDEN, "Error 403: AuthorizationFailed");
     System.out.println("testAuthorizationFail passed!");
   }

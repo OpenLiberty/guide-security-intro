@@ -1,4 +1,3 @@
-<!-- tag::security[] -->
 <server description="Sample Liberty server">
 
   <featureManager>
@@ -11,6 +10,7 @@
     httpPort="${server.http.port}"
     httpsPort="${server.https.port}" />
 
+<!-- tag::security[] -->
   <!--
     It is recommended to store the wlp.password.encryption.key property
     in a file outside the server configuration directory.
@@ -23,13 +23,14 @@
 
   <basicRegistry id="basic" realm="WebRealm">
     <user name="bob"
-      password="{aes}ALLB9chb345H2MFrjM9HaEdoRG43WHc4bcMgWH0oS2GY" /> <!-- bobpwd -->
+      password="{aes}ALLB9chb345H2MFrjM9HaEdoRG43WHc4bcMgWH0oS2GY" /> 
+      <!-- bobpwd -->
     <user name="alice"
       password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
     <user name="carl"
-      password="{xor}PD4tMy8oOw==" />   <!-- carlpwd -->
-    <user name="david"
-      password="{xor}Oz4pNjsvKDs=" />   <!-- davidpwd -->
+      password="{xor}PD4tMy8oOw==" />  <!-- carlpwd -->
+    <user name="dave"
+      password="{xor}Oz4pOi8oOw==" />  <!-- davepwd -->
 
     <group name="Manager">
       <member name="bob" />
@@ -46,11 +47,12 @@
     </group>
     
     <group name="PartTime">
-      <member name="david" />
+      <member name="dave" />
     </group>
   </basicRegistry>
 
-  <application location="${application.name}" type="war" id="${application.name}"
+  <application location="${application.name}" type="war" 
+               id="${application.name}"
                name="${application.name}" context-root="/">
     <application-bnd>
       <security-role name="admin">
@@ -62,6 +64,6 @@
       </security-role>
     </application-bnd>
   </application>
+<!-- end::security[] -->
 
 </server>
-<!-- end::security[] -->
