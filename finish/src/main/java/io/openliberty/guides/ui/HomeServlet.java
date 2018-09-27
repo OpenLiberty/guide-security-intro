@@ -12,7 +12,6 @@
 // end::copyright[]
 // tag::homeservlet[]
 package io.openliberty.guides.ui;
-
 import java.io.IOException;
 
 import javax.inject.Inject;
@@ -32,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
   errorPage = "/error.html", loginPage = "/welcome.html"))
 @ServletSecurity(value = @HttpConstraint(rolesAllowed = { "user", "admin" },
   transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL))
-
 public class HomeServlet extends HttpServlet {
 
   private static final long serialVersionUID = 1L;
@@ -40,6 +38,7 @@ public class HomeServlet extends HttpServlet {
   @Inject
   private SecurityContext securityContext;
   
+  // tag::doget[]
   /**
    * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
    *      response)
@@ -52,7 +51,8 @@ public class HomeServlet extends HttpServlet {
       response.sendRedirect("/user.jsf");
     }
   }
-
+  // end::doget[]
+  
   /**
    * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
    *      response)

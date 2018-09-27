@@ -1,4 +1,3 @@
-<!-- tag::security[] -->
 <server description="Sample Liberty server">
 
   <featureManager>
@@ -11,15 +10,7 @@
     httpPort="${server.http.port}"
     httpsPort="${server.https.port}" />
 
-  <!--
-    It is recommended to store the wlp.password.encryption.key property
-    in a file outside the server configuration directory.
-  -->
-  <include location="${pwd.encryption.key.location}"/>
-
-  <!-- The keystore for SSL is built using the maven keytool plugin -->
-  <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS"
-    password="${wlp.password.encryption.key}"/>
+  <!-- Define the security configuratio in here -->
 
 </server>
-<!-- end::security[] -->
+
