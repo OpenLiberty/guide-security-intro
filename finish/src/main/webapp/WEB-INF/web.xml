@@ -68,6 +68,11 @@
         <role-name>user</role-name>
       </auth-constraint>
     </security-constraint>
-    
+
+    <!-- Handle 403 Error -->
+    <error-page>
+      <error-code>403</error-code>
+      <location>/error403.html</location>
+    </error-page>
 </web-app>
 <!-- end::security[] -->
