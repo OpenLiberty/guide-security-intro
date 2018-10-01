@@ -47,7 +47,7 @@ To try out the application, first navigate to the `finish` directory and then ru
 mvn install liberty:start-server
 ```
 
-Upon hitting the initial link `http://localhost:9080`, the application automatically switches from `HTTP` to `HTTPS` connection, and forwards to a login page. 
+Upon hitting the initial link `http://localhost:9080`, the application automatically switches from `HTTP` to `HTTPS` connection, and forwards to a login page. If the browser gives you a certificate warning, it is because the Liberty server created a SSL certificate by default. You may follow your browser's provided instructions to accept the certificate and continue.
 
 The identity store is provided with the following user information credentials:
 
@@ -72,16 +72,16 @@ The identity store is provided with the following user information credentials:
 |TeamLead, Employee
 
 |dave
-|davedpwd
+|davepwd
 |
 |PartTime
 |===
 
 Now you can sign in to the `HomeServlet` with one of the credentials from the identity store.
 
-Notice that when you sign in as Bob or Carl, the browser redirects to the `admin` page and you can view their names as well as their role as `admin`.
-When you sign in as Alice, you can only view Alice's name. Furthermore, there is a person named Dave that belongs to a group called `PartTime` but has no role. 
-When you sign in as Dave, you will be blocked and a message will display `Error 403: AuthorizationFailed`.
+Notice that when you sign in as Bob or Carl, the browser redirects to the `admin` page and you can view their names and roles.
+When you sign in as Alice, you can only view Alice's name.
+When you sign in as Dave, you will be blocked and a message will display `Error 403: AuthorizationFailed` because Dave does not have a role.
 
 Once you are done checking out the application, stop the Open Liberty server:
 ```
@@ -98,7 +98,7 @@ Navigate to the  `start` directory to begin.
 You need to set up the identity store to define users and role information. Identity stores store user account information, such as user name and password, that can be accessed during authentication.
 Typically, applications would use an external and configurable registry, like a database or Lightweight Directory Access Protocol (LDAP). However, we will be using the basic registry provided by Liberty, as a simple example of an identity store for the purposes of this guide.
 
-To do this, add the following configurations into the `src/main/liberty/config/server.xml` file:
+To do this, create the `src/main/liberty/config/server.xml` file:
 
 [source, xml, indent=0]
 ----
@@ -118,19 +118,11 @@ When a role is mapped to the `ALL_AUTHENTICATED_USERS` special subject, then any
 
 Use the Liberty `securityUtility` command to encrypt the passwords so that they will not appear as plain text in the `server.xml` file. Navigate to `target/liberty/wlp/bin` directory, and run the following:
 ```
-./securityUtility encode --encoding=xor alicepwd
+./securityUtility encode --encoding=xor bobpwd
 
 ```
 
-Here, `alice`, `carl`, and `dave` use the XOR encoding for their passwords. While `bob` uses Advanced Encryption Standard (AES) encryption, an encryption key is required to encrypt and decrypt the password.
-
-```
-./securityUtility encode --encoding=aes --key=secret bobpwd
-```
-
-The encryption key must be provided to the server by defining the variable `wlp.password.encryption.key`. 
-This property is set in a configuration file which is saved outside of the configuration directory for the server. This ensures that the file containing the encryption key will not be included when running the server dump or package command. In this application, the configuration file is saved at `src/main/liberty/config/pwdEncryptionKey.xml`.
-
+Here, all users use the XOR encoding for their passwords.
 // =================================================================================================
 //
 // =================================================================================================
@@ -231,7 +223,7 @@ Rerun the Maven build. You see that a test failure occurs.
 
 You learned how to use Java EE Security feature to authenticate and authorize users to secure your web application.
 
-Next, you can try the related MicroProfile-JWT guide. It demonstrates technologies to secure backend services.
+Next, you can try the related https://openliberty.io/guides/microprofile-jwt.html[MicroProfile-JWT] guide. It demonstrates technologies to secure backend services.
 
 
 include::{common-includes}/finish.adoc[]

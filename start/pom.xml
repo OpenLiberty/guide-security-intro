@@ -114,7 +114,6 @@
                     <server.http.port>${testServerHttpPort}</server.http.port>
                     <server.https.port>${testServerHttpsPort}</server.https.port>
                     <application.name>${app.name}.war</application.name>
-                    <pwd.encryption.key.location>${basedir}/src/main/liberty/config/pwdEncryptionKey.xml</pwd.encryption.key.location>
                   </bootstrapProperties>
                 </configuration>
                 <executions>
