@@ -1,3 +1,0 @@
-<server>
-    <variable name="wlp.password.encryption.key" value="secret"/>
-</server>
