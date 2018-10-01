@@ -47,9 +47,7 @@ To try out the application, first navigate to the `finish` directory and then ru
 mvn install liberty:start-server
 ```
 
-Upon hitting the initial link `http://localhost:9080`, the application automatically switches from `HTTP` to `HTTPS` connection, and forwards to a login page. 
-
-If the browser gives you a certificate warning, following the instructions to proceed to the login page.
+Upon hitting the initial link `http://localhost:9080`, the application automatically switches from `HTTP` to `HTTPS` connection, and forwards to a login page. If the browser gives you a certificate warning, it is because the Liberty server created a SSL certificate by default. You may follow your browser's provided instructions to accept the certificate and continue.
 
 The identity store is provided with the following user information credentials:
 
