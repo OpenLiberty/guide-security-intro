@@ -122,8 +122,6 @@ As you can see in the `server.xml`, all user passwords are encrypted by the XOR 
 ./securityUtility encode --encoding=xor bobpwd
 
 ```
-
-As you can see in the `server.xml`, all users use the XOR encoding.
 // =================================================================================================
 //
 // =================================================================================================
@@ -211,9 +209,6 @@ Results :
 Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
 
 ----
-
-To see whether the tests detect a failure, you can change some input arguments in any of the test methods.
-Rerun the Maven build. You see that a test failure occurs.
 
 
 // =================================================================================================
