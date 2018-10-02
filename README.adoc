@@ -7,7 +7,7 @@
 //   IBM Corporation
 :projectid: security-intro
 :page-layout: guide
-:page-duration: 30 minutes
+:page-duration: 15 minutes
 :page-releasedate: 2018-08-11
 :page-description: Learn how to secure a web application through authentication and authorization.
 :page-tags: ['REST', 'MicroProfile', 'Security', 'CDI']
