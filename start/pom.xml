@@ -109,7 +109,7 @@
                     <version>RELEASE</version>
                     <type>zip</type>
                   </assemblyArtifact>
-                  <configFile>src/main/liberty/config/server.xml</configFile>
+                  <configDirectory>src/main/liberty/config</configDirectory>
                   <bootstrapProperties>
                     <server.http.port>${testServerHttpPort}</server.http.port>
                     <server.https.port>${testServerHttpsPort}</server.https.port>
