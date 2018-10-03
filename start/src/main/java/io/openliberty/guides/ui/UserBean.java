@@ -24,27 +24,28 @@ import javax.security.enterprise.SecurityContext;
 @RequestScoped
 
 public class UserBean implements Serializable {
-	
-  private static final long serialVersionUID = 1L;
 
-  @Inject
-  private SecurityContext securityContext;
+    private static final long serialVersionUID = 1L;
 
-  public String getUsername() {
-	return securityContext.getCallerPrincipal().getName();
-  }
+    @Inject
+    private SecurityContext securityContext;
 
-  public String getRoles() {
-	String roles = "";
-    if (securityContext.isCallerInRole(Utils.ADMIN)) {
-      roles = Utils.ADMIN;
+    public String getUsername() {
+        return securityContext.getCallerPrincipal().getName();
     }
-    if (securityContext.isCallerInRole(Utils.USER)) {
-      if (!roles.isEmpty())
-        roles += ", ";
-        roles += Utils.USER;
-	}
-    return roles;
-  }
+
+    public String getRoles() {
+        String roles = "";
+        if (securityContext.isCallerInRole(Utils.ADMIN)) {
+            roles = Utils.ADMIN;
+        }
+        if (securityContext.isCallerInRole(Utils.USER)) {
+            if (!roles.isEmpty()) {
+                roles += ", ";
+            }
+            roles += Utils.USER;
+        }
+        return roles;
+    }
 }
 // end::userbean[]

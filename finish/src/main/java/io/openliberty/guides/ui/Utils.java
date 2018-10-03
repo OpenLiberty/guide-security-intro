@@ -13,7 +13,7 @@
 package io.openliberty.guides.ui;
 
 public class Utils {
-  public static final String ADMIN = "admin";
-  public static final String USER = "user";
+    public static final String ADMIN = "admin";
+    public static final String USER = "user";
 }
 

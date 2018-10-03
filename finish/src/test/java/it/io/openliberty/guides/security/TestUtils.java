@@ -23,29 +23,32 @@ import javax.net.ssl.X509TrustManager;
 
 public class TestUtils {
 
-  public static void trustAll() throws Exception {
-    SSLContext sslContext = SSLContext.getInstance("SSL");
-    sslContext.init(
-      null, 
-      new TrustManager[] {
-        new X509TrustManager() {
-          @Override
-          public void checkClientTrusted(X509Certificate[] arg0, String arg1)
-            throws CertificateException {}
+    public static void trustAll() throws Exception {
+        SSLContext sslContext = SSLContext.getInstance("SSL");
+        sslContext.init(
+            null, 
+            new TrustManager[] {
+                new X509TrustManager() {
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] arg0,
+                        String arg1)
+                        throws CertificateException {}
 
-          @Override
-          public void checkServerTrusted(X509Certificate[] arg0, String arg1)
-            throws CertificateException {}
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] arg0,
+                        String arg1)
+                        throws CertificateException {}
 
-          public X509Certificate[] getAcceptedIssuers() {
-            return null;
-          }
-        }
-      },
-      new SecureRandom());
-    SSLContext.setDefault(sslContext);
-    HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
-  }
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+                }
+            },
+            new SecureRandom());
+        SSLContext.setDefault(sslContext);
+        HttpsURLConnection.setDefaultSSLSocketFactory(
+            sslContext.getSocketFactory());
+    }
 
 }
 

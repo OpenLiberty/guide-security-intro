@@ -33,33 +33,31 @@ import javax.servlet.http.HttpServletResponse;
   transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL))
 public class HomeServlet extends HttpServlet {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @Inject
-  private SecurityContext securityContext;
-  
-  // tag::doget[]
-  /**
-   * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-   *      response)
-   */
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    if (securityContext.isCallerInRole(Utils.ADMIN)) {
-        response.sendRedirect("/admin.jsf");
-    } else if  (securityContext.isCallerInRole(Utils.USER)) {
-      response.sendRedirect("/user.jsf");
+    @Inject
+    private SecurityContext securityContext;
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        if (securityContext.isCallerInRole(Utils.ADMIN)) {
+            response.sendRedirect("/admin.jsf");
+        } else if  (securityContext.isCallerInRole(Utils.USER)) {
+            response.sendRedirect("/user.jsf");
+        }
     }
-  }
-  // end::doget[]
-  
-  /**
-   * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-   *      response)
-   */
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    doGet(request, response);
-  }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        doGet(request, response);
+    }
 }
 // end::homeservlet[]
