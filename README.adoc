@@ -51,7 +51,6 @@ Upon hitting the initial link `http://localhost:9080`, the application automatic
 
 The identity store is provided with the following user information credentials:
 
-[#identitystoretable]
 .Identity Store
 |===
 |Username|Password|Role|Group
@@ -98,14 +97,21 @@ Navigate to the  `start` directory to begin.
 You need to set up the identity store to define users and role information. Identity stores store user account information, such as user name and password, that can be accessed during authentication.
 Typically, applications would use an external and configurable registry, like a database or Lightweight Directory Access Protocol (LDAP). However, for the purpose of this guide, a basic registry provided by Liberty is used as a simple example of an identity store.
 
-Create the `src/main/liberty/config/server.xml` file:
+Create the `src/main/liberty/config/identityStore.xml` file:
+
+[source, xml, indent=0]
+----
+include::finish/src/main/liberty/config/identityStore.xml[tags=security]
+----
+
+On the Open Liberty server, you can use the basic registry as an identity store to define the users and groups information.
+
+Open the `server.xml` file to view the configuration that maps roles to user groups.
 
 [source, xml, indent=0]
 ----
 include::finish/src/main/liberty/config/server.xml[tags=security]
 ----
-
-On the Open Liberty server, you can use the basic registry as an identity store to define the users and groups information.
 
 In this application, there are four groups: `Employee`, `TeamLead`, `Manager` and `PartTime`. Groups can be assigned to different access roles.
 Within the `<application-bnd>` tags, two different authorization roles are assigned to these groups: `admin` and `user`.
@@ -144,14 +150,9 @@ Authorization determines whether a user has the role required to access. It can 
 The `admin` and `user` are roles you defined in the `server.xml` configuration file. They are declared under 
 `rolesAllowed` attribute so that the `HomeServlet` can be accessed by authenticated accounts with these two roles.
 
-The `transportGuarantee` defines the data protection requirements that must be satisfied by the transport. In this case, it is set to the `CONFIDENTIAL` configuration which specifies that all user data must be encrypted during transport. This ensures that the browser gets redirected from `http` to an `https` link automatically.
+The `transportGuarantee` attribute defines the data protection requirements that must be satisfied by the transport. In this case, it is set to the `CONFIDENTIAL` configuration which specifies that all user data must be encrypted during transport. This ensures that the browser gets redirected from `http` to an `https` link automatically.
 
-The Security specification also defines a common SecurityContext API that can be used to perform some common programmatic security related operations. You can get access to the information of the authenticated account by calling the appropriate methods from the SecurityContext API.
-
-[source, java, indent=0]
-----
-include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=doget]
-----
+The Java EE Security specification also defines a common SecurityContext API that can be used to perform some common programmatic security related operations. You can get access to the information of the authenticated account by calling the appropriate methods from the SecurityContext API.
 
 The `doGet()` method uses the `securityContext.isCallerInRole()` API to determine the current user's role  and forward the repsonse to a proper page.
 
@@ -161,7 +162,8 @@ Open the `src/main/webapp/WEB-INF/web.xml` file:
 include::finish/src/main/webapp/WEB-INF/web.xml[tags=security]
 ----
 
-Note that the `security-constraint` is used to restrict the access of different resources. The `user.jsf` and `admin.jsf` pages can only be accessed by whoever has user or admin roles respectively.
+To restrict the access of different JSF resources, the `web.xml` defines the admin and user roles in the `<security-role>` tags and defines the web resource and authorization constraint in the `<security-constraint>` tags. The `user.jsf` and `admin.jsf` pages can only be accessed by whoever has user or admin roles respectively.
+
 // =================================================================================================
 // Building and running the application
 // =================================================================================================
@@ -169,9 +171,45 @@ Note that the `security-constraint` is used to restrict the access of different 
 include::{common-includes}/mvnbuild.adoc[]
 
 Point your browser to `http://localhost:9080`. As you can see, the browser gets redirected from `http` to an `https` link automatically while `index.html` switches to the `HomeServlet`, this is accomplished through the transport guarantee defined in the `HomeServlet`. 
-Because the `HomeServlet` also specifies the loginPage and errorPage attributes of the @LoginToContinue annotation in @FormAuthenticationMechanismDefinition, the login `welcome.html` is prompted for authentication.
+Because the `HomeServlet` also specifies the loginPage and errorPage attributes of the `@LoginToContinue` annotation in `@FormAuthenticationMechanismDefinition`, the login `welcome.html` is prompted for authentication.
 
-Use one of the credentials from the above table `Identity Store` to log in.
+Use one of the credentials from the `Identity Store` table to log in.
+
+.Identity Store
+|===
+|Username|Password|Role|Group
+
+|alice
+|alicepwd
+|user
+|Employee
+
+|bob
+|bobpwd
+|admin, user
+|Manager, Employee
+
+|carl
+|carlpwd
+|admin, user
+|TeamLead, Employee
+
+|dave
+|davepwd
+|
+|PartTime
+|===
+
+Now you can sign in to the `HomeServlet` with one of the credentials from the identity store.
+
+Notice that when you sign in as Bob or Carl, the browser redirects to the `admin` page and you can view their names and roles.
+When you sign in as Alice, you can only view Alice's name.
+When you sign in as Dave, you will be blocked and a message will display `Error 403: AuthorizationFailed` because Dave does not have a role.
+
+Once you are done checking out the application, stop the Open Liberty server:
+```
+mvn liberty:stop-server
+```
 
 // =================================================================================================
 // Testing the application
