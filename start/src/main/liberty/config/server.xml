@@ -11,7 +11,7 @@
     httpPort="${server.http.port}"
     httpsPort="${server.https.port}" />
 
-  <include location="identifyStore.xml"/>
+  <include location="identityStore.xml"/>
 
   <application location="${application.name}" type="war"
                id="${application.name}"
@@ -26,5 +26,6 @@
       </security-role>
     </application-bnd>
   </application>
+
 </server>
 <!-- end::security[] -->
