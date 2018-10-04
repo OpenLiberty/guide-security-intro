@@ -149,7 +149,7 @@ Authorization determines whether a user has the role required to access. It can 
 The `admin` and `user` are roles you defined in the `server.xml` configuration file. They are declared under 
 `rolesAllowed` attribute so that the `HomeServlet` can be accessed by authenticated accounts with these two roles.
 
-The `transportGuarantee` attribute defines the data protection requirements that must be satisfied by the transport. In this case, it's set to the `CONFIDENTIAL` configuration, which specifies that all user data must be encrypted during transport. This ensures that the browser gets redirected from `http` to an `https` link automatically.
+The `transportGuarantee` attribute defines the data protection requirements that must be satisfied by the transport. In this case, it's set to the `CONFIDENTIAL` configuration, which specifies that all user data must be encrypted during transport. This attribute ensures that the browser gets redirected from `http` to an `https` link automatically.
 
 The Java EE Security specification also defines a common SecurityContext API that can be used to perform some common programmatic security-related operations. You can get access to the information of the authenticated account by calling the appropriate methods from the SecurityContext API.
 
