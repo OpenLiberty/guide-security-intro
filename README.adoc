@@ -26,7 +26,7 @@ Learn how to secure a web application through authentication and authorization.
 == What you'll learn
 You'll learn how to secure a web application by performing authentication and authorization using Java EE Security. Authentication confirms the identity of the user by verifying a user name and password. While authorization determines whether a user has access to restricted resources.
 
-Java EE Security provides capability to configure the basic, form or custom form authentication mechanism using annotations in the servlets.
+Java EE Security provides capability to configure the basic, form or custom form authentication mechanism by using annotations in the servlets.
 It also provides a SecurityContext API for programmatic security checks in Java EE containers. You’ll learn how to implement form authentication. Form authentication allows you to specify the web application login and error pages, assign the security constraint of a servlet and use the SecurityContext API to determine the role of a logged in user.
 
 // =================================================================================================
@@ -149,7 +149,7 @@ Authorization determines whether a user has the role required to access. It can 
 The `admin` and `user` are roles you defined in the `server.xml` configuration file. They are declared under 
 `rolesAllowed` attribute so that the `HomeServlet` can be accessed by authenticated accounts with these two roles.
 
-The `transportGuarantee` attribute defines the data protection requirements that must be satisfied by the transport. In this case, it's set to the `CONFIDENTIAL` configuration, which specifies that all user data must be encrypted during transport. This ensures that the browser gets redirected from `http` to an `https` link automatically.
+The `transportGuarantee` attribute defines the data protection requirements that must be satisfied by the transport. In this case, it's set to the `CONFIDENTIAL` configuration, which specifies that all user data must be encrypted during transport. This attribute ensures that the browser gets redirected from `http` to an `https` link automatically.
 
 The Java EE Security specification also defines a common SecurityContext API that can be used to perform some common programmatic security-related operations. You can get access to the information of the authenticated account by calling the appropriate methods from the SecurityContext API.
 
