@@ -121,7 +121,7 @@ When a role is mapped to the `ALL_AUTHENTICATED_USERS` special subject, then any
 
 === Encrypting passwords using securityUtility
 
-As you can see in the `server.xml`, all user passwords are encrypted by the XOR encoding. For example, to encrypt 'bobpwd', navigate to the `target/liberty/wlp/bin` directory and run the Liberty
+As you can see in the `identityStore.xml`, all user passwords are encrypted by the XOR encoding. For example, to encrypt 'bobpwd', navigate to the `target/liberty/wlp/bin` directory and run the Liberty
 `securityUtility` command:
 ```
 ./securityUtility encode --encoding=xor bobpwd
