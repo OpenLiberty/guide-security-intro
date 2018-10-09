@@ -159,68 +159,10 @@ The `doGet()` method uses the `securityContext.isCallerInRole()` API to determin
 
 Open the `src/main/webapp/WEB-INF/web.xml` file:
 
-```
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-    version="3.1">
-    <display-name>Liberty Project</display-name>
-
-    <!-- WebAppJSF: Faces Servlet -->
-    <servlet>
-      <servlet-name>Faces Servlet</servlet-name>
-      <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-      <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <!-- WebAppJSF: Faces Servlet Mapping -->
-    <servlet-mapping>
-      <servlet-name>Faces Servlet</servlet-name>
-      <url-pattern>*.jsf</url-pattern>
-    </servlet-mapping>
-
-    <welcome-file-list>
-      <welcome-file>/index.html</welcome-file>
-    </welcome-file-list>
-
-    <!-- SECURITY ROLES FOR JSF -->
-    <security-role>
-      <role-name>admin</role-name>
-    </security-role>
-
-    <security-role>
-      <role-name>user</role-name>
-    </security-role>
-
-    <!-- SECURITY CONSTRAINTS FOR JSF -->
-    <security-constraint>
-      <web-resource-collection>
-        <web-resource-name>AdminViewProperties</web-resource-name>
-        <url-pattern>/admin.jsf</url-pattern>
-        <http-method>GET</http-method>
-      </web-resource-collection>
-      <auth-constraint>
-        <role-name>admin</role-name>
-      </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-      <web-resource-collection>
-        <web-resource-name>UserViewProperties</web-resource-name>
-        <url-pattern>/user.jsf</url-pattern>
-        <http-method>GET</http-method>
-      </web-resource-collection>
-      <auth-constraint>
-        <role-name>user</role-name>
-      </auth-constraint>
-    </security-constraint>
-
-    <!-- Handle 403 Error -->
-    <error-page>
-      <error-code>403</error-code>
-      <location>/error403.html</location>
-    </error-page>
-</web-app>
-```
+[source, xml, indent=0, role=“no_copy”]
+----
+include::finish/src/main/webapp/WEB-INF/web.xml[tags=security]
+----
 
 To restrict the access of different JSF resources, the `web.xml` defines the admin and user roles in the `<security-role>` elements and defines the web resource and authorization constraint in the `<security-constraint>` elements. The `user.jsf` and `admin.jsf` pages can only be accessed by whoever has user or admin roles respectively.
 
