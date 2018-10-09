@@ -106,6 +106,7 @@ include::finish/src/main/liberty/config/identityStore.xml[tags=**]
 ----
 
 On the Open Liberty server, you can use the basic registry as an identity store to define the users and groups information.
+In this application, there are four groups: `Employee`, `TeamLead`, `Manager` and `PartTime`. Groups can be assigned to different access roles.
 
 Open the `server.xml` file to view the configuration that maps roles to user groups.
 
@@ -114,7 +115,6 @@ Open the `server.xml` file to view the configuration that maps roles to user gro
 include::finish/src/main/liberty/config/server.xml[tags=security]
 ----
 
-In this application, there are four groups: `Employee`, `TeamLead`, `Manager` and `PartTime`. Groups can be assigned to different access roles.
 Within the `<application-bnd>` elements, two different authorization roles are assigned to these groups: `admin` and `user`.
 
 A role can be mapped to a user, a group, or a special subject. The two types of special subject are `EVERYONE` and `ALL_AUTHENTICATED_USERS`.
