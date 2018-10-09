@@ -110,7 +110,7 @@ public class SecurityTest {
             "Expected " + HttpServletResponse.SC_FOUND + " status code for login",
         HttpServletResponse.SC_FOUND, response.getStatusLine().getStatusCode());
 
-        // Return if expect the login should fail
+        // Return if the login fails
         if (expectLoginFail) {
             String location = response.getFirstHeader("Location").getValue();
             assertTrue(
