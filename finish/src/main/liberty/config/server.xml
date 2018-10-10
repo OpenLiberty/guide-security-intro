@@ -11,7 +11,7 @@
     httpPort="${server.http.port}"
     httpsPort="${server.https.port}" />
 
-  <include location="identityStore.xml"/>
+  <include location="userRegistry.xml"/>
 
   <application location="${application.name}" type="war"
                id="${application.name}"
