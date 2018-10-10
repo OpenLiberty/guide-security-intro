@@ -83,7 +83,7 @@ Notice that when you sign in as Bob or Carl, the browser redirects to the `admin
 When you sign in as Alice, you can only view Alice's name.
 When you sign in as Dave, you'll be blocked and a message will display `Error 403: AuthorizationFailed` because Dave doesn't have a role.
 
-Once you're done checking out the application,log out and stop the Open Liberty server:
+Once you're done checking out the application, log out and stop the Open Liberty server:
 ```
 mvn liberty:stop-server
 ```
