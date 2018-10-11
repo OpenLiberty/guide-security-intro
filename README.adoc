@@ -159,10 +159,10 @@ A role can be mapped to a user, a group, or a special subject. The two types of 
 When a role is mapped to the `EVERYONE` special subject, there's no security because everyone is allowed access and you're not prompted to enter credentials.
 When a role is mapped to the `ALL_AUTHENTICATED_USERS` special subject, then any user who is authenticated by the application server can access the protected resource.
 
-=== Encrypting passwords using securityUtility
+=== Encoding passwords using securityUtility
 
 It is not recommended to store passwords in plain text. For simplicity reasons, the application in this guide uses XOR encoding to encode the passwords, as you can see in the `userRegistry.xml`. 
-For example, to encrypt 'bobpwd', the Liberty `securityUtility` command can be run from the `target/liberty/wlp/bin` directory after you have installed Liberty.
+For example, to encode 'bobpwd', the Liberty `securityUtility` command can be run from the `target/liberty/wlp/bin` directory after you have installed Liberty.
 The `securityUtility` command can be run with the parameter `encode` and the provided text to encode:
 ```
 ./securityUtility encode --encoding=xor bobpwd
