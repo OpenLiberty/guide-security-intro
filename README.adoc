@@ -96,7 +96,7 @@ mvn liberty:stop-server
 First, let's build and secure this application. Navigate to the  `start` directory to begin.
 
 This application consists of a home servlet that redirects the user to the login page where the user's credentials are authenticated.
-There are two roles that allow users to access the application: `admin` and `user`. Next, depending on the role of the user, they will be redirected to respective pages based on their role or an error page if they are not authenticated or authorized.
+There are two roles that allow users to access the application: `admin` and `user`. Depending on the role of the user, they will be redirected to respective pages based on their role or an error page if they are not authenticated or authorized.
 
 Form Authentication is an authentication mechanism where the user is able to enter their login credentials using a form that the developers create.
 Java EE provides a more convenient way to authenticate a user by calling the built-in `j_security_check` action from the login form. 
