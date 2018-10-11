@@ -105,6 +105,9 @@ Create the `src/main/liberty/config/userRegistry.xml` file:
 include::finish/src/main/liberty/config/userRegistry.xml[tags=**]
 ----
 
+It is not recommended to store passwords in plain text. For simplicity reasons, the application in this guide uses XOR encoding to encrypt the passwords, as you can see in the `userRegistry.xml`. 
+An example of how to encode the password using Liberty's securityUtility will be shown at the end of the guide.
+
 On the Open Liberty server, you can use the basic registry as an user registry to define the users and groups information.
 In this application, there are four groups: `Employee`, `TeamLead`, `Manager` and `PartTime`. Groups can be assigned to different access roles.
 
@@ -121,13 +124,6 @@ A role can be mapped to a user, a group, or a special subject. The two types of 
 When a role is mapped to the `EVERYONE` special subject, there's no security because everyone is allowed access and you're not prompted to enter credentials.
 When a role is mapped to the `ALL_AUTHENTICATED_USERS` special subject, then any user who is authenticated by the application server can access the protected resource.
 
-=== Encrypting passwords using securityUtility
-
-It is not recommended to store password in plain text. For simplicity reasons, the application in this guide uses XOR encoding to encrypt the passwords, as you can see in the `userRegistry.xml`. For example, to encrypt 'bobpwd', navigate to the `target/liberty/wlp/bin` directory and run the Liberty `securityUtility` command:
-```
-./securityUtility encode --encoding=xor bobpwd
-
-```
 // =================================================================================================
 //
 // =================================================================================================
@@ -247,7 +243,14 @@ Results :
 Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
 
 ----
+=== Encrypting passwords using securityUtility (Optional)
 
+The `securityUtility` command and `encode` parameter encodes provided plain text.
+In order to encode 'bobpwd', navigate to the `target/liberty/wlp/bin` directory and run the Liberty `securityUtility` command:
+```
+./securityUtility encode --encoding=xor bobpwd
+
+```
 
 // =================================================================================================
 // Great work! You're done!
