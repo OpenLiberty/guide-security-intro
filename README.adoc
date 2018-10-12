@@ -121,7 +121,7 @@ The Java EE Security specification also defines a common SecurityContext API tha
 
 The `doGet()` method uses the `securityContext.isCallerInRole()` API to determine the current user's role  and forward the response to a proper page.
 
-Open the `src/main/webapp/WEB-INF/web.xml` file to view how the JSF pages are secured:
+Open the `src/main/webapp/WEB-INF/web.xml` file to view how the web pages are secured:
 [source, xml, role=“no_copy”]
 ----
 include::finish/src/main/webapp/WEB-INF/web.xml[tags=security]
