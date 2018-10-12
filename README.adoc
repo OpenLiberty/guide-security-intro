@@ -93,14 +93,15 @@ mvn liberty:stop-server
 // =================================================================================================
 
 == Adding authentication and authorization
-First, let's build and secure this application. Navigate to the  `start` directory to begin.
-
-This application consists of a home servlet that redirects the user to the login page where the user's credentials are authenticated.
-There are two roles that allow users to access the application: `admin` and `user`. Depending on the role of the user, they will be redirected to respective pages based on their role or an error page if they are not authenticated or authorized.
+First, let's build and secure this application using Form Authentication. 
 
 Form Authentication is an authentication mechanism where the user is able to enter their login credentials using a form that the developers create.
 Java EE provides a more convenient way to authenticate a user by calling the built-in `j_security_check` action from the login form. 
-The `welcome.html` and `error.html` pages are provided for you under the `src/main/webapp` directory. These are two front end files that provide the login form and error page.
+
+Navigate to the  `start` directory to begin.
+
+This application consists of a home servlet that redirects the user to the login page where the user's credentials are authenticated.
+There are two roles that allow users to access the application: `admin` and `user`. Depending on the role of the user, they will be redirected to respective pages based on their role or an error page if they are not authenticated or authorized.
 
 Create the `HomeServlet` class in the `src/main/java/io/openliberty/guides/ui/HomeServlet.java` file.
 [source, java, indent=0]
@@ -108,7 +109,7 @@ Create the `HomeServlet` class in the `src/main/java/io/openliberty/guides/ui/Ho
 include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=homeservlet;!copyright]
 ----
 
-In order to enable form authentication to the `HomeServlet`, define the `@FormAuthenticationMechanismDefinition` annotation and set its `loginToContinue` attribute to accept a configured `@LoginToContinue` annotation, which makes `welcome.html` as the login page and `error.html` as the error page.
+In order to enable form authentication in the `HomeServlet` class, define the `@FormAuthenticationMechanismDefinition` annotation and set its `loginToContinue` attribute to accept a configured `@LoginToContinue` annotation, which makes `welcome.html` as the login page and `error.html` as the error page. The `welcome.html` and `error.html` pages are provided for you under the `src/main/webapp` directory. These are two front end files that provide the login form and error page.
 
 Authorization determines whether a user has the role required to access. It can be achieved with the `@ServletSecurity` annotation. Note that the `@HttpConstraint` annotation defines the security constraints.
 The `admin` and `user` are roles you defined in the `server.xml` configuration file. They are declared under 
@@ -120,7 +121,7 @@ The Java EE Security specification also defines a common SecurityContext API tha
 
 The `doGet()` method uses the `securityContext.isCallerInRole()` API to determine the current user's role  and forward the response to a proper page.
 
-Open the `src/main/webapp/WEB-INF/web.xml` file:
+Open the `src/main/webapp/WEB-INF/web.xml` file to view how the JSF pages are secured:
 [source, xml, role=“no_copy”]
 ----
 include::finish/src/main/webapp/WEB-INF/web.xml[tags=security]
