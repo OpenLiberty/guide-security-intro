@@ -73,7 +73,7 @@ The following table shows the user identities which are stored in the Liberty us
 
 |dave
 |davepwd
-|
+|n/a
 |PartTime
 |===
 
@@ -205,7 +205,7 @@ Use one of the credentials from the `User Registry` table to log in.
 
 |dave
 |davepwd
-|
+|n/a
 |PartTime
 |===
 
