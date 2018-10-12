@@ -12,8 +12,8 @@
 // end::copyright[]
 // tag::homeservlet[]
 package io.openliberty.guides.ui;
-import java.io.IOException;
 
+import java.io.IOException;
 import javax.inject.Inject;
 import javax.security.enterprise.SecurityContext;
 import javax.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
