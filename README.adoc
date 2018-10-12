@@ -163,7 +163,7 @@ When a role is mapped to the `ALL_AUTHENTICATED_USERS` special subject, then any
 === Encoding passwords using securityUtility
 
 It is not recommended to store passwords in plain text. For simplicity reasons, the application in this guide uses XOR encoding to encode the passwords, as you can see in the `userRegistry.xml`. 
-For example, to encode 'bobpwd', the Liberty `securityUtility` command can be run from the `wlp/bin` from the Liberty application server.
+For example, to encode 'bobpwd', the Liberty `securityUtility` command can be run from the `wlp/bin` directory from the Liberty application server.
 
 Also reviewed the PR.
 The `securityUtility` command can be run with the parameter `encode` and the provided text to encode:
