@@ -91,48 +91,12 @@ mvn liberty:stop-server
 // =================================================================================================
 //
 // =================================================================================================
-== Configuring the user registry
-
-Navigate to the  `start` directory to begin.
-
-You need to set up the user registry to define users and role information. User registries store user account information, such as user name and password, that can be accessed during authentication.
-Typically, applications would use an external and configurable registry, like a database or Lightweight Directory Access Protocol (LDAP). However, for this guide, a basic registry provided by Liberty is used as a simple example of an user registry.
-
-Create the `src/main/liberty/config/userRegistry.xml` file:
-
-[source, xml, indent=0]
-----
-include::finish/src/main/liberty/config/userRegistry.xml[tags=**]
-----
-
-On the Open Liberty server, you can use the basic registry as an user registry to define the users and groups information.
-In this application, there are four groups: `Employee`, `TeamLead`, `Manager` and `PartTime`. Groups can be assigned to different access roles.
-
-Open the `server.xml` file to view the configuration that maps roles to user groups.
-
-[source, xml, indent=0]
-----
-include::finish/src/main/liberty/config/server.xml[tags=security]
-----
-
-Within the `<application-bnd>` tags, two different authorization roles are assigned to these groups: `admin` and `user`.
-
-A role can be mapped to a user, a group, or a special subject. The two types of special subject are `EVERYONE` and `ALL_AUTHENTICATED_USERS`.
-When a role is mapped to the `EVERYONE` special subject, there's no security because everyone is allowed access and you're not prompted to enter credentials.
-When a role is mapped to the `ALL_AUTHENTICATED_USERS` special subject, then any user who is authenticated by the application server can access the protected resource.
-
-=== Encrypting passwords using securityUtility
-
-It is not recommended to store password in plain text. For simplicity reasons, the application in this guide uses XOR encoding to encrypt the passwords, as you can see in the `userRegistry.xml`. For example, to encrypt 'bobpwd', navigate to the `target/liberty/wlp/bin` directory and run the Liberty `securityUtility` command:
-```
-./securityUtility encode --encoding=xor bobpwd
-
-```
-// =================================================================================================
-//
-// =================================================================================================
 
 == Adding authentication and authorization
+First, let's build and secure this application. Navigate to the  `start` directory to begin.
+
+This application consists of a home servlet that redirects the user to the login page where the user's credentials are authenticated.
+There are two roles that allow users to access the application: `admin` and `user`. Depending on the role of the user, they will be redirected to respective pages based on their role or an error page if they are not authenticated or authorized.
 
 Form Authentication is an authentication mechanism where the user is able to enter their login credentials using a form that the developers create.
 Java EE provides a more convenient way to authenticate a user by calling the built-in `j_security_check` action from the login form. 
@@ -144,7 +108,7 @@ Create the `HomeServlet` class in the `src/main/java/io/openliberty/guides/ui/Ho
 include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=homeservlet;!copyright]
 ----
 
-In order to enable form authentication to the `HomeServlet`, define the `@FormAuthenticationMechanismDefinition` annotation and set its loginToContinue attribute to accept a configured `@LoginToContinue` annotation, which makes `welcome.html` as the login page and `error.html` as the error page.
+In order to enable form authentication to the `HomeServlet`, define the `@FormAuthenticationMechanismDefinition` annotation and set its `loginToContinue` attribute to accept a configured `@LoginToContinue` annotation, which makes `welcome.html` as the login page and `error.html` as the error page.
 
 Authorization determines whether a user has the role required to access. It can be achieved with the `@ServletSecurity` annotation. Note that the `@HttpConstraint` annotation defines the security constraints.
 The `admin` and `user` are roles you defined in the `server.xml` configuration file. They are declared under 
@@ -163,6 +127,51 @@ include::finish/src/main/webapp/WEB-INF/web.xml[tags=security]
 ----
 
 To restrict the access of different JSF resources, the `web.xml` defines the admin and user roles in the `<security-role>` elements and defines the web resource and authorization constraint in the `<security-constraint>` elements. The `user.jsf` and `admin.jsf` pages can only be accessed by whoever has user or admin roles respectively.
+
+// =================================================================================================
+//
+// =================================================================================================
+== Configuring the user registry
+
+In this application, there are four groups: `Employee`, `TeamLead`, `Manager` and `PartTime`. Groups can be assigned to different access roles.
+You need to set up the user registry to define users and role information in order to be able to use the application. User registries store user account information, such as username and password, that can be accessed during authentication.
+Typically, applications would use an external and configurable registry, like a database or Lightweight Directory Access Protocol (LDAP). However, for this guide, a basic registry provided by Liberty is used as a simple example of an user registry.
+
+Create the `src/main/liberty/config/userRegistry.xml` file:
+
+[source, xml, indent=0]
+----
+include::finish/src/main/liberty/config/userRegistry.xml[tags=**]
+----
+
+On the Open Liberty server, you can use the basic registry as a user registry to define the users and groups information.
+
+Open the `server.xml` file to view the configuration that maps roles to user groups.
+
+[source, xml, indent=0]
+----
+include::finish/src/main/liberty/config/server.xml[tags=security]
+----
+
+Within the `<application-bnd>` tags, two different authorization roles are assigned to these groups: `admin` and `user`.
+
+A role can be mapped to a user, a group, or a special subject. The two types of special subject are `EVERYONE` and `ALL_AUTHENTICATED_USERS`.
+When a role is mapped to the `EVERYONE` special subject, there's no security because everyone is allowed access and you're not prompted to enter credentials.
+When a role is mapped to the `ALL_AUTHENTICATED_USERS` special subject, then any user who is authenticated by the application server can access the protected resource.
+
+=== Encoding passwords using securityUtility
+
+It is not recommended to store passwords in plain text. For simplicity reasons, the application in this guide uses XOR encoding to encode the passwords, as you can see in the `userRegistry.xml`. 
+For example, to encode 'bobpwd', the Liberty `securityUtility` command can be run from the `target/liberty/wlp/bin` directory after you have installed Liberty.
+The `securityUtility` command can be run with the parameter `encode` and the provided text to encode:
+```
+./securityUtility encode --encoding=xor bobpwd
+
+```
+This command should produce the following output:
+```
+{xor}PTA9Lyg7
+```
 
 // =================================================================================================
 // Building and running the application
