@@ -205,7 +205,7 @@ Use one of the credentials from the `User Registry` table to log in.
 
 |dave
 |davepwd
-|
+|N/A
 |PartTime
 |===
 
