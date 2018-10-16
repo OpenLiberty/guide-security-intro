@@ -15,7 +15,7 @@
 -->
 <html>
 <head>
-    <title>Authorization Failed</title>
+    <title>Authorization Error</title>
     <style>
       #logoutButton {
           width: 100%;
@@ -31,10 +31,10 @@
     </style>
 </head>
 <body>
-    <h2>Error 403: AuthorizationFailed.</h2>
+    <h2>Error 403: Authorization failed.</h2>
     <h:panelGroup id="logoutButton" layout="block">
         <FORM METHOD="POST" ACTION="ibm_security_logout" NAME="logout">
-          <input type="submit" name="logout" value="Log Out" />
+          <input type="submit" name="logout" value="Back" />
           <input type="HIDDEN" name="logoutExitPage" value="/home" />
         </FORM>
     </h:panelGroup>
