@@ -117,7 +117,7 @@ The SecurityContext interface provides programmatic access to Java EE Security A
 
 Open the `src/main/webapp/WEB-INF/web.xml` file and look at the rest of the security declaration for the application:
 
-[source, xml, indent=0, role=“no_copy”]
+[source, xml, indent=0, role="no_copy"]
 ----
 include::finish/src/main/webapp/WEB-INF/web.xml[tags=webxmlsecurity]
 ----
@@ -145,7 +145,7 @@ The registry has four users, `bob`, `alice`, `carl` and `dave`, and four groups,
 
 Open the `server.xml` file to view the security configuration of the server.
 
-[source, xml, indent=0, role=“no_copy”]
+[source, xml, indent=0, role="no_copy"]
 ----
 include::finish/src/main/liberty/config/server.xml[tags=serverxmlsecurity]
 ----
