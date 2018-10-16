@@ -57,28 +57,28 @@ public class SecurityTest {
 
     @Test
     public void testAuthorizationForAdmin() throws Exception {
-        executeURL("/", "bob", "bobpwd", false, 
+        executeURL("/", "bob", "bobpwd", false,
             HttpServletResponse.SC_OK, "admin, user");
         System.out.println("testAuthorizationForAdmin passed!");
     }
 
     @Test
     public void testAuthorizationForUser() throws Exception {
-        executeURL("/", "alice", "alicepwd", false, 
+        executeURL("/", "alice", "alicepwd", false,
             HttpServletResponse.SC_OK, "<title>User</title>");
         System.out.println("testAuthorizationForUser passed!");
     }
 
     @Test
     public void testAuthorizationFail() throws Exception {
-        executeURL("/", "dave", "davepwd", false, 
-            HttpServletResponse.SC_FORBIDDEN, "Error 403: AuthorizationFailed");
+        executeURL("/", "dave", "davepwd", false,
+            HttpServletResponse.SC_FORBIDDEN, "Error 403: Authorization failed");
         System.out.println("testAuthorizationFail passed!");
     }
 
     private void executeURL(
         String testUrl, String userid, String password,
-        boolean expectLoginFail, int expectedCode, String expectedContent) 
+        boolean expectLoginFail, int expectedCode, String expectedContent)
         throws Exception {
 
         // Use HttpClient to execute the testUrl by HTTP
@@ -92,10 +92,10 @@ public class SecurityTest {
         HttpClient client = clientBuilder.build();
         HttpResponse response = client.execute(getMethod);
 
-        // The response should return the login.html
+        // Response should be login.html
         String loginBody = EntityUtils.toString(response.getEntity(), "UTF-8");
         assertTrue(
-            "Not redirected to home.html", 
+            "Not redirected to home.html",
             loginBody.contains("window.location.assign"));
         String[] redirect = loginBody.split("'");
 
@@ -110,11 +110,11 @@ public class SecurityTest {
             "Expected " + HttpServletResponse.SC_FOUND + " status code for login",
         HttpServletResponse.SC_FOUND, response.getStatusLine().getStatusCode());
 
-        // Return if the login fails
+        // Return if login fails
         if (expectLoginFail) {
             String location = response.getFirstHeader("Location").getValue();
             assertTrue(
-                "Error.html was not returned", 
+                "Error.html was not returned",
                 location.contains("error.html"));
             return;
         }
@@ -135,13 +135,13 @@ public class SecurityTest {
         // Check the content of the response returned
         String actual = EntityUtils.toString(response.getEntity(), "UTF-8");
         assertTrue(
-            "The actual content did not contain the userid \"" + userid + 
+            "The actual content did not contain the userid \"" + userid +
             "\". It was:\n" + actual,
         actual.contains(userid));
         assertTrue(
-            "The url " + testUrl + 
+            "The url " + testUrl +
             " did not return the expected content \"" + expectedContent + "\"" +
-            "The actual content was:\n" + actual, 
+            "The actual content was:\n" + actual,
         actual.contains(expectedContent));
     }
 

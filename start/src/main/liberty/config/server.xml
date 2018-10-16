@@ -1,4 +1,4 @@
-<!-- tag::security[] -->
+<!-- tag::serverxml[] -->
 <server description="Sample Liberty server">
 
   <featureManager>
@@ -11,6 +11,7 @@
     httpPort="${server.http.port}"
     httpsPort="${server.https.port}" />
 
+  <!-- tag::serverxmlsecurity[] -->
   <include location="userRegistry.xml"/>
 
   <application location="${application.name}" type="war"
@@ -26,6 +27,7 @@
       </security-role>
     </application-bnd>
   </application>
+  <!-- end::serverxmlsecurity[] -->
 
 </server>
-<!-- end::security[] -->
+<!-- end::serverxml[] -->
