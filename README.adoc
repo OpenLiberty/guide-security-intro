@@ -51,7 +51,7 @@ mvn install liberty:start-server
 
 Navigate your browser to this URL to access the application: `http://localhost:9080`
 
-The application automatically switches from a `HTTP` connection to a secure `HTTPS` connection and forwards you to a login page. If the browser gives you a certificate warning, it's because the Liberty server created a self-signed SSL certificate by default. You may follow your browser's provided instructions to accept the certificate and continue.
+The application automatically switches from a HTTP connection to a secure HTTPS connection and forwards you to a login page. If the browser gives you a certificate warning, it's because the Liberty server created a self-signed SSL certificate by default. You may follow your browser's provided instructions to accept the certificate and continue.
 
 Now, sign into the application with one of the following user credentials from the user registry, which has been provided to you:
 
