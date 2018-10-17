@@ -30,7 +30,7 @@ Learn how to secure a web application through authentication and authorization.
 
 You'll learn how to secure a web application by performing authentication and authorization using Java EE Security. Authentication confirms the identity of the user by verifying a user's credentials while authorization determines whether a user has access to restricted resources.
 
-Java EE Security provides capability to configure the basic, form or custom form authentication mechanism by using annotations in servlets. It also provides SecurityContext API for programmatic security checks in application code.
+Java EE Security provides capability to configure the basic authentication, form authentication or custom form authentication mechanism by using annotations in servlets. It also provides SecurityContext API for programmatic security checks in application code.
 
 You’ll implement form authentication for a simple web frontend. You'll also learn to specify security constraints for a servlet and use the SecurityContext API to determine the role of a logged in user.
 
