@@ -30,7 +30,7 @@ Learn how to secure a web application through authentication and authorization.
 
 You'll learn how to secure a web application by performing authentication and authorization using Java EE Security. Authentication confirms the identity of the user by verifying a user's credentials while authorization determines whether a user has access to restricted resources.
 
-Java EE Security provides capability to configure the basic, form or custom form authentication mechanism by using annotations in servlets. It also provides SecurityContext API for programmatic security checks in application code.
+Java EE Security provides capability to configure the basic authentication, form authentication or custom form authentication mechanism by using annotations in servlets. It also provides SecurityContext API for programmatic security checks in application code.
 
 You’ll implement form authentication for a simple web frontend. You'll also learn to specify security constraints for a servlet and use the SecurityContext API to determine the role of a logged in user.
 
@@ -51,9 +51,9 @@ mvn install liberty:start-server
 
 Navigate your browser to this URL to access the application: `http://localhost:9080`
 
-The application automatically switches from a HTTP connection to a secure HTTPS connection and forwards you to a login page. If the browser gives you a certificate warning, it's because the Liberty server created a self-signed SSL certificate by default. You may follow your browser's provided instructions to accept the certificate and continue.
+The application automatically switches from an HTTP connection to a secure HTTPS connection and forwards you to a login page. If the browser gives you a certificate warning, it's because the Liberty server created a self-signed SSL certificate by default. You may follow your browser's provided instructions to accept the certificate and continue.
 
-Now, sign into the application with one of the following user credentials from the user registry, which has been provided to you:
+Sign into the application with one of the following user credentials from the user registry, which have been provided to you:
 
 |===
 |Username|Password|Role|Group
@@ -111,7 +111,7 @@ The `welcome.html` and `error.html` pages that implement the login form and erro
 
 Authorization determines whether a user can access a resource. To restrict access to authenticated users with `user` and `admin` roles only, define the `@ServletSecurity` annotation with the `@HttpConstraint` annotation and set the `rolesAllowed` attribute to these two roles.
 
-The `transportGuarantee` attribute defines the constraint on the traffic between the client and the application. Set it to `CONFIDENTIAL` to enforce that all user data must be encrypted, which is why a HTTP connection from a browser will be switched to a HTTPS one.
+The `transportGuarantee` attribute defines the constraint on the traffic between the client and the application. Set it to `CONFIDENTIAL` to enforce that all user data must be encrypted, which is why an HTTP connection from a browser will be switched to an HTTPS one.
 
 The SecurityContext interface provides programmatic access to Java EE Security API. Inject a SecurityContext instance into the `HomeServlet` class. The `doGet()` method uses the `isCallerInRole()` method from SecurityContext API to check a user's role and then forwards the response to the appropriate page.
 
@@ -161,7 +161,7 @@ Map the groups in the user registry to the appropriate user roles supported by t
 
 include::{common-includes}/mvnbuild.adoc[]
 
-Point your browser to `http://localhost:9080`. As you can see, the browser gets redirected from a HTTP connection to a HTTPS connection automatically, which is due to the transport guarantee defined in the `HomeServlet` class.
+Point your browser to `http://localhost:9080`. As you can see, the browser gets redirected from an HTTP connection to an HTTPS connection automatically, which is due to the transport guarantee defined in the `HomeServlet` class.
 
 You will see a login form since form authentication is implemented and configured. Sign into the application using one of the credentials from the following table, which is defined in the configured user registry.
 
