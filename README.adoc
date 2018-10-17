@@ -154,19 +154,6 @@ Use the `<include>` element to add the basic user registry configuration to your
 
 Map the groups in the user registry to the appropriate user roles supported by the application for proper user authorization. The `Manager` and `TeamLead` groups are mapped to the `admin` role while the `Employee` group is mapped to the `user` role using the `<security-role>` and `<group>` elements under the `<application-bnd>` configuration.
 
-=== Encoding passwords using securityUtility
-
-It is not recommended to store passwords in plain text. The `encode` task of Liberty's `securityUtility` command, which is available under the `wlp/bin` directory of a Liberty install, assists in this.
-
-For example, encode `bobpwd` with XOR encoding:
-```
-./securityUtility encode --encoding=xor bobpwd
-```
-
-You will see a similar output to the following:
-```
-{xor}PTA9Lyg7
-```
 
 // =================================================================================================
 // Building and running the application
