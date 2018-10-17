@@ -48,7 +48,6 @@
     </security-role>
 
     <!-- SECURITY CONSTRAINTS -->
-  <deny-uncovered-http-methods/>
     <security-constraint>
       <web-resource-collection>
         <web-resource-name>AdminViewProperties</web-resource-name>
@@ -69,8 +68,8 @@
       <auth-constraint>
         <role-name>user</role-name>
       </auth-constraint>
-    </security-constraint>   
-
+    </security-constraint>
+    <deny-uncovered-http-methods/>
     <!-- end::webxmlsecurity[] -->
 
     <!-- Handle 403 Error -->
