@@ -69,6 +69,7 @@
         <role-name>user</role-name>
       </auth-constraint>
     </security-constraint>
+    <deny-uncovered-http-methods/>
     <!-- end::webxmlsecurity[] -->
 
     <!-- Handle 403 Error -->
