@@ -12,9 +12,7 @@
 :page-description: Learn how to secure a web application through authentication and authorization using Java EE 8 Security API.
 :page-tags: ['REST', 'MicroProfile', 'Security', 'CDI']
 :page-related-guides: ['microprofile-jwt', 'cdi-intro']
-:page-guide-category: basic
-:page-essential: true
-:page-essential-order: 1
+:page-guide-category: none
 :page-permalink: /guides/{projectid}
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
