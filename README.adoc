@@ -9,7 +9,7 @@
 :projectid: security-intro
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-19
-:page-description: Learn how to secure a web application through authentication and authorization using Java EE 8 Security API.
+:page-description: Learn how to secure a web application through authentication and authorization.
 :page-tags: ['REST', 'MicroProfile', 'Security', 'CDI']
 :page-related-guides: ['microprofile-jwt', 'cdi-intro']
 :page-guide-category: none
