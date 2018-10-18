@@ -52,28 +52,24 @@ public class SecurityTest {
     @Test
     public void testAuthenticationFail() throws Exception {
         executeURL("/", "bob", "wrongpassword", true, -1, "Don't care");
-        System.out.println("testAuthenticationFail passed!");
     }
 
     @Test
     public void testAuthorizationForAdmin() throws Exception {
         executeURL("/", "bob", "bobpwd", false,
             HttpServletResponse.SC_OK, "admin, user");
-        System.out.println("testAuthorizationForAdmin passed!");
     }
 
     @Test
     public void testAuthorizationForUser() throws Exception {
         executeURL("/", "alice", "alicepwd", false,
             HttpServletResponse.SC_OK, "<title>User</title>");
-        System.out.println("testAuthorizationForUser passed!");
     }
 
     @Test
     public void testAuthorizationFail() throws Exception {
         executeURL("/", "dave", "davepwd", false,
             HttpServletResponse.SC_FORBIDDEN, "Error 403: Authorization failed");
-        System.out.println("testAuthorizationFail passed!");
     }
 
     private void executeURL(

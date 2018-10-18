@@ -5,16 +5,19 @@
 //
 // Contributors:
 //   IBM Corporation
-:projectid: security-intro
 :page-layout: guide
+:projectid: security-intro
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-19
 :page-description: Learn how to secure a web application through authentication and authorization.
 :page-tags: ['REST', 'MicroProfile', 'Security', 'CDI']
 :page-related-guides: ['microprofile-jwt', 'cdi-intro']
+:page-guide-category: none
 :page-permalink: /guides/{projectid}
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
+:page-seo-title: Securing a web application
+:page-seo-description: Learn how to secure a web application through authentication and authorization using Java EE 8 Security API.
 = Securing a web application
 
 [.hidden]
