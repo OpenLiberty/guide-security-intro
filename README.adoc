@@ -146,6 +146,8 @@ include::finish/src/main/liberty/config/userRegistry.xml[tags=**]
 
 The registry has four users, `bob`, `alice`, `carl` and `dave`, and four groups, `Employee`, `TeamLead`, `Manager` and `PartTime`. Each user belongs to one or more groups.
 
+It is not recommended to store passwords in plain text. The passwords in the `userRegistry.xml` file are encoded using the Liberty `securityUtility` command with XOR encoding.
+
 Open the `server.xml` file to view the security configuration of the server.
 
 [source, xml, indent=0, role="no_copy"]
