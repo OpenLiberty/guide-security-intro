@@ -10,7 +10,7 @@
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-19
 :page-description: Learn how to secure a web application through authentication and authorization.
-:page-tags: ['REST', 'MicroProfile', 'Security', 'CDI']
+:page-tags: ['REST', 'Security', 'CDI']
 :page-related-guides: ['microprofile-jwt', 'cdi-intro']
 :page-guide-category: none
 :page-permalink: /guides/{projectid}
