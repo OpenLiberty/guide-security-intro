@@ -5,7 +5,7 @@
 //
 // Contributors:
 //   IBM Corporation
-:page-layout: guide
+:page-layout: guide-multipane
 :projectid: security-intro
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-19
@@ -48,6 +48,7 @@ include::{common-includes}/gitclone.adoc[]
 The `finish` directory in the root of this guide contains the finished application secured with form authentication. Feel free to give it a try before you proceed.
 
 To try out the application, first navigate to the `finish` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
+[role='command']
 ```
 mvn install liberty:start-server
 ```
@@ -87,6 +88,7 @@ When you sign in as Alice, you can only view Alice's name.
 When you sign in as Dave, you'll be blocked and will see a `Error 403: Authorization failed` message because Dave doesn't have a role supported by the application.
 
 Once you're done checking out the application, log out and stop the Open Liberty server:
+[role='command']
 ```
 mvn liberty:stop-server
 ```
@@ -100,32 +102,35 @@ mvn liberty:stop-server
 For this application, users will be asked to login with a form when they access the application. Users are authenticated and depending on their roles, they will be redirected to the pages that they are authorized to access. If authentication or authorization failed, users will be sent to an error page. The application supports two roles, `admin` and `user`.
 
 Navigate to the `start` directory to begin.
+[role="code_command"]
+----
+Create the `HomeServlet` class.
+`src/main/java/io/openliberty/guides/ui/HomeServlet.java`
+----
 
-Create the `HomeServlet` class in the `src/main/java/io/openliberty/guides/ui/HomeServlet.java` file:
-
-[source, java, indent=0]
+[source, java, linenums, role="code_column"]
 ----
 include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=homeservlet;!copyright]
 ----
 
-The `HomeServlet` servlet is the entry point of the application. To enable form authentication for the `HomeServlet` class, define the `@FormAuthenticationMechanismDefinition` annotation and set its `loginToContinue` attribute with a `@LoginToContinue` annotation defining `welcome.html` as the login page and `error.html` as the error page.
+The [hotspot=21-49 file=0]`HomeServlet` servlet is the entry point of the application. To enable form authentication for the `HomeServlet` class, define the [hotspot=17-18 file=0]`@FormAuthenticationMechanismDefinition` annotation and set its [hotspot=18-19 file=0]`loginToContinue` attribute with a [hotspot=18-19 file=0]`@LoginToContinue` annotation defining [hotspot=19 file=0]`welcome.html` as the login page and [hotspot=18 file=0]`error.html` as the error page.
 
-The `welcome.html` and `error.html` pages that implement the login form and error page respectively are provided for you under the `src/main/webapp` directory. The login form in the `welcome.html` page uses the `j_security_check` action, which is defined by Java EE and available by default.
+The [hotspot=19 file=0]`welcome.html` and [hotspot=18 file=0]`error.html` pages that implement the login form and error page respectively are provided for you under the `src/main/webapp` directory. The login form in the [hotspot=19 file=0]`welcome.html` page uses the `j_security_check` action, which is defined by Java EE and available by default.
 
 Authorization determines whether a user can access a resource. To restrict access to authenticated users with `user` and `admin` roles only, define the `@ServletSecurity` annotation with the `@HttpConstraint` annotation and set the `rolesAllowed` attribute to these two roles.
 
-The `transportGuarantee` attribute defines the constraint on the traffic between the client and the application. Set it to `CONFIDENTIAL` to enforce that all user data must be encrypted, which is why an HTTP connection from a browser will be switched to an HTTPS one.
+The [hotspot=21 file=0]`transportGuarantee` attribute defines the constraint on the traffic between the client and the application. Set it to [hotspot=21 file=0]`CONFIDENTIAL` to enforce that all user data must be encrypted, which is why an HTTP connection from a browser will be switched to an HTTPS one.
 
-The SecurityContext interface provides programmatic access to Java EE Security API. Inject a SecurityContext instance into the `HomeServlet` class. The `doGet()` method uses the `isCallerInRole()` method from SecurityContext API to check a user's role and then forwards the response to the appropriate page.
+The SecurityContext interface provides programmatic access to Java EE Security API. Inject a SecurityContext instance into the [hotspot=21-49 file=0]`HomeServlet` class. The [hotspot=33-40 file=0]`doGet()` method uses the [hotspot=35-36 file=0]`isCallerInRole()` method from SecurityContext API to check a user's role and then forwards the response to the appropriate page.
 
-Open the `src/main/webapp/WEB-INF/web.xml` file and look at the rest of the security declaration for the application:
+The [hotspot=24-55 file=1]`src/main/webapp/WEB-INF/web.xml` file contains the rest of the security declaration for the application.
 
-[source, xml, indent=0, role="no_copy"]
+[source, xml, linenums, role="code_column"]
 ----
-include::finish/src/main/webapp/WEB-INF/web.xml[tags=webxmlsecurity]
+include::finish/src/main/webapp/WEB-INF/web.xml[tags=**;!copyright]
 ----
 
-The `<security-role>` elements define the roles supported by the application, which are `user` and `admin`. The `<security-constraint>` elements further specify that JSF resources like the `user.jsf` and `admin.jsf` pages can only be accessed by users with `user` and `admin` role respectively.
+The [hotspot=25-31 file=1]`<security-role>` elements define the roles supported by the application, which are [hotspot=30 file=1]`user` and [hotspot=26 file=1]`admin`. The [hotspot=34-55 file=1]`<security-constraint>` elements further specify that JSF resources like the [hotspot=48 file=1]`user.jsf` and [hotspot=37 file=1]`admin.jsf` pages can only be accessed by users with [hotspot=30 file=1]`user` and [hotspot=26 file=1]`admin` role respectively.
 
 // =================================================================================================
 // Configuring the user registry
@@ -199,6 +204,7 @@ When you sign in as Alice, you can only view Alice's name.
 When you sign in as Dave, you'll be blocked and will see a `Error 403: Authorization failed` message because Dave doesn't have a role supported by the application.
 
 Once you're done checking out the application, log out and stop the Open Liberty server:
+[role='command']
 ```
 mvn liberty:stop-server
 ```
