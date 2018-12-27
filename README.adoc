@@ -102,7 +102,7 @@ mvn liberty:stop-server
 For this application, users will be asked to login with a form when they access the application. Users are authenticated and depending on their roles, they will be redirected to the pages that they are authorized to access. If authentication or authorization failed, users will be sent to an error page. The application supports two roles, `admin` and `user`.
 
 Navigate to the `start` directory to begin.
-[role="code_command"]
+[role="code_command hotspot=1-50", subs="quotes"]
 ----
 Create the `HomeServlet` class.
 `src/main/java/io/openliberty/guides/ui/HomeServlet.java`

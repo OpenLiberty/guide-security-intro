@@ -27,8 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(urlPatterns = "/home")
-@FormAuthenticationMechanismDefinition(loginToContinue = @LoginToContinue(
-  errorPage = "/error.html", loginPage = "/welcome.html"))
+@FormAuthenticationMechanismDefinition(
+    loginToContinue = @LoginToContinue(errorPage = "/error.html", 
+                                       loginPage = "/welcome.html"))
 @ServletSecurity(value = @HttpConstraint(rolesAllowed = { "user", "admin" },
   transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL))
 public class HomeServlet extends HttpServlet {
