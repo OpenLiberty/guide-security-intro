@@ -144,9 +144,9 @@ User registries store user account information, such as username and password, f
 
 Open Liberty provides an easy-to-use basic user registry for developers, which you will configure.
 
-[role="code_command"]
+[role="code_command hotspot=1-30", subs="quotes"]
 ----
-Create the User Registry configuration file.
+Create the `UserRegistry` configuration file.
 `src/main/liberty/config/userRegistry.xml` 
 ----
 
@@ -224,7 +224,7 @@ mvn liberty:stop-server
 
 Write `SecurityTest` class to test the authentication and authorization of the application.
 
-[role="code_command"]
+[role="code_command hotspot=1-31", subs="quotes"]
 ----
 Create the `SecurityTest` class.
 `src/test/java/it/io/openliberty/guides/security/SecurityTest.java`

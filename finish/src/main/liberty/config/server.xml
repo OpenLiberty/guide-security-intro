@@ -8,10 +8,8 @@
   </featureManager>
 
   <httpEndpoint id="defaultHttpEndpoint"
-    httpPort="${server.http.port}"
-    httpsPort="${server.https.port}" />
+    httpPort="${server.http.port}" httpsPort="${server.https.port}" />
 
-  <!-- tag::serverxmlsecurity[] -->
   <include location="userRegistry.xml"/>
 
   <application location="${application.name}" type="war"
@@ -27,7 +25,6 @@
       </security-role>
     </application-bnd>
   </application>
-  <!-- end::serverxmlsecurity[] -->
 
 </server>
 <!-- end::serverxml[] -->
