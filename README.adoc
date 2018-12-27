@@ -129,7 +129,7 @@ The [hotspot=24-55 file=1]`src/main/webapp/WEB-INF/web.xml` file contains the re
 web.xml
 [source, xml, linenums, role="code_column"]
 ----
-include::finish/src/main/webapp/WEB-INF/web.xml[tags=**;!copyright]
+include::finish/src/main/webapp/WEB-INF/web.xml[tags=webxml;!copyright]
 ----
 
 The [hotspot=25-31 file=1]`<security-role>` elements define the roles supported by the application, which are [hotspot=30 file=1]`user` and [hotspot=26 file=1]`admin`. The [hotspot=34-55 file=1]`<security-constraint>` elements further specify that JSF resources like the [hotspot=48 file=1]`user.jsf` and [hotspot=37 file=1]`admin.jsf` pages can only be accessed by users with [hotspot=30 file=1]`user` and [hotspot=26 file=1]`admin` role respectively.
