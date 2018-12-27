@@ -8,11 +8,13 @@
   </featureManager>
 
   <httpEndpoint id="defaultHttpEndpoint"
-    httpPort="${server.http.port}" httpsPort="${server.https.port}" />
+    httpPort="${server.http.port}" 
+    httpsPort="${server.https.port}" />
 
   <include location="userRegistry.xml"/>
 
-  <application location="${application.name}" type="war"
+  <application location="${application.name}" 
+               type="war"
                id="${application.name}"
                name="${application.name}" context-root="/">
     <application-bnd>
