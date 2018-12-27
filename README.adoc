@@ -40,7 +40,7 @@ You’ll implement form authentication for a simple web frontend. You'll also le
 // =================================================================================================
 // Getting Started
 // =================================================================================================
-
+[role="command"]
 include::{common-includes}/gitclone.adoc[]
 
 === Try what you'll build
@@ -108,6 +108,7 @@ Create the `HomeServlet` class.
 `src/main/java/io/openliberty/guides/ui/HomeServlet.java`
 ----
 
+HomeServlet.java
 [source, java, linenums, role="code_column"]
 ----
 include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=homeservlet;!copyright]
@@ -117,7 +118,7 @@ The [hotspot=21-49 file=0]`HomeServlet` servlet is the entry point of the applic
 
 The [hotspot=19 file=0]`welcome.html` and [hotspot=18 file=0]`error.html` pages that implement the login form and error page respectively are provided for you under the `src/main/webapp` directory. The login form in the [hotspot=19 file=0]`welcome.html` page uses the `j_security_check` action, which is defined by Java EE and available by default.
 
-Authorization determines whether a user can access a resource. To restrict access to authenticated users with `user` and `admin` roles only, define the `@ServletSecurity` annotation with the `@HttpConstraint` annotation and set the `rolesAllowed` attribute to these two roles.
+Authorization determines whether a user can access a resource. To restrict access to authenticated users with `user` and `admin` roles only, define the [hotspot=32-33 file=0]`@ServletSecurity` annotation with the [hotspot=32 file=0]`@HttpConstraint` annotation and set the [hotspot=32 file=0]`rolesAllowed` attribute to these two roles.
 
 The [hotspot=21 file=0]`transportGuarantee` attribute defines the constraint on the traffic between the client and the application. Set it to [hotspot=21 file=0]`CONFIDENTIAL` to enforce that all user data must be encrypted, which is why an HTTP connection from a browser will be switched to an HTTPS one.
 
@@ -125,6 +126,7 @@ The SecurityContext interface provides programmatic access to Java EE Security A
 
 The [hotspot=24-55 file=1]`src/main/webapp/WEB-INF/web.xml` file contains the rest of the security declaration for the application.
 
+web.xml
 [source, xml, linenums, role="code_column"]
 ----
 include::finish/src/main/webapp/WEB-INF/web.xml[tags=**;!copyright]
@@ -142,33 +144,38 @@ User registries store user account information, such as username and password, f
 
 Open Liberty provides an easy-to-use basic user registry for developers, which you will configure.
 
-Create the `src/main/liberty/config/userRegistry.xml` file:
+[role="code_command"]
+----
+Create the User Registry configuration file.
+`src/main/liberty/config/userRegistry.xml` 
+----
 
-[source, xml, indent=0]
+userRegistry.xml
+[source, xml, linenums, role="code_column"]
 ----
 include::finish/src/main/liberty/config/userRegistry.xml[tags=**]
 ----
 
-The registry has four users, `bob`, `alice`, `carl` and `dave`, and four groups, `Employee`, `TeamLead`, `Manager` and `PartTime`. Each user belongs to one or more groups.
+The registry has four users, [hotspot=13 file=0]`bob`, [hotspot=21 file=0]`alice`, [hotspot=23 file=0]`carl` and [hotspot=277 file=0]`dave`, and four groups, [hotspot=20-24 file=0]`Employee`, [hotspot=16-18 file=0]`TeamLead`, [hotspot=12-14 file=0]`Manager` and [hotspot=26-28 file=0]`PartTime`. Each user belongs to one or more groups.
 
-It is not recommended to store passwords in plain text. The passwords in the `userRegistry.xml` file are encoded using the Liberty `securityUtility` command with XOR encoding.
+It is not recommended to store passwords in plain text. The passwords in the [hotspot=1-30 file=0]`userRegistry.xml` file are encoded using the Liberty `securityUtility` command with XOR encoding.
 
-Open the `server.xml` file to view the security configuration of the server.
+The [hotspot=14-28 file=1]`server.xml` file contains the security configuration of the server.
 
-[source, xml, indent=0, role="no_copy"]
+[source, xml, linenums, role="code_column"]
 ----
-include::finish/src/main/liberty/config/server.xml[tags=serverxmlsecurity]
+include::finish/src/main/liberty/config/server.xml[tags=**]
 ----
 
-Use the `<include>` element to add the basic user registry configuration to your server configuration. Open Liberty will include configuration information from the specified XML file in its server configuration.
+Use the [hotspot=14 file=1]`<include>` element to add the basic user registry configuration to your server configuration. Open Liberty will include configuration information from the specified XML file in its server configuration.
 
-Map the groups in the user registry to the appropriate user roles supported by the application for proper user authorization. The `Manager` and `TeamLead` groups are mapped to the `admin` role while the `Employee` group is mapped to the `user` role using the `<security-role>` and `<group>` elements under the `<application-bnd>` configuration.
+Map the groups in the user registry to the appropriate user roles supported by the application for proper user authorization. The [hotspot=21 file=1]`Manager` and [hotspot=22 file=1]`TeamLead` groups are mapped to the [hotspot=20 file=1]`admin` role while the [hotspot=25 file=1]`Employee` group is mapped to the [hotspot=24 file=1]`user` role using the [hotspot=20-26 file=1]`<security-role>` and [hotspot=21-22 file=1]`<group>` elements under the [hotspot=19-27 file=1]`<application-bnd>` configuration.
 
 
 // =================================================================================================
 // Building and running the application
 // =================================================================================================
-
+[role="command"]
 include::{common-includes}/mvnbuild.adoc[]
 
 Point your browser to `http://localhost:9080`. As you can see, the browser gets redirected from an HTTP connection to an HTTPS connection automatically, which is due to the transport guarantee defined in the `HomeServlet` class.
@@ -217,17 +224,23 @@ mvn liberty:stop-server
 
 Write `SecurityTest` class to test the authentication and authorization of the application.
 
-Create the `SecurityTest` class in the `src/test/java/it/io/openliberty/guides/security/SecurityTest.java` file like the following:
+[role="code_command"]
+----
+Create the `SecurityTest` class.
+`src/test/java/it/io/openliberty/guides/security/SecurityTest.java`
+----
 
-[source, java, indent=0]
+SecurityTest.java
+[source, java, linenums, role="code_column"]
 ----
 include::finish/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=test]
 ----
 
-The `testAuthenticationFail()` method tests an invalid user authentication while the `testAuthorizationFail()` method tests unauthorized access to the application.
+The [hotspot=53-55]`testAuthenticationFail()` method tests an invalid user authentication while the [hotspot=53-55]`testAuthorizationFail()` method tests unauthorized access to the application.
 
-The `testAuthorizationForAdmin()` and `testAuthorizationForUser()` methods, respectively, verify that a user with `admin` role and a user with `user` role are properly authenticated and can access authorized resource.
+The [hotspot=58-61]`testAuthorizationForAdmin()` and [hotspot=64-67]`testAuthorizationForUser()` methods, respectively, verify that a user with [hotspot=60]`admin` role and a user with [hotspot=66]`user` role are properly authenticated and can access authorized resource.
 
+[role="code_command"]
 include::{common-includes}/mvnverify.adoc[]
 
 [source, role="no_copy"]
