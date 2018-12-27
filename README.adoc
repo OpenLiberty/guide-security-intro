@@ -225,7 +225,7 @@ mvn liberty:stop-server
 
 Write `SecurityTest` class to test the authentication and authorization of the application.
 
-[role="code_command hotspot=1-31", subs="quotes"]
+[role="code_command hotspot=1-131", subs="quotes"]
 ----
 Create the `SecurityTest` class.
 `src/test/java/it/io/openliberty/guides/security/SecurityTest.java`
