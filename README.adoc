@@ -162,6 +162,7 @@ It is not recommended to store passwords in plain text. The passwords in the [ho
 
 The [hotspot=14-28 file=1]`server.xml` file contains the security configuration of the server.
 
+server.xml
 [source, xml, linenums, role="code_column"]
 ----
 include::finish/src/main/liberty/config/server.xml[tags=**]
