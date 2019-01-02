@@ -114,11 +114,11 @@ HomeServlet.java
 include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=homeservlet;!copyright]
 ----
 
-The [hotspot=21-49 file=0]`HomeServlet` servlet is the entry point of the application. To enable form authentication for the `HomeServlet` class, define the [hotspot=17-18 file=0]`@FormAuthenticationMechanismDefinition` annotation and set its [hotspot=18-19 file=0]`loginToContinue` attribute with a [hotspot=18-19 file=0]`@LoginToContinue` annotation defining [hotspot=19 file=0]`welcome.html` as the login page and [hotspot=18 file=0]`error.html` as the error page.
+The [hotspot=22-50 file=0]`HomeServlet` servlet is the entry point of the application. To enable form authentication for the [hotspot=22-50 file=0]`HomeServlet` class, define the [hotspot=17-18 file=0]`@FormAuthenticationMechanismDefinition` annotation and set its [hotspot=18-19 file=0]`loginToContinue` attribute with a [hotspot=18-19 file=0]`@LoginToContinue` annotation defining [hotspot=19 file=0]`welcome.html` as the login page and [hotspot=18 file=0]`error.html` as the error page.
 
 The [hotspot=19 file=0]`welcome.html` and [hotspot=18 file=0]`error.html` pages that implement the login form and error page respectively are provided for you under the `src/main/webapp` directory. The login form in the [hotspot=19 file=0]`welcome.html` page uses the `j_security_check` action, which is defined by Java EE and available by default.
 
-Authorization determines whether a user can access a resource. To restrict access to authenticated users with `user` and `admin` roles only, define the [hotspot=32-33 file=0]`@ServletSecurity` annotation with the [hotspot=32 file=0]`@HttpConstraint` annotation and set the [hotspot=32 file=0]`rolesAllowed` attribute to these two roles.
+Authorization determines whether a user can access a resource. To restrict access to authenticated users with `user` and `admin` roles only, define the [hotspot=20-21 file=0]`@ServletSecurity` annotation with the [hotspot=20 file=0]`@HttpConstraint` annotation and set the [hotspot=20 file=0]`rolesAllowed` attribute to these two roles.
 
 The [hotspot=21 file=0]`transportGuarantee` attribute defines the constraint on the traffic between the client and the application. Set it to [hotspot=21 file=0]`CONFIDENTIAL` to enforce that all user data must be encrypted, which is why an HTTP connection from a browser will be switched to an HTTPS one.
 
@@ -156,7 +156,7 @@ userRegistry.xml
 include::finish/src/main/liberty/config/userRegistry.xml[tags=**]
 ----
 
-The registry has four users, [hotspot=13 file=0]`bob`, [hotspot=21 file=0]`alice`, [hotspot=23 file=0]`carl` and [hotspot=277 file=0]`dave`, and four groups, [hotspot=20-24 file=0]`Employee`, [hotspot=16-18 file=0]`TeamLead`, [hotspot=12-14 file=0]`Manager` and [hotspot=26-28 file=0]`PartTime`. Each user belongs to one or more groups.
+The registry has four users, [hotspot=13 file=0]`bob`, [hotspot=21 file=0]`alice`, [hotspot=23 file=0]`carl` and [hotspot=27 file=0]`dave`, and four groups, [hotspot=20-24 file=0]`Employee`, [hotspot=16-18 file=0]`TeamLead`, [hotspot=12-14 file=0]`Manager` and [hotspot=26-28 file=0]`PartTime`. Each user belongs to one or more groups.
 
 It is not recommended to store passwords in plain text. The passwords in the [hotspot=1-30 file=0]`userRegistry.xml` file are encoded using the Liberty `securityUtility` command with XOR encoding.
 
@@ -237,9 +237,9 @@ SecurityTest.java
 include::finish/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=test]
 ----
 
-The [hotspot=53-55]`testAuthenticationFail()` method tests an invalid user authentication while the [hotspot=53-55]`testAuthorizationFail()` method tests unauthorized access to the application.
+The [hotspot=40-42]`testAuthenticationFail()` method tests an invalid user authentication while the [hotspot=57-60]`testAuthorizationFail()` method tests unauthorized access to the application.
 
-The [hotspot=58-61]`testAuthorizationForAdmin()` and [hotspot=64-67]`testAuthorizationForUser()` methods, respectively, verify that a user with [hotspot=60]`admin` role and a user with [hotspot=66]`user` role are properly authenticated and can access authorized resource.
+The [hotspot=45-48]`testAuthorizationForAdmin()` and [hotspot=51-54]`testAuthorizationForUser()` methods, respectively, verify that a user with [hotspot=47]`admin` role and a user with [hotspot=53]`user` role are properly authenticated and can access authorized resource.
 
 [role="code_command"]
 include::{common-includes}/mvnverify.adoc[]
@@ -271,3 +271,4 @@ Next, you can try the related https://openliberty.io/guides/microprofile-jwt.htm
 
 
 include::{common-includes}/finish.adoc[]
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/multipane/attribution.adoc[subs="attributes"]
