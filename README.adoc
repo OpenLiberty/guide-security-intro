@@ -239,7 +239,7 @@ include::finish/src/test/java/it/io/openliberty/guides/security/SecurityTest.jav
 
 The [hotspot=40-42]`testAuthenticationFail()` method tests an invalid user authentication while the [hotspot=57-60]`testAuthorizationFail()` method tests unauthorized access to the application.
 
-The [hotspot=45-48]`testAuthorizationForAdmin()` and [hotspot=51-54]`testAuthorizationForUser()` methods, respectively, verify that a user with [hotspot=47]`admin` role and a user with [hotspot=53]`user` role are properly authenticated and can access authorized resource.
+The [hotspot=45-48]`testAuthorizationForAdmin()` and [hotspot=51-54]`testAuthorizationForUser()` methods, respectively, verify that a user with `admin` role and a user with `user` role are properly authenticated and can access authorized resource.
 
 [role="code_command"]
 include::{common-includes}/mvnverify.adoc[]
