@@ -133,7 +133,7 @@ web.xml
 include::finish/src/main/webapp/WEB-INF/web.xml[tags=webxml;!copyright]
 ----
 
-The [hotspot=25-31 file=1]`<security-role/>` elements define the roles supported by the application, which are [hotspot=30 file=1]`user` and [hotspot=26 file=1]`admin`. The [hotspot=34-55 file=1]`<security-constraint>` elements further specify that JSF resources like the [hotspot=48 file=1]`user.jsf` and [hotspot=37 file=1]`admin.jsf` pages can only be accessed by users with [hotspot=30 file=1]`user` and [hotspot=26 file=1]`admin` role respectively.
+The [hotspot=25-31 file=1]`<security-role/>` elements define the roles supported by the application, which are [hotspot=30 file=1]`user` and [hotspot=26 file=1]`admin`. The [hotspot=34-55 file=1]`<security-constraint/>` elements further specify that JSF resources like the [hotspot=48 file=1]`user.jsf` and [hotspot=37 file=1]`admin.jsf` pages can only be accessed by users with [hotspot=30 file=1]`user` and [hotspot=26 file=1]`admin` role respectively.
 
 // =================================================================================================
 // Configuring the user registry
@@ -171,7 +171,7 @@ include::finish/src/main/liberty/config/server.xml[tags=**]
 
 Use the [hotspot=13 file=1]`<include/>` element to add the basic user registry configuration to your server configuration. Open Liberty will include configuration information from the specified XML file in its server configuration.
 
-Map the groups in the user registry to the appropriate user roles supported by the application for proper user authorization. The [hotspot=21 file=1]`Manager` and [hotspot=22 file=1]`TeamLead` groups are mapped to the [hotspot=20 file=1]`admin` role while the [hotspot=25 file=1]`Employee` group is mapped to the [hotspot=24 file=1]`user` role using the [hotspot=20-26 file=1]`<security-role>` and [hotspot=21-22 file=1]`<group>` elements under the [hotspot=19-27 file=1]`<application-bnd>` configuration.
+Map the groups in the user registry to the appropriate user roles supported by the application for proper user authorization. The [hotspot=21 file=1]`Manager` and [hotspot=22 file=1]`TeamLead` groups are mapped to the [hotspot=20 file=1]`admin` role while the [hotspot=25 file=1]`Employee` group is mapped to the [hotspot=24 file=1]`user` role using the [hotspot=20-26 file=1]`<security-role/>` and [hotspot=21-22 file=1]`<group/>` elements under the [hotspot=19-27 file=1]`<application-bnd/>` configuration.
 
 
 // =================================================================================================
