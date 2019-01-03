@@ -5,6 +5,7 @@
 //
 // Contributors:
 //   IBM Corporation
+:guide-author: Open Liberty
 :page-layout: guide-multipane
 :projectid: security-intro
 :page-duration: 15 minutes
@@ -53,7 +54,7 @@ To try out the application, first navigate to the `finish` directory and then ru
 mvn install liberty:start-server
 ```
 
-Navigate your browser to this URL to access the application: `http://localhost:9080`
+Navigate your browser to this URL to access the application: http://localhost:9080
 
 The application automatically switches from an HTTP connection to a secure HTTPS connection and forwards you to a login page. If the browser gives you a certificate warning, it's because the Liberty server created a self-signed SSL certificate by default. You may follow your browser's provided instructions to accept the certificate and continue.
 
@@ -102,7 +103,7 @@ mvn liberty:stop-server
 For this application, users will be asked to login with a form when they access the application. Users are authenticated and depending on their roles, they will be redirected to the pages that they are authorized to access. If authentication or authorization failed, users will be sent to an error page. The application supports two roles, `admin` and `user`.
 
 Navigate to the `start` directory to begin.
-[role="code_command hotspot=1-50", subs="quotes"]
+[role="code_command hotspot=22-50", subs="quotes"]
 ----
 Create the `HomeServlet` class.
 `src/main/java/io/openliberty/guides/ui/HomeServlet.java`
@@ -114,7 +115,7 @@ HomeServlet.java
 include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=homeservlet;!copyright]
 ----
 
-The [hotspot=22-50 file=0]`HomeServlet` servlet is the entry point of the application. To enable form authentication for the [hotspot=22-50 file=0]`HomeServlet` class, define the [hotspot=17-18 file=0]`@FormAuthenticationMechanismDefinition` annotation and set its [hotspot=18-19 file=0]`loginToContinue` attribute with a [hotspot=18-19 file=0]`@LoginToContinue` annotation defining [hotspot=19 file=0]`welcome.html` as the login page and [hotspot=18 file=0]`error.html` as the error page.
+The [hotspot=22-50 file=0]`HomeServlet` servlet is the entry point of the application. To enable form authentication for the [hotspot=22-50 file=0]`HomeServlet` class, define the [hotspot=17-19 file=0]`@FormAuthenticationMechanismDefinition` annotation and set its [hotspot=18-19 file=0]`loginToContinue` attribute with a [hotspot=18-19 file=0]`@LoginToContinue` annotation defining [hotspot=19 file=0]`welcome.html` as the login page and [hotspot=18 file=0]`error.html` as the error page.
 
 The [hotspot=19 file=0]`welcome.html` and [hotspot=18 file=0]`error.html` pages that implement the login form and error page respectively are provided for you under the `src/main/webapp` directory. The login form in the [hotspot=19 file=0]`welcome.html` page uses the `j_security_check` action, which is defined by Java EE and available by default.
 
@@ -122,7 +123,7 @@ Authorization determines whether a user can access a resource. To restrict acces
 
 The [hotspot=21 file=0]`transportGuarantee` attribute defines the constraint on the traffic between the client and the application. Set it to [hotspot=21 file=0]`CONFIDENTIAL` to enforce that all user data must be encrypted, which is why an HTTP connection from a browser will be switched to an HTTPS one.
 
-The SecurityContext interface provides programmatic access to Java EE Security API. Inject a SecurityContext instance into the [hotspot=21-49 file=0]`HomeServlet` class. The [hotspot=33-40 file=0]`doGet()` method uses the [hotspot=35-36 file=0]`isCallerInRole()` method from SecurityContext API to check a user's role and then forwards the response to the appropriate page.
+The SecurityContext interface provides programmatic access to Java EE Security API. Inject a SecurityContext instance into the [hotspot=22-50 file=0]`HomeServlet` class. The [hotspot=33-40 file=0]`doGet()` method uses the [hotspot=35-36 file=0]`isCallerInRole()` method from SecurityContext API to check a user's role and then forwards the response to the appropriate page.
 
 The [hotspot=24-55 file=1]`src/main/webapp/WEB-INF/web.xml` file contains the rest of the security declaration for the application.
 
@@ -132,7 +133,7 @@ web.xml
 include::finish/src/main/webapp/WEB-INF/web.xml[tags=webxml;!copyright]
 ----
 
-The [hotspot=25-31 file=1]`<security-role>` elements define the roles supported by the application, which are [hotspot=30 file=1]`user` and [hotspot=26 file=1]`admin`. The [hotspot=34-55 file=1]`<security-constraint>` elements further specify that JSF resources like the [hotspot=48 file=1]`user.jsf` and [hotspot=37 file=1]`admin.jsf` pages can only be accessed by users with [hotspot=30 file=1]`user` and [hotspot=26 file=1]`admin` role respectively.
+The [hotspot=25-31 file=1]`<security-role/>` elements define the roles supported by the application, which are [hotspot=30 file=1]`user` and [hotspot=26 file=1]`admin`. The [hotspot=34-55 file=1]`<security-constraint>` elements further specify that JSF resources like the [hotspot=48 file=1]`user.jsf` and [hotspot=37 file=1]`admin.jsf` pages can only be accessed by users with [hotspot=30 file=1]`user` and [hotspot=26 file=1]`admin` role respectively.
 
 // =================================================================================================
 // Configuring the user registry
@@ -160,7 +161,7 @@ The registry has four users, [hotspot=13 file=0]`bob`, [hotspot=21 file=0]`alice
 
 It is not recommended to store passwords in plain text. The passwords in the [hotspot=1-30 file=0]`userRegistry.xml` file are encoded using the Liberty `securityUtility` command with XOR encoding.
 
-The [hotspot=14-28 file=1]`server.xml` file contains the security configuration of the server.
+The [hotspot=19-27 file=1]`server.xml` file contains the security configuration of the server.
 
 server.xml
 [source, xml, linenums, role="code_column"]
@@ -168,7 +169,7 @@ server.xml
 include::finish/src/main/liberty/config/server.xml[tags=**]
 ----
 
-Use the [hotspot=14 file=1]`<include>` element to add the basic user registry configuration to your server configuration. Open Liberty will include configuration information from the specified XML file in its server configuration.
+Use the [hotspot=13 file=1]`<include/>` element to add the basic user registry configuration to your server configuration. Open Liberty will include configuration information from the specified XML file in its server configuration.
 
 Map the groups in the user registry to the appropriate user roles supported by the application for proper user authorization. The [hotspot=21 file=1]`Manager` and [hotspot=22 file=1]`TeamLead` groups are mapped to the [hotspot=20 file=1]`admin` role while the [hotspot=25 file=1]`Employee` group is mapped to the [hotspot=24 file=1]`user` role using the [hotspot=20-26 file=1]`<security-role>` and [hotspot=21-22 file=1]`<group>` elements under the [hotspot=19-27 file=1]`<application-bnd>` configuration.
 
@@ -179,7 +180,7 @@ Map the groups in the user registry to the appropriate user roles supported by t
 [role="command"]
 include::{common-includes}/mvnbuild.adoc[]
 
-Point your browser to `http://localhost:9080`. As you can see, the browser gets redirected from an HTTP connection to an HTTPS connection automatically, which is due to the transport guarantee defined in the `HomeServlet` class.
+Point your browser to http://localhost:9080. As you can see, the browser gets redirected from an HTTP connection to an HTTPS connection automatically, which is due to the transport guarantee defined in the `HomeServlet` class.
 
 You will see a login form since form authentication is implemented and configured. Sign into the application using one of the credentials from the following table, which is defined in the configured user registry.
 
@@ -225,7 +226,7 @@ mvn liberty:stop-server
 
 Write `SecurityTest` class to test the authentication and authorization of the application.
 
-[role="code_command hotspot=1-131", subs="quotes"]
+[role="code_command hotspot=27-131", subs="quotes"]
 ----
 Create the `SecurityTest` class.
 `src/test/java/it/io/openliberty/guides/security/SecurityTest.java`
@@ -234,14 +235,14 @@ Create the `SecurityTest` class.
 SecurityTest.java
 [source, java, linenums, role="code_column"]
 ----
-include::finish/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=test]
+include::finish/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=**]
 ----
 
 The [hotspot=40-42]`testAuthenticationFail()` method tests an invalid user authentication while the [hotspot=57-60]`testAuthorizationFail()` method tests unauthorized access to the application.
 
 The [hotspot=45-48]`testAuthorizationForAdmin()` and [hotspot=51-54]`testAuthorizationForUser()` methods, respectively, verify that a user with `admin` role and a user with `user` role are properly authenticated and can access authorized resource.
 
-[role="code_command"]
+[role="command"]
 include::{common-includes}/mvnverify.adoc[]
 
 [source, role="no_copy"]
@@ -265,7 +266,7 @@ Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
 
 == Great work! You're done!
 
-You learned how to use Java EE Security to authenticate and authorize users to secure your web application.
+You learned how to use Java EE Security in Open Liberty to authenticate and authorize users to secure your web application.
 
 Next, you can try the related https://openliberty.io/guides/microprofile-jwt.html[MicroProfile JWT] guide. It demonstrates technologies to secure backend services.
 
