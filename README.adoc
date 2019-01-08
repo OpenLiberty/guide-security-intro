@@ -106,7 +106,7 @@ For this application, users will be asked to login with a form when they access 
 Navigate to the `start` directory to begin.
 [role="code_command hotspot=22-50", subs="quotes"]
 ----
-Create the `HomeServlet` class.
+#Create the `HomeServlet` class.#
 `src/main/java/io/openliberty/guides/ui/HomeServlet.java`
 ----
 
@@ -148,7 +148,7 @@ Open Liberty provides an easy-to-use basic user registry for developers, which y
 
 [role="code_command hotspot=1-30", subs="quotes"]
 ----
-Create the `UserRegistry` configuration file.
+#Create the `UserRegistry` configuration file.#
 `src/main/liberty/config/userRegistry.xml` 
 ----
 
@@ -229,7 +229,7 @@ Write `SecurityTest` class to test the authentication and authorization of the a
 
 [role="code_command hotspot=27-131", subs="quotes"]
 ----
-Create the `SecurityTest` class.
+#Create the `SecurityTest` class.#
 `src/test/java/it/io/openliberty/guides/security/SecurityTest.java`
 ----
 
