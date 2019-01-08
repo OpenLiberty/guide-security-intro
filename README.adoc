@@ -19,6 +19,7 @@
 :source-highlighter: prettify
 :page-seo-title: Securing a web application
 :page-seo-description: Learn how to secure a web application through authentication and authorization using Java EE 8 Security API.
+:guide-author: Open Liberty
 = Securing a web application
 
 [.hidden]
