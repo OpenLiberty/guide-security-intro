@@ -40,20 +40,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- For tests -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.httpcomponents</groupId>
-          <artifactId>httpclient</artifactId>
-          <version>4.5.3</version>
-          <scope>test</scope>
-        </dependency>
-        
         <!--Open Liberty features -->
         <dependency>
             <groupId>io.openliberty.features</groupId>
@@ -73,7 +59,19 @@
             <type>esa</type>
             <scope>provided</scope>
         </dependency>
-
+        <!-- For tests -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpclient</artifactId>
+          <version>4.5.3</version>
+          <scope>test</scope>
+        </dependency>
         <!--For JDK 9 & 10 support -->   
         <dependency>
             <groupId>javax.xml.bind</groupId>
