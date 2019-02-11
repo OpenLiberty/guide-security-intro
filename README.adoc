@@ -104,7 +104,7 @@ mvn liberty:stop-server
 For this application, users will be asked to login with a form when they access the application. Users are authenticated and depending on their roles, they will be redirected to the pages that they are authorized to access. If authentication or authorization failed, users will be sent to an error page. The application supports two roles, `admin` and `user`.
 
 Navigate to the `start` directory to begin.
-[role="code_command hotspot=22-50", subs="quotes"]
+[role="code_command hotspot", subs="quotes"]
 ----
 #Create the `HomeServlet` class.#
 `src/main/java/io/openliberty/guides/ui/HomeServlet.java`
@@ -146,7 +146,7 @@ User registries store user account information, such as username and password, f
 
 Open Liberty provides an easy-to-use basic user registry for developers, which you will configure.
 
-[role="code_command hotspot=1-30", subs="quotes"]
+[role="code_command hotspot", subs="quotes"]
 ----
 #Create the `UserRegistry` configuration file.#
 `src/main/liberty/config/userRegistry.xml` 
@@ -160,7 +160,7 @@ include::finish/src/main/liberty/config/userRegistry.xml[tags=**]
 
 The registry has four users, [hotspot=13 file=0]`bob`, [hotspot=21 file=0]`alice`, [hotspot=23 file=0]`carl` and [hotspot=27 file=0]`dave`, and four groups, [hotspot=20-24 file=0]`Employee`, [hotspot=16-18 file=0]`TeamLead`, [hotspot=12-14 file=0]`Manager` and [hotspot=26-28 file=0]`PartTime`. Each user belongs to one or more groups.
 
-It is not recommended to store passwords in plain text. The passwords in the [hotspot=1-30 file=0]`userRegistry.xml` file are encoded using the Liberty `securityUtility` command with XOR encoding.
+It is not recommended to store passwords in plain text. The passwords in the [hotspot file=0]`userRegistry.xml` file are encoded using the Liberty `securityUtility` command with XOR encoding.
 
 The [hotspot=19-27 file=1]`server.xml` file contains the security configuration of the server.
 
@@ -227,7 +227,7 @@ mvn liberty:stop-server
 
 Write `SecurityTest` class to test the authentication and authorization of the application.
 
-[role="code_command hotspot=27-131", subs="quotes"]
+[role="code_command hotspot", subs="quotes"]
 ----
 #Create the `SecurityTest` class.#
 `src/test/java/it/io/openliberty/guides/security/SecurityTest.java`
