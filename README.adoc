@@ -55,7 +55,7 @@ To try out the application, first navigate to the `finish` directory and then ru
 mvn install liberty:start-server
 ```
 
-Navigate your browser to this URL to access the application: http://localhost:9080[window="_blank"]
+Navigate your browser to this URL to access the application: http://localhost:9080[http://localhost:9080^]
 
 The application automatically switches from an HTTP connection to a secure HTTPS connection and forwards you to a login page. If the browser gives you a certificate warning, it's because the Liberty server created a self-signed SSL certificate by default. You may follow your browser's provided instructions to accept the certificate and continue.
 
@@ -181,7 +181,7 @@ Map the groups in the user registry to the appropriate user roles supported by t
 [role="command"]
 include::{common-includes}/mvnbuild.adoc[]
 
-Point your browser to http://localhost:9080[window="_blank"]. As you can see, the browser gets redirected from an HTTP connection to an HTTPS connection automatically, which is due to the transport guarantee defined in the `HomeServlet` class.
+Point your browser to http://localhost:9080[http://localhost:9080^]. As you can see, the browser gets redirected from an HTTP connection to an HTTPS connection automatically, which is due to the transport guarantee defined in the `HomeServlet` class.
 
 You will see a login form since form authentication is implemented and configured. Sign into the application using one of the credentials from the following table, which is defined in the configured user registry.
 
