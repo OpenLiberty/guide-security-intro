@@ -272,4 +272,4 @@ You learned how to use Java EE Security in Open Liberty to authenticate and auth
 Next, you can try the related https://openliberty.io/guides/microprofile-jwt.html[MicroProfile JWT^] guide. It demonstrates technologies to secure backend services.
 
 
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/multipane/attribution.adoc[subs="attributes"]
+include::{common-includes}/attribution.adoc[subs="attributes"]
