@@ -1,4 +1,4 @@
-// Copyright (c) 2017 IBM Corporation and others.
+// Copyright (c) 2017, 2019 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -11,7 +11,7 @@
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-19
 :page-description: Learn how to secure a web application through authentication and authorization.
-:page-tags: ['REST', 'Security', 'CDI', 'Java EE']
+:page-tags: [Java EE']
 :page-related-guides: ['microprofile-jwt', 'cdi-intro']
 :page-guide-category: none
 :page-permalink: /guides/{projectid}
@@ -236,7 +236,7 @@ Write `SecurityTest` class to test the authentication and authorization of the a
 SecurityTest.java
 [source, java, linenums, role="code_column"]
 ----
-include::finish/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=**]
+include::finish/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=**;!copyright]
 ----
 
 The [hotspot=40-42]`testAuthenticationFail()` method tests an invalid user authentication while the [hotspot=57-60]`testAuthorizationFail()` method tests unauthorized access to the application.
