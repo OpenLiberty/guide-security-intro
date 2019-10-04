@@ -111,9 +111,9 @@ Navigate to the `start` directory to begin.
 ----
 
 HomeServlet.java
-[source, java, linenums, role="code_column"]
+[source, java, linenums, role='code_column hide_tags=homeservlet,copyright']
 ----
-include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[tags=homeservlet;!copyright]
+include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[]
 ----
 
 The [hotspot=HomeServlet file=0]`HomeServlet` servlet is the entry point of the application. To enable form authentication for the [hotspot=HomeServlet  file=0]`HomeServlet` class, define the [hotspot=AuthenticationMechanism file=0]`@FormAuthenticationMechanismDefinition` annotation and set its [hotspot=loginToContinue file=0]`loginToContinue` attribute with a [hotspot=loginToContinue file=0]`@LoginToContinue` annotation defining [hotspot=loginPage file=0]`welcome.html` as the login page and [hotspot=errorPage file=0]`error.html` as the error page.
@@ -129,9 +129,9 @@ The SecurityContext interface provides programmatic access to Java EE Security A
 The [hotspot=webxmlsecurity file=1]`src/main/webapp/WEB-INF/web.xml` file contains the rest of the security declaration for the application.
 
 web.xml
-[source, xml, linenums, role="code_column"]
+[source, xml, linenums, role='code_column hide_tags=webxml,copyright']
 ----
-include::finish/src/main/webapp/WEB-INF/web.xml[tags=webxml;!copyright]
+include::finish/src/main/webapp/WEB-INF/web.xml[]
 ----
 
 The [hotspot=security-role file=1]`<security-role/>` elements define the roles supported by the application, which are [hotspot=role-name-user file=1]`user` and [hotspot=role-name-admin file=1]`admin`. The [hotspot=security-constraint file=1]`<security-constraint/>` elements further specify that JSF resources like the [hotspot=url-pattern-user file=1]`user.jsf` and [hotspot=url-pattern-admin file=1]`admin.jsf` pages can only be accessed by users with [hotspot=role-name-user file=1]`user` and [hotspot=role-name-admin file=1]`admin` role respectively.
@@ -153,9 +153,9 @@ Open Liberty provides an easy-to-use basic user registry for developers, which y
 ----
 
 userRegistry.xml
-[source, xml, linenums, role="code_column"]
+[source, xml, linenums, role='code_column']
 ----
-include::finish/src/main/liberty/config/userRegistry.xml[tags=**]
+include::finish/src/main/liberty/config/userRegistry.xml[]
 ----
 
 The registry has four users, [hotspot=member-name-bob file=0]`bob`, [hotspot=member-name-alice file=0]`alice`, [hotspot=member-name-carl file=0]`carl` and [hotspot=member-name-dave file=0]`dave`, and four groups, [hotspot=group-name-Employee file=0]`Employee`, [hotspot=group-name-TeamLead file=0]`TeamLead`, [hotspot=group-name-Manager file=0]`Manager` and [hotspot=group-name-PartTime file=0]`PartTime`. Each user belongs to one or more groups.
@@ -165,9 +165,9 @@ It is not recommended to store passwords in plain text. The passwords in the [ho
 The [hotspot=application-bnd file=1]`server.xml` file contains the security configuration of the server.
 
 server.xml
-[source, xml, linenums, role="code_column"]
+[source, xml, linenums, role='code_column']
 ----
-include::finish/src/main/liberty/config/server.xml[tags=**]
+include::finish/src/main/liberty/config/server.xml[]
 ----
 
 Use the [hotspot=location file=1]`<include/>` element to add the basic user registry configuration to your server configuration. Open Liberty will include configuration information from the specified XML file in its server configuration.
@@ -234,9 +234,9 @@ Write `SecurityTest` class to test the authentication and authorization of the a
 ----
 
 SecurityTest.java
-[source, java, linenums, role="code_column"]
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[tags=**;!copyright]
+include::finish/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[]
 ----
 
 The [hotspot=testAuthenticationFail]`testAuthenticationFail()` method tests an invalid user authentication while the [hotspot=testAuthorizationFail]`testAuthorizationFail()` method tests unauthorized access to the application.
