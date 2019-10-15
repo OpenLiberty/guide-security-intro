@@ -80,5 +80,5 @@ public class HomeServlet extends HttpServlet {
         doGet(request, response);
     }
 }
-// end::Homeservlet[]
+// end::HomeServlet[]
 // end::Servlet[]

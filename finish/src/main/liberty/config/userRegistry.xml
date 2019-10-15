@@ -16,11 +16,13 @@
       <!-- end::member-name-bob[] -->
     </group>
     <!-- end::group-name-Manager[] -->
+
     <!-- tag::group-name-TeamLead[] -->
     <group name="TeamLead">
       <member name="carl" />
     </group>
     <!-- end::group-name-TeamLead[]-->
+    
     <!-- tag::group-name-Employee[] -->
     <group name="Employee">
       <!-- tag::member-name-alice[] -->

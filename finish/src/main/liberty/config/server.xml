@@ -32,7 +32,7 @@
         <!-- tag::group-name-TeamLead[] -->
         <group name="TeamLead" />
         <!-- end::group-name-TeamLead[] -->
-        <!-- end:: group[] -->
+        <!-- end::group[] -->
       </security-role>
       <!-- tag::security-role-user[] -->
       <security-role name="user">
@@ -43,7 +43,7 @@
       </security-role>
       <!-- end::security[] -->
     </application-bnd>
+     <!-- end::application-bnd[] -->
   </application>
- <!-- end::application-bnd[] -->
 </server>
 <!-- end::serverxml[] -->
