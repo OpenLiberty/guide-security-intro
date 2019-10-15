@@ -10,7 +10,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::Servlet[]
 package io.openliberty.guides.ui;
 
 import java.io.IOException;
@@ -81,4 +80,3 @@ public class HomeServlet extends HttpServlet {
     }
 }
 // end::HomeServlet[]
-// end::Servlet[]
