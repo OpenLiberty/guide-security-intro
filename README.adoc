@@ -129,7 +129,7 @@ The SecurityContext interface provides programmatic access to Java EE Security A
 The [hotspot=webxmlsecurity file=1]`src/main/webapp/WEB-INF/web.xml` file contains the rest of the security declaration for the application.
 
 web.xml
-[source, xml, linenums, role='code_column hide_tags=webxml,copyright']
+[source, xml, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/src/main/webapp/WEB-INF/web.xml[]
 ----
