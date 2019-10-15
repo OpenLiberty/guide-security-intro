@@ -21,18 +21,18 @@
                name="${application.name}" context-root="/">
     <!-- tag::application-bnd[] -->
     <application-bnd>
-      <!-- tag::security[] -->
+      <!-- tag::Security[] -->
       <!-- tag::security-role-admin[] -->
       <security-role name="admin">
       <!-- end::security-role-admin[] -->
-        <!-- tag::group[] -->
+        <!-- tag::Group[] -->
         <!-- tag::group-name-Manager[] -->
         <group name="Manager" />
         <!-- end::group-name-Manager[] -->
         <!-- tag::group-name-TeamLead[] -->
         <group name="TeamLead" />
         <!-- end::group-name-TeamLead[] -->
-        <!-- end::group[] -->
+        <!-- end::Group[] -->
       </security-role>
       <!-- tag::security-role-user[] -->
       <security-role name="user">
@@ -41,7 +41,7 @@
         <group name="Employee" />
         <!-- end::group-name-Employee[] -->
       </security-role>
-      <!-- end::security[] -->
+      <!-- end::Security[] -->
     </application-bnd>
      <!-- end::application-bnd[] -->
   </application>
