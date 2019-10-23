@@ -49,28 +49,36 @@ public class SecurityTest {
     }
 
     @Test
+    // tag::testAuthenticationFail[]
     public void testAuthenticationFail() throws Exception {
         executeURL("/", "bob", "wrongpassword", true, -1, "Don't care");
     }
+    // end::testAuthenticationFail[]
 
     @Test
+    // tag::testAuthorizationForAdmin[]
     public void testAuthorizationForAdmin() throws Exception {
         executeURL("/", "bob", "bobpwd", false,
             HttpServletResponse.SC_OK, "admin, user");
     }
+    // end::testAuthorizationForAdmin[]
 
     @Test
+    // tag::testAuthorizationForUser[]
     public void testAuthorizationForUser() throws Exception {
         executeURL("/", "alice", "alicepwd", false,
             HttpServletResponse.SC_OK, "<title>User</title>");
     }
+    // end::testAuthorizationForUser[]
 
     @Test
+    // tag::testAuthorizationFail[]
     public void testAuthorizationFail() throws Exception {
         executeURL("/", "dave", "davepwd", false,
             HttpServletResponse.SC_FORBIDDEN, "Error 403: Authorization failed");
     }
-
+    // end::testAuthorizationFail[]
+    
     private void executeURL(
         String testUrl, String userid, String password,
         boolean expectLoginFail, int expectedCode, String expectedContent)

@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>io.openliberty.guides</groupId>
-    <artifactId>security-intro</artifactId>
+    <artifactId>guide-security-intro</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -162,8 +162,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <summaryFile>${project.build.directory}/test-reports/security-intro/failsafe-summary.xml</summaryFile>
-                    <reportsDirectory>${project.build.directory}/test-reports/security-intro</reportsDirectory>
+                    <summaryFile>${project.build.directory}/test-reports/guide-security-intro/failsafe-summary.xml</summaryFile>
+                    <reportsDirectory>${project.build.directory}/test-reports/guide-security-intro</reportsDirectory>
                 </configuration>
             </plugin>
 

@@ -42,19 +42,28 @@
 
     <!-- tag::webxmlsecurity[] -->
     <!-- SECURITY ROLES -->
+    <!-- tag::security-role[] -->
     <security-role>
+      <!-- tag::role-name-admin[] -->
       <role-name>admin</role-name>
+      <!-- end::role-name-admin[] -->
     </security-role>
 
     <security-role>
+      <!-- tag::role-name-user[] -->
       <role-name>user</role-name>
+      <!-- end::role-name-user[] -->
     </security-role>
+    <!-- end::security-role[] -->
 
     <!-- SECURITY CONSTRAINTS -->
+    <!-- tag::security-constraint[] -->
     <security-constraint>
       <web-resource-collection>
         <web-resource-name>AdminViewProperties</web-resource-name>
+        <!-- tag::url-pattern-admin[] -->
         <url-pattern>/admin.jsf</url-pattern>
+        <!-- end::url-pattern-admin[] -->
         <http-method>GET</http-method>
       </web-resource-collection>
       <auth-constraint>
@@ -65,7 +74,9 @@
     <security-constraint>
       <web-resource-collection>
         <web-resource-name>UserViewProperties</web-resource-name>
+        <!-- tag::url-pattern-user[] -->
         <url-pattern>/user.jsf</url-pattern>
+        <!-- end::url-pattern-user[] -->
         <http-method>GET</http-method>
       </web-resource-collection>
       <auth-constraint>
@@ -73,6 +84,7 @@
       </auth-constraint>
     </security-constraint>
     <deny-uncovered-http-methods/>
+    <!-- end::security-constraint[] -->
     <!-- end::webxmlsecurity[] -->
 
     <!-- Handle 403 Error -->
