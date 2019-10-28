@@ -9,22 +9,38 @@
     <user name="dave"
       password="{xor}Oz4pOi8oOw==" />  <!-- davepwd -->
 
+    <!-- tag::group-name-Manager[] -->
     <group name="Manager">
+      <!-- tag::member-name-bob[] -->
       <member name="bob" />
+      <!-- end::member-name-bob[] -->
     </group>
+    <!-- end::group-name-Manager[] -->
 
+    <!-- tag::group-name-TeamLead[] -->
     <group name="TeamLead">
       <member name="carl" />
     </group>
-
-    <group name="Employee">
-      <member name="alice" />
-      <member name="bob" />
-      <member name="carl" />
-    </group>
+    <!-- end::group-name-TeamLead[]-->
     
-    <group name="PartTime">
-      <member name="dave" />
+    <!-- tag::group-name-Employee[] -->
+    <group name="Employee">
+      <!-- tag::member-name-alice[] -->
+      <member name="alice" />
+      <!-- end::member-name-alice[] -->
+      <member name="bob" />
+      <!-- tag::member-name-carl[] -->
+      <member name="carl" />
+      <!-- end::member-name-carl[] -->
     </group>
+    <!-- end::group-name-Employee[] -->
+
+    <!-- tag::group-name-PartTime[] -->
+    <group name="PartTime">
+      <!-- tag::member-name-dave[] -->
+      <member name="dave" />
+      <!-- end::member-name-dave[] -->
+    </group>
+    <!-- end::group-name-PartTime[] -->
   </basicRegistry>
 </server>

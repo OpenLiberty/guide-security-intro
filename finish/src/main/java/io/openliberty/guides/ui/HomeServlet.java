@@ -10,7 +10,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::homeservlet[]
 package io.openliberty.guides.ui;
 
 import java.io.IOException;
@@ -27,11 +26,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(urlPatterns = "/home")
+// tag::AuthenticationMechanism[]
 @FormAuthenticationMechanismDefinition(
+    // tag::loginToContinue[]
+    // tag::errorPage[]
     loginToContinue = @LoginToContinue(errorPage = "/error.html", 
+    // end::errorPage[]
+                                        // tag::loginPage[]
                                        loginPage = "/welcome.html"))
+                                        // end::loginPage[]
+    // end::loginToContinue[]
+// end::AuthenticationMechanism[]
+// tag::ServletSecurity[]
+// tag::HttpConstraint[]
 @ServletSecurity(value = @HttpConstraint(rolesAllowed = { "user", "admin" },
-  transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL))
+// end::HttpConstraint[]
+  // tag::TransportGuarantee[]
+  transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL)) 
+  // end::TransportGuarantee[]
+// end::ServletSecurity[]
+// tag::HomeServlet[]
 public class HomeServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -43,14 +57,18 @@ public class HomeServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
      *      response)
      */
+    // tag::doGet[]
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+        // tag::CallerInRole[]
         if (securityContext.isCallerInRole(Utils.ADMIN)) {
             response.sendRedirect("/admin.jsf");
+        // end::CallerInRole[]
         } else if  (securityContext.isCallerInRole(Utils.USER)) {
             response.sendRedirect("/user.jsf");
         }
     }
+    // end::doGet[]
 
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -61,4 +79,4 @@ public class HomeServlet extends HttpServlet {
         doGet(request, response);
     }
 }
-// end::homeservlet[]
+// end::HomeServlet[]
