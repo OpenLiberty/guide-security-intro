@@ -15,7 +15,7 @@
 :page-related-guides: ['microprofile-jwt', 'cdi-intro']
 :page-guide-category: none
 :page-permalink: /guides/{projectid}
-:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/tags-twyb-intro
 :source-highlighter: prettify
 :page-seo-title: Securing a web application
 :page-seo-description: Learn how to secure a web application through authentication and authorization using Java EE 8 Security API.
@@ -51,7 +51,7 @@ The `finish` directory in the root of this guide contains the finished applicati
 Give it a try before you proceed.
 
 [role='command']
-include::{common-includes}/twyb-intro.adoc[lines=5-18]
+include::{common-includes}/twyb-intro.adoc[tag=runCommand]
 
 Navigate your browser to this URL to access the application: http://localhost:9080[http://localhost:9080^]
 
