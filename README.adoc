@@ -11,14 +11,14 @@
 :page-duration: 15 minutes
 :page-releasedate: 2018-10-19
 :page-description: Learn how to secure a web application through authentication and authorization.
-:page-tags: ['Java EE', 'Jakarta EE', 'Security']
+:page-tags: ['Jakarta EE', 'Security']
 :page-related-guides: ['microprofile-jwt', 'cdi-intro']
 :page-guide-category: none
 :page-permalink: /guides/{projectid}
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/tags-twyb-intro
 :source-highlighter: prettify
 :page-seo-title: Securing a web application
-:page-seo-description: Learn how to secure a web application through authentication and authorization using Java EE 8 Security API.
+:page-seo-description: Learn how to secure a web application through authentication and authorization using Jakarta EE 8 Security API.
 :guide-author: Open Liberty
 = Securing a web application
 
@@ -33,11 +33,11 @@ Learn how to secure a web application through authentication and authorization.
 
 == What you'll learn
 
-You'll learn how to secure a web application by performing authentication and authorization using Java EE Security. 
+You'll learn how to secure a web application by performing authentication and authorization using Jakarta EE Security. 
 Authentication confirms the identity of the user by verifying a user's credentials while authorization
- determines whether a user has access to restricted resources.
+determines whether a user has access to restricted resources.
 
-Java EE Security provides capability to configure the basic authentication, form authentication or custom 
+Jakarta EE Security provides capability to configure the basic authentication, form authentication or custom 
 form authentication mechanism by using annotations in servlets. It also provides SecurityContext API for 
 programmatic security checks in application code.
 
@@ -138,7 +138,7 @@ as the login page and [hotspot=errorPage file=0]`error.html` as the error page.
 The [hotspot=loginPage file=0]`welcome.html` and [hotspot=errorPage file=0]`error.html` pages 
 that implement the login form and error page respectively are provided for you under the 
 `src/main/webapp` directory. The login form in the [hotspot=loginPage file=0]`welcome.html` page 
-uses the `j_security_check` action, which is defined by Java EE and available by default.
+uses the `j_security_check` action, which is defined by Jakarta EE and available by default.
 
 Authorization determines whether a user can access a resource. To restrict access to 
 authenticated users with `user` and `admin` roles only, define the 
@@ -151,7 +151,7 @@ on the traffic between the client and the application.
 Set it to [hotspot=TransportGuarantee file=0]`CONFIDENTIAL` to enforce that all user data must be encrypted, 
 which is why an HTTP connection from a browser will be switched to an HTTPS one.
 
-The SecurityContext interface provides programmatic access to Java EE Security API. 
+The SecurityContext interface provides programmatic access to Jakarta EE Security API. 
 Inject a SecurityContext instance into the [hotspot=HomeServlet file=0]`HomeServlet` class. 
 The [hotspot=doGet file=0]`doGet()` method uses the [hotspot=CallerInRole file=0]`isCallerInRole()` method 
 from SecurityContext API to check a user's role and then forwards the response to the appropriate page.
@@ -181,7 +181,7 @@ can only be accessed by users with [hotspot=role-name-user file=1]`user` and
 User registries store user account information, such as username and password, for use by applications 
 to perform security-related operations. Typically, application servers would be configured to use an 
 external registry like a Lightweight Directory Access Protocol (LDAP) registry and applications would 
-access information in the registry for authentication and authorization using API like Java EE Security API.
+access information in the registry for authentication and authorization using API like Jakarta EE Security API.
 
 Open Liberty provides an easy-to-use basic user registry for developers, which you will configure.
 
@@ -328,7 +328,7 @@ include::{common-includes}/devmode-quit.adoc[]
 
 == Great work! You're done!
 
-You learned how to use Java EE Security in Open Liberty to authenticate and authorize users to secure your web application.
+You learned how to use Jakarta EE Security in Open Liberty to authenticate and authorize users to secure your web application.
 
 Next, you can try the related https://openliberty.io/guides/microprofile-jwt.html[MicroProfile JWT^] guide. It demonstrates technologies to secure backend services.
 
