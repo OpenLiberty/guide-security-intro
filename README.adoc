@@ -149,7 +149,7 @@ authenticated users with `user` and `admin` roles only, define the
 The [hotspot=TransportGuarantee file=0]`transportGuarantee` attribute defines the constraint
 on the traffic between the client and the application. 
 Set it to [hotspot=TransportGuarantee file=0]`CONFIDENTIAL` to enforce that all user data must be encrypted, 
-which is why an HTTP connection from a browser will be switched to an HTTPS one.
+which is why an HTTP connection from a browser will switch to HTTPS.
 
 The SecurityContext interface provides programmatic access to Jakarta EE Security API. 
 Inject a SecurityContext instance into the [hotspot=HomeServlet file=0]`HomeServlet` class. 
@@ -181,13 +181,13 @@ can only be accessed by users with [hotspot=role-name-user file=1]`user` and
 User registries store user account information, such as username and password, for use by applications 
 to perform security-related operations. Typically, application servers would be configured to use an 
 external registry like a Lightweight Directory Access Protocol (LDAP) registry and applications would 
-access information in the registry for authentication and authorization using API like Jakarta EE Security API.
+access information in the registry for authentication and authorization using APIs like the Jakarta EE Security API.
 
 Open Liberty provides an easy-to-use basic user registry for developers, which you will configure.
 
 [role="code_command hotspot", subs="quotes"]
 ----
-#Create the `UserRegistry` configuration file.#
+#Create the `userRegistry` configuration file.#
 `src/main/liberty/config/userRegistry.xml` 
 ----
 
@@ -197,16 +197,14 @@ userRegistry.xml
 include::finish/src/main/liberty/config/userRegistry.xml[]
 ----
 
-The registry has four users, [hotspot=member-name-bob file=0]`bob`, [hotspot=member-name-alice file=0]`alice`, 
-[hotspot=member-name-carl file=0]`carl` and [hotspot=member-name-dave file=0]`dave`, and four groups, 
-[hotspot=group-name-Employee file=0]`Employee`, [hotspot=group-name-TeamLead file=0]`TeamLead`, 
-[hotspot=group-name-Manager file=0]`Manager` and [hotspot=group-name-PartTime file=0]`PartTime`. 
+The registry has four users, [hotspot=user-bob file=0]`bob`, [hotspot=user-alice file=0]`alice`, 
+[hotspot=user-carl file=0]`carl` and [hotspot=user-dave file=0]`dave`, and four groups, 
+[hotspot=group-name-Manager file=0]`Manager`, [hotspot=group-name-TeamLead file=0]`TeamLead`, 
+[hotspot=group-name-Employee file=0]`Employee` and [hotspot=group-name-PartTime file=0]`PartTime`. 
 Each user belongs to one or more groups.
 
 It is not recommended to store passwords in plain text. The passwords in the [hotspot file=0]`userRegistry.xml` file
 are encoded using the Liberty `securityUtility` command with XOR encoding.
-
-The [hotspot=application-bnd file=1]`server.xml` file contains the security configuration of the server.
 
 server.xml
 [source, xml, linenums, role='code_column']
@@ -217,11 +215,14 @@ include::finish/src/main/liberty/config/server.xml[]
 Use the [hotspot=location file=1]`<include/>` element to add the basic user registry configuration to your server configuration. 
 Open Liberty will include configuration information from the specified XML file in its server configuration.
 
-Map the groups in the user registry to the appropriate user roles supported by the application for proper user authorization. 
+The [hotspot file=1]`server.xml` file contains the security configuration of the server 
+under the [hotspot=application-bnd file=1]`<application-bnd/>` element.
+Map the groups in the [hotspot file=0]`userRegistry.xml` to the appropriate user roles supported by the application for proper user authorization,
+using the [hotspot=Security file=1]`<security-role/>` and 
+[hotspot=Group hotspot=group-name-Employee file=1]`<group/>` elements. 
 The [hotspot=group-name-Manager file=1]`Manager` and [hotspot=group-name-TeamLead file=1]`TeamLead` groups are mapped to the 
 [hotspot=security-role-admin file=1]`admin` role while the [hotspot=group-name-Employee file=1]`Employee` group is mapped to the 
-[hotspot=security-role-user file=1]`user` role using the [hotspot=Security file=1]`<security-role/>` and 
-[hotspot=Group file=1]`<group/>` elements under the [hotspot=application-bnd file=1]`<application-bnd/>` configuration.
+[hotspot=security-role-user file=1]`user` role.
 
 
 // =================================================================================================
