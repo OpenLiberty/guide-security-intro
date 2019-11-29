@@ -47,13 +47,11 @@ include::{common-includes}/gitclone.adoc[]
 
 === Try what you'll build
 
-The `finish` directory in the root of this guide contains the finished application secured with form authentication. Feel free to give it a try before you proceed.
+The `finish` directory in the root of this guide contains the finished application secured with form authentication. 
+Give it a try before you proceed.
 
-To try out the application, first navigate to the `finish` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
 [role='command']
-```
-mvn install liberty:start-server
-```
+include::{common-includes}/twyb-intro.adoc[lines=5-18]
 
 Navigate your browser to this URL to access the application: http://localhost:9080[http://localhost:9080^]
 
@@ -89,11 +87,8 @@ Notice that when you sign in as Bob or Carl, the browser redirects to the `admin
 When you sign in as Alice, you can only view Alice's name.
 When you sign in as Dave, you'll be blocked and will see a `Error 403: Authorization failed` message because Dave doesn't have a role supported by the application.
 
-Once you're done checking out the application, log out and stop the Open Liberty server:
 [role='command']
-```
-mvn liberty:stop-server
-```
+include::{common-includes}/twyb-end.adoc[]
 
 // =================================================================================================
 // Adding authentication and authorization
@@ -104,6 +99,10 @@ mvn liberty:stop-server
 For this application, users will be asked to login with a form when they access the application. Users are authenticated and depending on their roles, they will be redirected to the pages that they are authorized to access. If authentication or authorization failed, users will be sent to an error page. The application supports two roles, `admin` and `user`.
 
 Navigate to the `start` directory to begin.
+
+[role='command']
+include::{common-includes}/devmode-start.adoc[]
+
 [role="code_command hotspot", subs="quotes"]
 ----
 #Create the `HomeServlet` class.#
@@ -176,10 +175,10 @@ Map the groups in the user registry to the appropriate user roles supported by t
 
 
 // =================================================================================================
-// Building and running the application
+// Running the application
 // =================================================================================================
 [role="command"]
-include::{common-includes}/mvnbuild.adoc[]
+include::{common-includes}/devmode-build.adoc[]
 
 Point your browser to http://localhost:9080[http://localhost:9080^]. As you can see, the browser gets redirected from an HTTP connection to an HTTPS connection automatically, which is due to the transport guarantee defined in the `HomeServlet` class.
 
@@ -213,11 +212,6 @@ Notice that when you sign in as Bob or Carl, the browser redirects to the `admin
 When you sign in as Alice, you can only view Alice's name.
 When you sign in as Dave, you'll be blocked and will see a `Error 403: Authorization failed` message because Dave doesn't have a role supported by the application.
 
-Once you're done checking out the application, log out and stop the Open Liberty server:
-[role='command']
-```
-mvn liberty:stop-server
-```
 
 // =================================================================================================
 // Testing the application
@@ -225,34 +219,36 @@ mvn liberty:stop-server
 
 == Testing the application
 
-Write `SecurityTest` class to test the authentication and authorization of the application.
+Write `SecurityIT` class to test the authentication and authorization of the application.
 
 [role="code_command hotspot", subs="quotes"]
 ----
-#Create the `SecurityTest` class.#
-`src/test/java/it/io/openliberty/guides/security/SecurityTest.java`
+#Create the `SecurityIT` class.#
+`src/test/java/it/io/openliberty/guides/security/SecurityIT.java`
 ----
 
-SecurityTest.java
+SecurityIT.java
 [source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/src/test/java/it/io/openliberty/guides/security/SecurityTest.java[]
+include::finish/src/test/java/it/io/openliberty/guides/security/SecurityIT.java[]
 ----
 
 The [hotspot=testAuthenticationFail]`testAuthenticationFail()` method tests an invalid user authentication while the [hotspot=testAuthorizationFail]`testAuthorizationFail()` method tests unauthorized access to the application.
 
 The [hotspot=testAuthorizationForAdmin]`testAuthorizationForAdmin()` and [hotspot=testAuthorizationForUser]`testAuthorizationForUser()` methods, respectively, verify that a user with `admin` role and a user with `user` role are properly authenticated and can access authorized resource.
 
-[role="command"]
-include::{common-includes}/mvnverify.adoc[]
+[role='command']
+include::{common-includes}/devmode-test.adoc[]
+
+You see the following output:
 
 [source, role="no_copy"]
 ----
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.security.SecurityTest
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.78 sec - in it.io.openliberty.guides.security.SecurityTest
+Running it.io.openliberty.guides.security.SecurityIT
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.78 sec - in it.io.openliberty.guides.security.SecurityIT
 
 Results :
 
@@ -260,6 +256,8 @@ Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
 
 ----
 
+[role='command']
+include::{common-includes}/devmode-quit.adoc[]
 
 // =================================================================================================
 // Great work! You're done!

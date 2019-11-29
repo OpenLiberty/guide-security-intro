@@ -21,7 +21,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-public class TestUtils {
+public class ITUtils {
 
     public static void trustAll() throws Exception {
         SSLContext sslContext = SSLContext.getInstance("SSL");
