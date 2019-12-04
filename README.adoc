@@ -18,7 +18,7 @@
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/tags-twyb-intro
 :source-highlighter: prettify
 :page-seo-title: Securing a web application
-:page-seo-description: Learn how to secure a web application through authentication and authorization using Jakarta EE 8 Security API.
+:page-seo-description: Learn how to use the Jakarta EE 8 Security API to secure a web application through authentication and authorization.
 :guide-author: Open Liberty
 = Securing a web application
 
@@ -37,12 +37,12 @@ You'll learn how to secure a web application by performing authentication and au
 Authentication confirms the identity of the user by verifying a user's credentials while authorization
 determines whether a user has access to restricted resources.
 
-Jakarta EE Security provides capability to configure the basic authentication, form authentication or custom 
-form authentication mechanism by using annotations in servlets. It also provides SecurityContext API for 
+Jakarta EE Security provides capability to configure the basic authentication, form authentication, or custom 
+form authentication mechanism by using annotations in servlets. It also provides the SecurityContext API for
 programmatic security checks in application code.
 
-You’ll implement form authentication for a simple web frontend. You'll also learn to specify security 
-constraints for a servlet and use the SecurityContext API to determine the role of a logged in user.
+You’ll implement form authentication for a simple web front end. You'll also learn to specify security
+constraints for a servlet and use the SecurityContext API to determine the role of a logged-in user.
 
 // =================================================================================================
 // Getting Started
@@ -52,7 +52,7 @@ include::{common-includes}/gitclone.adoc[]
 
 === Try what you'll build
 
-The `finish` directory in the root of this guide contains the finished application secured with form authentication. 
+The `finish` directory in the root of this guide contains the finished application that is secured with form authentication. 
 Give it a try before you proceed.
 
 [role='command']
@@ -62,11 +62,11 @@ Navigate your browser to this URL to access the application: http://localhost:90
 
 The application automatically switches from an HTTP connection to a secure HTTPS connection 
 and forwards you to a login page. If the browser gives you a certificate warning, it's because the 
-Liberty server created a self-signed SSL certificate by default. You may follow your browser's 
+Open Liberty server created a self-signed SSL certificate by default. You can follow your browser's 
 provided instructions to accept the certificate and continue.
 
-Sign into the application with one of the following user credentials from the user registry, 
-which have been provided to you:
+Sign in to the application with one of the following user credentials from the user registry, 
+which are provided to you:
 
 |===
 |Username|Password|Role|Group
@@ -94,8 +94,8 @@ which have been provided to you:
 
 Notice that when you sign in as Bob or Carl, the browser redirects to the `admin` page and you can view their names and roles. 
 When you sign in as Alice, you can only view Alice's name.
-When you sign in as Dave, you'll be blocked and will see a `Error 403: Authorization failed` message 
-because Dave doesn't have a role supported by the application.
+When you sign in as Dave, you are blocked and see an `Error 403: Authorization failed` message 
+because Dave doesn't have a role that is supported by the application.
 
 [role='command']
 include::{common-includes}/twyb-end.adoc[]
@@ -106,9 +106,9 @@ include::{common-includes}/twyb-end.adoc[]
 
 == Adding authentication and authorization
 
-For this application, users will be asked to login with a form when they access the application. 
-Users are authenticated and depending on their roles, they will be redirected to the pages that they 
-are authorized to access. If authentication or authorization failed, users will be sent to an error page. 
+For this application, users are asked to log in with a form when they access the application. 
+Users are authenticated and depending on their roles, they are redirected to the pages that they 
+are authorized to access. If authentication or authorization fails, users are sent to an error page. 
 The application supports two roles, `admin` and `user`.
 
 Navigate to the `start` directory to begin.
@@ -129,19 +129,21 @@ include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[]
 ----
 
 The [hotspot=HomeServlet file=0]`HomeServlet` servlet is the entry point of the application. 
-To enable form authentication for the [hotspot=HomeServlet  file=0]`HomeServlet` class, 
+To enable form authentication for the [hotspot=HomeServlet file=0]`HomeServlet` class, 
 define the [hotspot=AuthenticationMechanism file=0]`@FormAuthenticationMechanismDefinition` annotation 
 and set its [hotspot=loginToContinue file=0]`loginToContinue` attribute with a 
-[hotspot=loginToContinue file=0]`@LoginToContinue` annotation defining [hotspot=loginPage file=0]`welcome.html` 
+[hotspot=loginToContinue file=0]`@LoginToContinue` annotation. 
+This [hotspot=AuthenticationMechanism file=0]`@FormAuthenticationMechanismDefinition` annotation 
+defines [hotspot=loginPage file=0]`welcome.html` 
 as the login page and [hotspot=errorPage file=0]`error.html` as the error page.
 
-The [hotspot=loginPage file=0]`welcome.html` and [hotspot=errorPage file=0]`error.html` pages 
-that implement the login form and error page respectively are provided for you under the 
+The [hotspot=loginPage file=0]`welcome.html` page implements the login form, and the [hotspot=errorPage file=0]`error.html` page
+implements the error page. Both pages are provided for you under the 
 `src/main/webapp` directory. The login form in the [hotspot=loginPage file=0]`welcome.html` page 
 uses the `j_security_check` action, which is defined by Jakarta EE and available by default.
 
 Authorization determines whether a user can access a resource. To restrict access to 
-authenticated users with `user` and `admin` roles only, define the 
+authenticated users with `user` and `admin` roles, define the 
 [hotspot=ServletSecurity file=0]`@ServletSecurity` annotation with the 
 [hotspot=HttpConstraint file=0]`@HttpConstraint` annotation and set the 
 [hotspot=HttpConstraint file=0]`rolesAllowed` attribute to these two roles.
@@ -149,12 +151,12 @@ authenticated users with `user` and `admin` roles only, define the
 The [hotspot=TransportGuarantee file=0]`transportGuarantee` attribute defines the constraint
 on the traffic between the client and the application. 
 Set it to [hotspot=TransportGuarantee file=0]`CONFIDENTIAL` to enforce that all user data must be encrypted, 
-which is why an HTTP connection from a browser will switch to HTTPS.
+which is why an HTTP connection from a browser switches to HTTPS.
 
-The SecurityContext interface provides programmatic access to Jakarta EE Security API. 
+The SecurityContext interface provides programmatic access to the Jakarta EE Security API. 
 Inject a SecurityContext instance into the [hotspot=HomeServlet file=0]`HomeServlet` class. 
 The [hotspot=doGet file=0]`doGet()` method uses the [hotspot=CallerInRole file=0]`isCallerInRole()` method 
-from SecurityContext API to check a user's role and then forwards the response to the appropriate page.
+from the SecurityContext API to check a user's role and then forwards the response to the appropriate page.
 
 The [hotspot=webxmlsecurity file=1]`src/main/webapp/WEB-INF/web.xml` file 
 contains the rest of the security declaration for the application.
@@ -165,12 +167,12 @@ web.xml
 include::finish/src/main/webapp/WEB-INF/web.xml[]
 ----
 
-The [hotspot=security-role file=1]`<security-role/>` elements define the roles supported by the application, 
+The [hotspot=security-role file=1]`<security-role/>` elements define the roles that are supported by the application, 
 which are [hotspot=role-name-user file=1]`user` and [hotspot=role-name-admin file=1]`admin`. 
-The [hotspot=security-constraint file=1]`<security-constraint/>` elements further specify that JSF resources 
+The [hotspot=security-constraint file=1]`<security-constraint/>` elements specify that JSF resources 
 like the [hotspot=url-pattern-user file=1]`user.jsf` and [hotspot=url-pattern-admin file=1]`admin.jsf` pages 
-can only be accessed by users with [hotspot=role-name-user file=1]`user` and 
-[hotspot=role-name-admin file=1]`admin` role respectively.
+can be accessed only by users with [hotspot=role-name-user file=1]`user` and 
+[hotspot=role-name-admin file=1]`admin` roles.
 
 // =================================================================================================
 // Configuring the user registry
@@ -180,8 +182,8 @@ can only be accessed by users with [hotspot=role-name-user file=1]`user` and
 
 User registries store user account information, such as username and password, for use by applications 
 to perform security-related operations. Typically, application servers would be configured to use an 
-external registry like a Lightweight Directory Access Protocol (LDAP) registry and applications would 
-access information in the registry for authentication and authorization using APIs like the Jakarta EE Security API.
+external registry like a Lightweight Directory Access Protocol (LDAP) registry. Applications would 
+access information in the registry for authentication and authorization by using APIs like the Jakarta EE Security API.
 
 Open Liberty provides an easy-to-use basic user registry for developers, which you will configure.
 
@@ -198,13 +200,13 @@ include::finish/src/main/liberty/config/userRegistry.xml[]
 ----
 
 The registry has four users, [hotspot=user-bob file=0]`bob`, [hotspot=user-alice file=0]`alice`, 
-[hotspot=user-carl file=0]`carl` and [hotspot=user-dave file=0]`dave`, and four groups, 
+[hotspot=user-carl file=0]`carl`, and [hotspot=user-dave file=0]`dave`. It also has four groups: 
 [hotspot=group-name-Manager file=0]`Manager`, [hotspot=group-name-TeamLead file=0]`TeamLead`, 
-[hotspot=group-name-Employee file=0]`Employee` and [hotspot=group-name-PartTime file=0]`PartTime`. 
+[hotspot=group-name-Employee file=0]`Employee`, and [hotspot=group-name-PartTime file=0]`PartTime`. 
 Each user belongs to one or more groups.
 
 It is not recommended to store passwords in plain text. The passwords in the [hotspot file=0]`userRegistry.xml` file
-are encoded using the Liberty `securityUtility` command with XOR encoding.
+are encoded by using the Liberty `securityUtility` command with XOR encoding.
 
 server.xml
 [source, xml, linenums, role='code_column']
@@ -213,13 +215,12 @@ include::finish/src/main/liberty/config/server.xml[]
 ----
 
 Use the [hotspot=location file=1]`<include/>` element to add the basic user registry configuration to your server configuration. 
-Open Liberty will include configuration information from the specified XML file in its server configuration.
+Open Liberty includes configuration information from the specified XML file in its server configuration.
 
 The [hotspot file=1]`server.xml` file contains the security configuration of the server 
 under the [hotspot=application-bnd file=1]`<application-bnd/>` element.
-Map the groups in the [hotspot file=0]`userRegistry.xml` to the appropriate user roles supported by the application for proper user authorization,
-using the [hotspot=Security file=1]`<security-role/>` and 
-[hotspot=Group hotspot=group-name-Employee file=1]`<group/>` elements. 
+Use the [hotspot=Security file=1]`<security-role/>` and [hotspot=Group hotspot=group-name-Employee file=1]`<group/>` elements to 
+map the groups in the [hotspot file=0]`userRegistry.xml` file to the appropriate user roles supported by the application for proper user authorization.
 The [hotspot=group-name-Manager file=1]`Manager` and [hotspot=group-name-TeamLead file=1]`TeamLead` groups are mapped to the 
 [hotspot=security-role-admin file=1]`admin` role while the [hotspot=group-name-Employee file=1]`Employee` group is mapped to the 
 [hotspot=security-role-user file=1]`user` role.
@@ -237,12 +238,12 @@ HomeServlet.java
 include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[]
 ----
 
-Point your browser to http://localhost:9080[http://localhost:9080^]. 
-As you can see, the browser gets redirected from an HTTP connection to an HTTPS connection automatically, 
-which is due to the transport guarantee defined in the [hotspot file=0]`HomeServlet` class.
+Point your browser to the http://localhost:9080[http://localhost:9080^] URL. 
+As you can see, the browser gets automatically redirected from an HTTP connection to an HTTPS connection
+because the transport guarantee is defined in the [hotspot file=0]`HomeServlet` class.
 
 You will see a login form since form authentication is implemented and configured. 
-Sign into the application using one of the credentials from the following table, which is defined in the configured user registry.
+Sign in to the application by using one of the credentials from the following table. The credentials are defined in the configured user registry.
 
 |===
 |Username|Password|Role|Group
@@ -270,8 +271,8 @@ Sign into the application using one of the credentials from the following table,
 
 Notice that when you sign in as Bob or Carl, the browser redirects to the `admin` page and you can view their names and roles.
 When you sign in as Alice, you can only view Alice's name.
-When you sign in as Dave, you'll be blocked and will see a `Error 403: Authorization failed` message 
-because Dave doesn't have a role supported by the application.
+When you sign in as Dave, you are blocked and see an `Error 403: Authorization failed` message 
+because Dave doesn't have a role that is supported by the application.
 
 
 // =================================================================================================
@@ -280,7 +281,7 @@ because Dave doesn't have a role supported by the application.
 
 == Testing the application
 
-Write [hotspot file=0]`SecurityIT` class to test the authentication and authorization of the application.
+Write the [hotspot file=0]`SecurityIT` class to test the authentication and authorization of the application.
 
 [role="code_command hotspot", subs="quotes"]
 ----
@@ -298,8 +299,8 @@ The [hotspot=testAuthenticationFail]`testAuthenticationFail()` method tests an i
 while the [hotspot=testAuthorizationFail]`testAuthorizationFail()` method tests unauthorized access to the application.
 
 The [hotspot=testAuthorizationForAdmin]`testAuthorizationForAdmin()` and 
-[hotspot=testAuthorizationForUser]`testAuthorizationForUser()` methods, respectively, verify that a user with `admin` role 
-and a user with `user` role are properly authenticated and can access authorized resource.
+[hotspot=testAuthorizationForUser]`testAuthorizationForUser()` methods verify that users with `admin` or `user` roles 
+are properly authenticated and can access authorized resource.
 
 [role='command']
 include::{common-includes}/devmode-test.adoc[]
