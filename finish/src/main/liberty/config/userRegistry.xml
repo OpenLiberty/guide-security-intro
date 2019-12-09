@@ -1,19 +1,25 @@
 <server description="Sample Liberty server">
   <basicRegistry id="basic" realm="WebRealm">
+    <!-- tag::user-bob[] -->
     <user name="bob"
       password="{xor}PTA9Lyg7" /> <!-- bobpwd -->
+    <!-- end::user-bob[] -->
+    <!-- tag::user-alice[] -->
     <user name="alice"
       password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
+    <!-- end::user-alice[] -->
+    <!-- tag::user-carl[] -->
     <user name="carl"
       password="{xor}PD4tMy8oOw==" />  <!-- carlpwd -->
+    <!-- end::user-carl[] -->
+    <!-- tag::user-dave[] -->
     <user name="dave"
       password="{xor}Oz4pOi8oOw==" />  <!-- davepwd -->
+    <!-- end::user-dave[] -->
 
     <!-- tag::group-name-Manager[] -->
     <group name="Manager">
-      <!-- tag::member-name-bob[] -->
       <member name="bob" />
-      <!-- end::member-name-bob[] -->
     </group>
     <!-- end::group-name-Manager[] -->
 
@@ -25,21 +31,15 @@
     
     <!-- tag::group-name-Employee[] -->
     <group name="Employee">
-      <!-- tag::member-name-alice[] -->
       <member name="alice" />
-      <!-- end::member-name-alice[] -->
       <member name="bob" />
-      <!-- tag::member-name-carl[] -->
       <member name="carl" />
-      <!-- end::member-name-carl[] -->
     </group>
     <!-- end::group-name-Employee[] -->
 
     <!-- tag::group-name-PartTime[] -->
     <group name="PartTime">
-      <!-- tag::member-name-dave[] -->
       <member name="dave" />
-      <!-- end::member-name-dave[] -->
     </group>
     <!-- end::group-name-PartTime[] -->
   </basicRegistry>
