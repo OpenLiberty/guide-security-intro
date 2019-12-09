@@ -1,4 +1,4 @@
-package io.openliberty.guides.ui.filters;
+package io.openliberty.guides.ui;
 
 import java.io.IOException;
 

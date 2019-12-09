@@ -12,8 +12,8 @@
 // end::copyright[]
 package it.io.openliberty.guides.security;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -33,19 +33,19 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class SecurityTest {
+public class SecurityIT {
 
     private static String urlHttp;
     private static String urlHttps;
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
-        urlHttp = "http://localhost:" + System.getProperty("liberty.test.port");
-        urlHttps = "https://localhost:" + System.getProperty("liberty.test.ssl.port");
-        TestUtils.trustAll();
+        urlHttp = "http://localhost:" + System.getProperty("http.port");
+        urlHttps = "https://localhost:" + System.getProperty("https.port");
+        ITUtils.trustAll();
     }
 
     @Test
@@ -97,9 +97,8 @@ public class SecurityTest {
 
         // Response should be login.html
         String loginBody = EntityUtils.toString(response.getEntity(), "UTF-8");
-        assertTrue(
-            "Not redirected to home.html",
-            loginBody.contains("window.location.assign"));
+        assertTrue(loginBody.contains("window.location.assign"),
+            "Not redirected to home.html");
         String[] redirect = loginBody.split("'");
 
         // Use j_security_check to login
@@ -109,16 +108,15 @@ public class SecurityTest {
         nvps.add(new BasicNameValuePair("j_password", password));
         postMethod.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
         response = client.execute(postMethod);
-        assertEquals(
-            "Expected " + HttpServletResponse.SC_FOUND + " status code for login",
-        HttpServletResponse.SC_FOUND, response.getStatusLine().getStatusCode());
+        assertEquals(HttpServletResponse.SC_FOUND, 
+            response.getStatusLine().getStatusCode(),
+            "Expected " + HttpServletResponse.SC_FOUND + " status code for login");
 
         // Return if login fails
         if (expectLoginFail) {
             String location = response.getFirstHeader("Location").getValue();
-            assertTrue(
-                "Error.html was not returned",
-                location.contains("error.html"));
+            assertTrue(location.contains("error.html"),
+                "Error.html was not returned");
             return;
         }
 
@@ -126,9 +124,8 @@ public class SecurityTest {
         url = new URI(urlHttps + redirect[1]);
         getMethod = new HttpGet(url);
         response = client.execute(getMethod);
-        assertEquals(
-            "Expected " + expectedCode + " status code for login",
-            expectedCode, response.getStatusLine().getStatusCode());
+        assertEquals(expectedCode, response.getStatusLine().getStatusCode(),
+            "Expected " + expectedCode + " status code for login");
 
         // Return if not SC_OK
         if (expectedCode != HttpServletResponse.SC_OK) {
@@ -137,15 +134,12 @@ public class SecurityTest {
 
         // Check the content of the response returned
         String actual = EntityUtils.toString(response.getEntity(), "UTF-8");
-        assertTrue(
+        assertTrue(actual.contains(userid),
             "The actual content did not contain the userid \"" + userid +
-            "\". It was:\n" + actual,
-        actual.contains(userid));
-        assertTrue(
-            "The url " + testUrl +
-            " did not return the expected content \"" + expectedContent + "\"" +
-            "The actual content was:\n" + actual,
-        actual.contains(expectedContent));
+            "\". It was:\n" + actual);
+        assertTrue(actual.contains(expectedContent),
+            "The url " + testUrl + " did not return the expected content \"" 
+            + expectedContent + "\"" + "The actual content was:\n" + actual);
     }
 
 }

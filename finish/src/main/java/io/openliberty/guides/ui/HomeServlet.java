@@ -53,10 +53,12 @@ public class HomeServlet extends HttpServlet {
     @Inject
     private SecurityContext securityContext;
 
+    // tag::javaDoc1[]
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
      *      response)
      */
+    // end::javaDoc1[]
     // tag::doGet[]
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -70,10 +72,12 @@ public class HomeServlet extends HttpServlet {
     }
     // end::doGet[]
 
+    // tag::javaDoc2[]
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
      */
+    // end::javaDoc2[]
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         doGet(request, response);
