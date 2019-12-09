@@ -15,7 +15,7 @@
 :page-related-guides: ['microprofile-jwt', 'cdi-intro']
 :page-guide-category: none
 :page-permalink: /guides/{projectid}
-:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/tags-twyb-intro
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: Securing a web application
 :page-seo-description: Learn how to use the Jakarta EE 8 Security API to secure a web application through authentication and authorization.
