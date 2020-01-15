@@ -17,8 +17,8 @@
 :page-permalink: /guides/{projectid}
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-:page-seo-title: Securing a web application
-:page-seo-description: Learn how to use the Jakarta EE 8 Security API to secure a web application through authentication and authorization.
+:page-seo-title: Securing a Java web application using the Jakarta EE Security API
+:page-seo-description: A getting started tutorial and an example on how to secure a Java or Jakarta EE web application through authentication and authorization with a user registry by using the Jakarta EE Security API.
 :guide-author: Open Liberty
 = Securing a web application
 
