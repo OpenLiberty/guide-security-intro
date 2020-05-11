@@ -16,9 +16,9 @@
 
   <include location="userRegistry.xml"/>
 
-  <application location="${application.name}" type="war"
-               id="${application.name}"
-               name="${application.name}" context-root="/">
+  <application location="guide-security-intro.war" type="war"
+               id="guide-security-intro.war"
+               name="guide-security-intro.war" context-root="/">
     <application-bnd>
       <security-role name="admin">
         <group name="Manager" />

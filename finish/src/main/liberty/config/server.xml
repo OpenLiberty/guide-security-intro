@@ -19,9 +19,9 @@
   <include location="userRegistry.xml"/>
   <!-- end::location[]-->
 
-  <application location="${application.name}" type="war"
-               id="${application.name}"
-               name="${application.name}" context-root="/">
+  <application location="guide-security-intro.war" type="war"
+               id="guide-security-intro.war"
+               name="guide-security-intro.war" context-root="/">
     <!-- tag::application-bnd[] -->
     <application-bnd>
       <!-- tag::Security[] -->
