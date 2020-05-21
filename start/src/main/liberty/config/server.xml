@@ -8,7 +8,6 @@
 
   <variable name="default.http.port" defaultValue="9080"/>
   <variable name="default.https.port" defaultValue="9443"/>
-  <variable name="application.name" defaultValue="guide-security-intro.war"/>
 
   <httpEndpoint id="defaultHttpEndpoint"
     httpPort="${default.http.port}"
@@ -16,9 +15,9 @@
 
   <include location="userRegistry.xml"/>
 
-  <application location="${application.name}" type="war"
-               id="${application.name}"
-               name="${application.name}" context-root="/">
+  <application location="guide-security-intro.war" type="war"
+               id="guide-security-intro.war"
+               name="guide-security-intro.war" context-root="/">
     <application-bnd>
       <security-role name="admin">
         <group name="Manager" />
