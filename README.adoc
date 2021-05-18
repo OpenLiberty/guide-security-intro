@@ -114,7 +114,7 @@ The application supports two roles, `admin` and `user`.
 Navigate to the `start` directory to begin.
 
 [role='command']
-include::{common-includes}/devmode-start.adoc[]
+include::{common-includes}/devmode-lmp33-start.adoc[]
 
 [role="code_command hotspot", subs="quotes"]
 ----
