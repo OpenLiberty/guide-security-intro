@@ -167,9 +167,9 @@ web.xml
 include::finish/src/main/webapp/WEB-INF/web.xml[]
 ----
 
-The [hotspot=security-role file=1]`<security-role/>` elements define the roles that are supported by the application, 
+The [hotspot=security-role file=1]`security-role` elements define the roles that are supported by the application, 
 which are [hotspot=role-name-user file=1]`user` and [hotspot=role-name-admin file=1]`admin`. 
-The [hotspot=security-constraint file=1]`<security-constraint/>` elements specify that JSF resources 
+The [hotspot=security-constraint file=1]`security-constraint` elements specify that JSF resources 
 like the [hotspot=url-pattern-user file=1]`user.jsf` and [hotspot=url-pattern-admin file=1]`admin.jsf` pages 
 can be accessed only by users with [hotspot=role-name-user file=1]`user` and 
 [hotspot=role-name-admin file=1]`admin` roles.
@@ -214,12 +214,12 @@ server.xml
 include::finish/src/main/liberty/config/server.xml[]
 ----
 
-Use the [hotspot=location file=1]`<include/>` element to add the basic user registry configuration to your server configuration. 
+Use the [hotspot=location file=1]`include` element to add the basic user registry configuration to your server configuration. 
 Open Liberty includes configuration information from the specified XML file in its server configuration.
 
 The [hotspot file=1]`server.xml` file contains the security configuration of the server 
-under the [hotspot=application-bnd file=1]`<application-bnd/>` element.
-Use the [hotspot=Security file=1]`<security-role/>` and [hotspot=Group hotspot=group-name-Employee file=1]`<group/>` elements to 
+under the [hotspot=application-bnd file=1]`application-bnd` element.
+Use the [hotspot=Security file=1]`security-role` and [hotspot=Group hotspot=group-name-Employee file=1]`group` elements to 
 map the groups in the [hotspot file=0]`userRegistry.xml` file to the appropriate user roles supported by the application for proper user authorization.
 The [hotspot=group-name-Manager file=1]`Manager` and [hotspot=group-name-TeamLead file=1]`TeamLead` groups are mapped to the 
 [hotspot=security-role-admin file=1]`admin` role while the [hotspot=group-name-Employee file=1]`Employee` group is mapped to the 
