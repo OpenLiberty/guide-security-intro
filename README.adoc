@@ -23,7 +23,7 @@
 = Securing a web application
 
 [.hidden]
-NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website^].
 
 Learn how to secure a web application through authentication and authorization.
 
@@ -58,7 +58,16 @@ Give it a try before you proceed.
 [role='command']
 include::{common-includes}/twyb-intro.adoc[tag=runCommand]
 
+ifndef::cloud-hosted[]
 Navigate your browser to this URL to access the application: http://localhost:9080[http://localhost:9080^]
+endif::[]
+
+ifdef::cloud-hosted[]
+To access the application, elect **Launch Application** from the menu of the IDE, 
+type in **9080** to specify the port number for the microservice, and click the **OK** button. 
+You're redirected to a URL similar to **`https://accountname-9090.theiadocker-4.proxy.cognitiveclass.ai`**, 
+where **accountname** is your account name.
+endif::[]
 
 The application automatically switches from an HTTP connection to a secure HTTPS connection 
 and forwards you to a login page. If the browser gives you a certificate warning, it's because the 
@@ -238,7 +247,16 @@ HomeServlet.java
 include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[]
 ----
 
+ifndef::cloud-hosted[]
 Point your browser to the http://localhost:9080[http://localhost:9080^] URL. 
+endif::[]
+
+ifdef::cloud-hosted[]
+Select **Launch Application** from the menu of the IDE, 
+type in **9080** to specify the port number for the microservice, and click the **OK** button. 
+You're redirected to a URL similar to **`https://accountname-9090.theiadocker-4.proxy.cognitiveclass.ai`**, 
+where **accountname** is your account name.
+endif::[]
 As you can see, the browser gets automatically redirected from an HTTP connection to an HTTPS connection
 because the transport guarantee is defined in the [hotspot file=0]`HomeServlet` class.
 
