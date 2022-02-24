@@ -105,7 +105,7 @@ public class SecurityIT {
         HttpPost postMethod = new HttpPost(urlHttps + "/j_security_check");
         List<NameValuePair> nvps = new ArrayList<NameValuePair>();
         nvps.add(new BasicNameValuePair("j_username", userid ));
-        nvps.add(new BasicNameValuePair("j_password", password));
+        nvps.add(new BasicNameValuePair("j_password", password ));
         postMethod.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
         response = client.execute(postMethod);
         assertEquals(HttpServletResponse.SC_FOUND,
@@ -135,8 +135,8 @@ public class SecurityIT {
         // Check the content of the response returned
         String actual = EntityUtils.toString(response.getEntity(), "UTF-8");
         assertTrue(actual.contains(userid),
-            "The actual content did not contain the userid \"" + userid +
-            "\". It was:\n" + actual);
+            "The actual content did not contain the userid \"" + userid
+            + "\". It was:\n" + actual);
         assertTrue(actual.contains(expectedContent),
             "The url " + testUrl + " did not return the expected content \""
             + expectedContent + "\"" + "The actual content was:\n" + actual);

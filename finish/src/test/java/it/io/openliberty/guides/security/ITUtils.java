@@ -32,12 +32,12 @@ public class ITUtils {
                     @Override
                     public void checkClientTrusted(X509Certificate[] arg0,
                         String arg1)
-                        throws CertificateException {}
+                        throws CertificateException { }
 
                     @Override
                     public void checkServerTrusted(X509Certificate[] arg0,
                         String arg1)
-                        throws CertificateException {}
+                        throws CertificateException { }
 
                     public X509Certificate[] getAcceptedIssuers() {
                         return null;
