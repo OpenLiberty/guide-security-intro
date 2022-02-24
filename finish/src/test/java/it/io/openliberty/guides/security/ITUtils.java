@@ -16,10 +16,10 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import jakarta.net.ssl.HttpsURLConnection;
-import jakarta.net.ssl.SSLContext;
-import jakarta.net.ssl.TrustManager;
-import jakarta.net.ssl.X509TrustManager;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class ITUtils {
 

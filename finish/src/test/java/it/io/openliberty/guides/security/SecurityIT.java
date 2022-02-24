@@ -19,7 +19,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.net.ssl.SSLContext;
+import javax.net.ssl.SSLContext;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpResponse;
