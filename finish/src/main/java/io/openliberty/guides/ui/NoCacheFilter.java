@@ -30,7 +30,8 @@ public class NoCacheFilter implements Filter {
                          ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
                 HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-                httpServletResponse.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+                httpServletResponse.setHeader("Cache-Control", "no-store,"
+                                             + "no-cache, must-revalidate, max-age=0");
                 httpServletResponse.setDateHeader("Expires", 0);
                 httpServletResponse.setHeader("Pragma", "no-cache");
                 chain.doFilter(request, response);
