@@ -1,36 +1,36 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018, 2019 IBM Corporation and others.
+ * Copyright (c) 2018, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
 package io.openliberty.guides.ui;
 
 import java.io.IOException;
-import javax.inject.Inject;
-import javax.security.enterprise.SecurityContext;
-import javax.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
-import javax.security.enterprise.authentication.mechanism.http.LoginToContinue;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.HttpConstraint;
-import javax.servlet.annotation.ServletSecurity;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.inject.Inject;
+import jakarta.security.enterprise.SecurityContext;
+import jakarta.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
+import jakarta.security.enterprise.authentication.mechanism.http.LoginToContinue;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.HttpConstraint;
+import jakarta.servlet.annotation.ServletSecurity;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet(urlPatterns = "/home")
 // tag::AuthenticationMechanism[]
 @FormAuthenticationMechanismDefinition(
     // tag::loginToContinue[]
     // tag::errorPage[]
-    loginToContinue = @LoginToContinue(errorPage = "/error.html", 
+    loginToContinue = @LoginToContinue(errorPage = "/error.html",
     // end::errorPage[]
                                         // tag::loginPage[]
                                        loginPage = "/welcome.html"))
@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 @ServletSecurity(value = @HttpConstraint(rolesAllowed = { "user", "admin" },
 // end::HttpConstraint[]
   // tag::TransportGuarantee[]
-  transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL)) 
+  transportGuarantee = ServletSecurity.TransportGuarantee.CONFIDENTIAL))
   // end::TransportGuarantee[]
 // end::ServletSecurity[]
 // tag::HomeServlet[]

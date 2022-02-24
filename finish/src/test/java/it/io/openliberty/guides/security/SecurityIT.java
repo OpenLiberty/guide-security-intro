@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018, 2019 IBM Corporation and others.
+ * Copyright (c) 2018, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.net.ssl.SSLContext;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.net.ssl.SSLContext;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -78,7 +78,7 @@ public class SecurityIT {
             HttpServletResponse.SC_FORBIDDEN, "Error 403: Authorization failed");
     }
     // end::testAuthorizationFail[]
-    
+
     private void executeURL(
         String testUrl, String userid, String password,
         boolean expectLoginFail, int expectedCode, String expectedContent)
@@ -108,7 +108,7 @@ public class SecurityIT {
         nvps.add(new BasicNameValuePair("j_password", password));
         postMethod.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
         response = client.execute(postMethod);
-        assertEquals(HttpServletResponse.SC_FOUND, 
+        assertEquals(HttpServletResponse.SC_FOUND,
             response.getStatusLine().getStatusCode(),
             "Expected " + HttpServletResponse.SC_FOUND + " status code for login");
 
@@ -138,7 +138,7 @@ public class SecurityIT {
             "The actual content did not contain the userid \"" + userid +
             "\". It was:\n" + actual);
         assertTrue(actual.contains(expectedContent),
-            "The url " + testUrl + " did not return the expected content \"" 
+            "The url " + testUrl + " did not return the expected content \""
             + expectedContent + "\"" + "The actual content was:\n" + actual);
     }
 

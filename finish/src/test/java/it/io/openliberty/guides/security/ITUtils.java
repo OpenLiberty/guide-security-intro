@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018 IBM Corporation and others.
+ * Copyright (c) 2018, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,17 +16,17 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import jakarta.net.ssl.HttpsURLConnection;
+import jakarta.net.ssl.SSLContext;
+import jakarta.net.ssl.TrustManager;
+import jakarta.net.ssl.X509TrustManager;
 
 public class ITUtils {
 
     public static void trustAll() throws Exception {
         SSLContext sslContext = SSLContext.getInstance("SSL");
         sslContext.init(
-            null, 
+            null,
             new TrustManager[] {
                 new X509TrustManager() {
                     @Override
