@@ -104,8 +104,8 @@ public class SecurityIT {
         // Use j_security_check to login
         HttpPost postMethod = new HttpPost(urlHttps + "/j_security_check");
         List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-        nvps.add(new BasicNameValuePair("j_username", userid ) );
-        nvps.add(new BasicNameValuePair("j_password", password ) );
+        nvps.add(new BasicNameValuePair("j_username", userid ));
+        nvps.add(new BasicNameValuePair("j_password", password ));
         postMethod.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
         response = client.execute(postMethod);
         assertEquals(HttpServletResponse.SC_FOUND,
