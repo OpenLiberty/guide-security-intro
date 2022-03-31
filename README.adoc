@@ -183,7 +183,7 @@ include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[]
 
 Point your browser to the http://localhost:9080[http://localhost:9080^] URL. As you can see, the browser gets automatically redirected from an HTTP connection to an HTTPS connection because the transport guarantee is defined in the [hotspot file=0]`HomeServlet` class.
 
-You will see a login form since form authentication is implemented and configured. Sign in to the application by using one of the credentials from the following table. The credentials are defined in the configured user registry.
+You will see a login form because form authentication is implemented and configured. Sign in to the application by using one of the credentials from the following table. The credentials are defined in the configured user registry.
 
 |===
 |Username|Password|Role|Group
