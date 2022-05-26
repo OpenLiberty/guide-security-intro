@@ -50,7 +50,7 @@ include::{common-includes}/gitclone.adoc[]
 The `finish` directory in the root of this guide contains the finished application that is secured with form authentication. Give it a try before you proceed.
 
 [role='command']
-include::{common-includes}/twyb-intro.adoc[tag=runCommand]
+include::{common-includes}/twyb-intro.adoc[]
 
 ifndef::cloud-hosted[]
 Navigate your browser to this URL to access the application: http://localhost:9080[http://localhost:9080^]
