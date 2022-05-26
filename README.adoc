@@ -64,7 +64,7 @@ The application automatically switches from an HTTP connection to a secure HTTPS
 
 Sign in to the application with one of the following user credentials from the user registry, which are provided to you:
 
-[cols="35, 200", options="header"]
+[cols="<35, ^150, ^150, ^150"]
 |===
 | *Username* | *Password* | *Role* | *Group*
 | alice | alicepwd | user | Employee
