@@ -48,7 +48,7 @@ include::{common-includes}/gitclone.adoc[]
 [role='command']
 include::{common-includes}/twyb-intro.adoc[]
 
-The finished application is secured with form authentication. Give it a try before you proceed.
+The finished application is secured with form authentication.
 
 ifndef::cloud-hosted[]
 Navigate your browser to this URL to access the application: http://localhost:9080[http://localhost:9080^]
@@ -64,6 +64,7 @@ The application automatically switches from an HTTP connection to a secure HTTPS
 
 Sign in to the application with one of the following user credentials from the user registry, which are provided to you:
 
+[cols="35, 200", options="header"]
 |===
 | *Username* | *Password* | *Role* | *Group*
 | alice | alicepwd | user | Employee
