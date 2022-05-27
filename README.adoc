@@ -87,6 +87,11 @@ include::{common-includes}/twyb-end.adoc[]
 For this application, users are asked to log in with a form when they access the application. Users are authenticated and depending on their roles, they are redirected to the pages that they are authorized to access. If authentication or authorization fails, users are sent to an error page. The application supports two roles, `admin` and `user`.
 
 Navigate to the `start` directory to begin.
+ifdef::cloud-hosted[]
+```bash
+cd /home/project/guide-security-intro/start
+```
+endif::[]
 
 [role='command']
 include::{common-includes}/devmode-lmp33-start.adoc[]
@@ -120,6 +125,10 @@ web.xml
 ----
 include::finish/src/main/webapp/WEB-INF/web.xml[]
 ----
+
+ifdef::cloud-hosted[]
+::openFile{path="/home/project/guide-security-intro/start/src/main/webapp/WEB-INF/web.xml"}
+endif::[]
 
 The [hotspot=security-role file=1]`security-role` elements define the roles that are supported by the application, which are [hotspot=role-name-user file=1]`user` and [hotspot=role-name-admin file=1]`admin`. The [hotspot=security-constraint file=1]`security-constraint` elements specify that JSF resources like the [hotspot=url-pattern-user file=1]`user.jsf` and [hotspot=url-pattern-admin file=1]`admin.jsf` pages can be accessed only by users with [hotspot=role-name-user file=1]`user` and [hotspot=role-name-admin file=1]`admin` roles.
 
