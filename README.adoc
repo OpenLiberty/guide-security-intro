@@ -164,6 +164,12 @@ server.xml
 include::finish/src/main/liberty/config/server.xml[]
 ----
 
+ifdef::cloud-hosted[]
+See the server configuration file.
+
+::openFile{path="/home/project/guide-security-intro/start/src/main/liberty/config/server.xml"}
+endif::[]
+
 Use the [hotspot=location file=1]`include` element to add the basic user registry configuration to your server configuration. Open Liberty includes configuration information from the specified XML file in its server configuration.
 
 The [hotspot file=1]`server.xml` file contains the security configuration of the server under the [hotspot=application-bnd file=1]`application-bnd` element. Use the [hotspot=Security file=1]`security-role` and [hotspot=Group hotspot=group-name-Employee file=1]`group` elements to map the groups in the [hotspot file=0]`userRegistry.xml` file to the appropriate user roles supported by the application for proper user authorization. The [hotspot=group-name-Manager file=1]`Manager` and [hotspot=group-name-TeamLead file=1]`TeamLead` groups are mapped to the [hotspot=security-role-admin file=1]`admin` role while the [hotspot=group-name-Employee file=1]`Employee` group is mapped to the [hotspot=security-role-user file=1]`user` role.
