@@ -23,7 +23,7 @@
 = Securing a web application
 
 [.hidden]
-NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website^].
 
 Learn how to secure a web application through authentication and authorization.
 
@@ -45,41 +45,32 @@ You’ll implement form authentication for a simple web front end. You'll also l
 [role="command"]
 include::{common-includes}/gitclone.adoc[]
 
-=== Try what you'll build
-
-The `finish` directory in the root of this guide contains the finished application that is secured with form authentication. Give it a try before you proceed.
-
 [role='command']
-include::{common-includes}/twyb-intro.adoc[tag=runCommand]
+include::{common-includes}/twyb-intro.adoc[]
 
+The finished application is secured with form authentication.
+
+ifndef::cloud-hosted[]
 Navigate your browser to this URL to access the application: http://localhost:9080[http://localhost:9080^]
+endif::[]
+
+ifdef::cloud-hosted[]
+Click the following button to visit the application:
+
+::startApplication{port="9080" display="external" name="Visit application" route="/"}
+endif::[]
 
 The application automatically switches from an HTTP connection to a secure HTTPS connection and forwards you to a login page. If the browser gives you a certificate warning, it's because the Open Liberty server created a self-signed SSL certificate by default. You can follow your browser's provided instructions to accept the certificate and continue.
 
 Sign in to the application with one of the following user credentials from the user registry, which are provided to you:
 
+[cols="<35, ^150, ^150, ^150"]
 |===
-|Username|Password|Role|Group
-
-|alice
-|alicepwd
-|user
-|Employee
-
-|bob
-|bobpwd
-|admin, user
-|Manager, Employee
-
-|carl
-|carlpwd
-|admin, user
-|TeamLead, Employee
-
-|dave
-|davepwd
-|N/A
-|PartTime
+| *Username* | *Password* | *Role* | *Group*
+| alice | alicepwd | user | Employee
+| bob | bobpwd | admin, user | Manager, Employee
+| carl | carlpwd | admin, user | TeamLead, Employee
+| dave | davepwd | N/A | PartTime
 |===
 
 Notice that when you sign in as Bob or Carl, the browser redirects to the `admin` page and you can view their names and roles. When you sign in as Alice, you can only view Alice's name. When you sign in as Dave, you are blocked and see an `Error 403: Authorization failed` message because Dave doesn't have a role that is supported by the application.
@@ -96,6 +87,11 @@ include::{common-includes}/twyb-end.adoc[]
 For this application, users are asked to log in with a form when they access the application. Users are authenticated and depending on their roles, they are redirected to the pages that they are authorized to access. If authentication or authorization fails, users are sent to an error page. The application supports two roles, `admin` and `user`.
 
 Navigate to the `start` directory to begin.
+ifdef::cloud-hosted[]
+```bash
+cd /home/project/guide-security-intro/start
+```
+endif::[]
 
 [role='command']
 include::{common-includes}/devmode-lmp33-start.adoc[]
@@ -129,6 +125,10 @@ web.xml
 ----
 include::finish/src/main/webapp/WEB-INF/web.xml[]
 ----
+
+ifdef::cloud-hosted[]
+::openFile{path="/home/project/guide-security-intro/start/src/main/webapp/WEB-INF/web.xml"}
+endif::[]
 
 The [hotspot=security-role file=1]`security-role` elements define the roles that are supported by the application, which are [hotspot=role-name-user file=1]`user` and [hotspot=role-name-admin file=1]`admin`. The [hotspot=security-constraint file=1]`security-constraint` elements specify that JSF resources like the [hotspot=url-pattern-user file=1]`user.jsf` and [hotspot=url-pattern-admin file=1]`admin.jsf` pages can be accessed only by users with [hotspot=role-name-user file=1]`user` and [hotspot=role-name-admin file=1]`admin` roles.
 
@@ -181,32 +181,27 @@ HomeServlet.java
 include::finish/src/main/java/io/openliberty/guides/ui/HomeServlet.java[]
 ----
 
-Point your browser to the http://localhost:9080[http://localhost:9080^] URL. As you can see, the browser gets automatically redirected from an HTTP connection to an HTTPS connection because the transport guarantee is defined in the [hotspot file=0]`HomeServlet` class.
+ifndef::cloud-hosted[]
+Point your browser to the http://localhost:9080[http://localhost:9080^] URL.
+endif::[]
+
+ifdef::cloud-hosted[]
+Click the following button to visit the application:
+
+::startApplication{port="9080" display="external" name="Visit application" route="/"}
+endif::[]
+
+As you can see, the browser gets automatically redirected from an HTTP connection to an HTTPS connection because the transport guarantee is defined in the [hotspot file=0]`HomeServlet` class.
 
 You will see a login form because form authentication is implemented and configured. Sign in to the application by using one of the credentials from the following table. The credentials are defined in the configured user registry.
 
+[cols="<35, ^150, ^150, ^150"]
 |===
-|Username|Password|Role|Group
-
-|alice
-|alicepwd
-|user
-|Employee
-
-|bob
-|bobpwd
-|admin, user
-|Manager, Employee
-
-|carl
-|carlpwd
-|admin, user
-|TeamLead, Employee
-
-|dave
-|davepwd
-|N/A
-|PartTime
+| *Username* | *Password* | *Role* | *Group*
+| alice | alicepwd | user | Employee
+| bob | bobpwd | admin, user | Manager, Employee
+| carl | carlpwd | admin, user | TeamLead, Employee
+| dave | davepwd | N/A | PartTime
 |===
 
 Notice that when you sign in as Bob or Carl, the browser redirects to the `admin` page and you can view their names and roles. When you sign in as Alice, you can only view Alice's name. When you sign in as Dave, you are blocked and see an `Error 403: Authorization failed` message because Dave doesn't have a role that is supported by the application.
