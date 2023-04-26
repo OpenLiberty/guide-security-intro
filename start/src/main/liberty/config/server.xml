@@ -1,9 +1,9 @@
 <server description="Sample Liberty server">
 
   <featureManager>
-    <feature>appSecurity-4.0</feature>
-    <feature>faces-3.0</feature>
-    <feature>servlet-5.0</feature>
+    <feature>appSecurity-5.0</feature>
+    <feature>faces-4.0</feature>
+    <feature>servlet-6.0</feature>
   </featureManager>
 
   <variable name="default.http.port" defaultValue="9080"/>
