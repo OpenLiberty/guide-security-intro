@@ -1,4 +1,4 @@
-// Copyright (c) 2017, 2022 IBM Corporation and others.
+// Copyright (c) 2017, 2023 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -138,7 +138,7 @@ The [hotspot=security-role file=1]`security-role` elements define the roles that
 
 == Configuring the user registry
 
-User registries store user account information, such as username and password, for use by applications to perform security-related operations. Typically, application servers would be configured to use an external registry like a Lightweight Directory Access Protocol (LDAP) registry. Applications would access information in the registry for authentication and authorization by using APIs like the Jakarta EE Security API.
+User registries store user account information, such as username and password, for use by applications to perform security-related operations. Typically, Open Liberty would be configured to use an external registry like a Lightweight Directory Access Protocol (LDAP) registry. Applications would access information in the registry for authentication and authorization by using APIs like the Jakarta EE Security API.
 
 Open Liberty provides an easy-to-use basic user registry for developers, which you will configure.
 
@@ -165,14 +165,14 @@ include::finish/src/main/liberty/config/server.xml[]
 ----
 
 ifdef::cloud-hosted[]
-See the server configuration file.
+See the Liberty server.xml configuration file.
 
 ::openFile{path="/home/project/guide-security-intro/start/src/main/liberty/config/server.xml"}
 endif::[]
 
-Use the [hotspot=location file=1]`include` element to add the basic user registry configuration to your server configuration. Open Liberty includes configuration information from the specified XML file in its server configuration.
+Use the [hotspot=location file=1]`include` element to add the basic user registry configuration to your Liberty configuration. Open Liberty includes configuration information from the specified XML file in its configuration.
 
-The [hotspot file=1]`server.xml` file contains the security configuration of the server under the [hotspot=application-bnd file=1]`application-bnd` element. Use the [hotspot=Security file=1]`security-role` and [hotspot=Group hotspot=group-name-Employee file=1]`group` elements to map the groups in the [hotspot file=0]`userRegistry.xml` file to the appropriate user roles supported by the application for proper user authorization. The [hotspot=group-name-Manager file=1]`Manager` and [hotspot=group-name-TeamLead file=1]`TeamLead` groups are mapped to the [hotspot=security-role-admin file=1]`admin` role while the [hotspot=group-name-Employee file=1]`Employee` group is mapped to the [hotspot=security-role-user file=1]`user` role.
+The [hotspot file=1]`server.xml` configuration file contains the security configuration of the Liberty under the [hotspot=application-bnd file=1]`application-bnd` element. Use the [hotspot=Security file=1]`security-role` and [hotspot=Group hotspot=group-name-Employee file=1]`group` elements to map the groups in the [hotspot file=0]`userRegistry.xml` file to the appropriate user roles supported by the application for proper user authorization. The [hotspot=group-name-Manager file=1]`Manager` and [hotspot=group-name-TeamLead file=1]`TeamLead` groups are mapped to the [hotspot=security-role-admin file=1]`admin` role while the [hotspot=group-name-Employee file=1]`Employee` group is mapped to the [hotspot=security-role-user file=1]`user` role.
 
 
 // =================================================================================================
