@@ -60,7 +60,7 @@ Click the following button to visit the application:
 ::startApplication{port="9080" display="external" name="Visit application" route="/"}
 endif::[]
 
-The application automatically switches from an HTTP connection to a secure HTTPS connection and forwards you to a login page. If the browser gives you a certificate warning, it's because the Open Liberty server created a self-signed SSL certificate by default. You can follow your browser's provided instructions to accept the certificate and continue.
+The application automatically switches from an HTTP connection to a secure HTTPS connection and forwards you to a login page. If the browser gives you a certificate warning, it's because the Open Liberty instance created a self-signed SSL certificate by default. You can follow your browser's provided instructions to accept the certificate and continue.
 
 Sign in to the application with one of the following user credentials from the user registry, which are provided to you:
 
