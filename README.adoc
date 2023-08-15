@@ -165,7 +165,7 @@ include::finish/src/main/liberty/config/server.xml[]
 ----
 
 ifdef::cloud-hosted[]
-See the Liberty server.xml configuration file.
+See the Liberty ***server.xml*** configuration file.
 
 ::openFile{path="/home/project/guide-security-intro/start/src/main/liberty/config/server.xml"}
 endif::[]
