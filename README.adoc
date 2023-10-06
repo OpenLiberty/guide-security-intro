@@ -257,7 +257,7 @@ Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
 ----
 
 [role='command']
-include::{common-includes}/devmode-quit.adoc[]
+include::{common-includes}/devmode-quit-ctrlc.adoc[]
 
 // =================================================================================================
 // Great work! You're done!
