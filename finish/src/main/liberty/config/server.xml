@@ -2,9 +2,10 @@
 <server description="Sample Liberty server">
 
   <featureManager>
-    <feature>appSecurity-5.0</feature>
-    <feature>faces-4.0</feature>
-    <feature>servlet-6.0</feature>
+    <platform>jakartaee-10.0</platform>
+    <feature>appSecurity</feature>
+    <feature>faces</feature>
+    <feature>servlet</feature>
   </featureManager>
 
   <variable name="http.port" defaultValue="9080"/>
