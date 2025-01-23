@@ -1,4 +1,4 @@
-// Copyright (c) 2017, 2023 IBM Corporation and others.
+// Copyright (c) 2017, 2025 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -154,9 +154,9 @@ userRegistry.xml
 include::finish/src/main/liberty/config/userRegistry.xml[]
 ----
 
-The registry has four users, [hotspot=user-bob file=0]`bob`, [hotspot=user-alice file=0]`alice`, [hotspot=user-carl file=0]`carl`, and [hotspot=user-dave file=0]`dave`. It also has four groups: [hotspot=group-name-Manager file=0]`Manager`, [hotspot=group-name-TeamLead file=0]`TeamLead`, [hotspot=group-name-Employee file=0]`Employee`, and [hotspot=group-name-PartTime file=0]`PartTime`. Each user belongs to one or more groups.
+The registry has four users, [hotspot=user-bob file=0]`bob`, [hotspot=user-alice file=0]`alice`, [hotspot=user-carl file=0]`carl`, and [hotspot=user-dave file=0]`dave`. It also has four groups: [hotspot=group-name-Manager file=0]`Manager`, [hotspot=group-name-TeamLead file=0]`TeamLead`, [hotspot=group-name-Employee file=0]`Employee`, and [hotspot=group-name-PartTime file=0]`PartTime`. Each user belongs to one or more groups. To learn more about configuration for the `basicRegistry` element, see the https://openliberty.io/docs/latest/reference/config/basicRegistry.html[Basic User Registry^] documentation.
 
-It is not recommended to store passwords in plain text. The passwords in the [hotspot file=0]`userRegistry.xml` file are encoded by using the Liberty `securityUtility` command with XOR encoding.
+It is not recommended to store passwords in plain text. The passwords in the [hotspot file=0]`userRegistry.xml` file are encoded by using the Liberty `securityUtility` command with XOR encoding. To learn more about configuration for the `securityUtility` commands, see the https://openliberty.io/docs/latest/reference/command/securityUtility-commands.html[securityUtility commands^] documentation.
 
 server.xml
 [source, xml, linenums, role='code_column']
@@ -172,7 +172,7 @@ endif::[]
 
 Use the [hotspot=location file=1]`include` element to add the basic user registry configuration to your Liberty configuration. Open Liberty includes configuration information from the specified XML file in its configuration.
 
-The [hotspot file=1]`server.xml` configuration file contains the security configuration of the Liberty under the [hotspot=application-bnd file=1]`application-bnd` element. Use the [hotspot=Security file=1]`security-role` and [hotspot=Group hotspot=group-name-Employee file=1]`group` elements to map the groups in the [hotspot file=0]`userRegistry.xml` file to the appropriate user roles supported by the application for proper user authorization. The [hotspot=group-name-Manager file=1]`Manager` and [hotspot=group-name-TeamLead file=1]`TeamLead` groups are mapped to the [hotspot=security-role-admin file=1]`admin` role while the [hotspot=group-name-Employee file=1]`Employee` group is mapped to the [hotspot=security-role-user file=1]`user` role.
+The [hotspot file=1]`server.xml` configuration file contains the security configuration of the Liberty under the [hotspot=application-bnd file=1]`application-bnd` element. Use the [hotspot=Security file=1]`security-role` and [hotspot=Group hotspot=group-name-Employee file=1]`group` elements to map the groups in the [hotspot file=0]`userRegistry.xml` file to the appropriate user roles supported by the application for proper user authorization. The [hotspot=group-name-Manager file=1]`Manager` and [hotspot=group-name-TeamLead file=1]`TeamLead` groups are mapped to the [hotspot=security-role-admin file=1]`admin` role while the [hotspot=group-name-Employee file=1]`Employee` group is mapped to the [hotspot=security-role-user file=1]`user` role. To learn more about configuration for the `security-role` element, see the https://openliberty.io/docs/latest/reference/config/application.html#application.html#application-bnd/security-role&expand=true[Application^] documentation.
 
 
 // =================================================================================================
