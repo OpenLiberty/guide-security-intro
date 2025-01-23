@@ -156,7 +156,7 @@ include::finish/src/main/liberty/config/userRegistry.xml[]
 
 The registry has four users, [hotspot=user-bob file=0]`bob`, [hotspot=user-alice file=0]`alice`, [hotspot=user-carl file=0]`carl`, and [hotspot=user-dave file=0]`dave`. It also has four groups: [hotspot=group-name-Manager file=0]`Manager`, [hotspot=group-name-TeamLead file=0]`TeamLead`, [hotspot=group-name-Employee file=0]`Employee`, and [hotspot=group-name-PartTime file=0]`PartTime`. Each user belongs to one or more groups. To learn more about configuration for the `basicRegistry` element, see the https://openliberty.io/docs/latest/reference/config/basicRegistry.html[Basic User Registry^] documentation.
 
-It is not recommended to store passwords in plain text. The passwords in the [hotspot file=0]`userRegistry.xml` file are encoded by using the Liberty `securityUtility` command with XOR encoding. To learn more about configuration for the `securityUtility` commands, see the https://openliberty.io/docs/latest/reference/command/securityUtility-commands.html[securityUtility commands^] documentation.
+It is not recommended to store passwords in plain text. The passwords in the [hotspot file=0]`userRegistry.xml` file are encoded by using the Liberty `securityUtility` command with XOR encoding. To learn more about the `securityUtility` commands, see the https://openliberty.io/docs/latest/reference/command/securityUtility-commands.html[securityUtility commands^] documentation.
 
 server.xml
 [source, xml, linenums, role='code_column']
