@@ -46,7 +46,7 @@ You’ll implement form authentication for a simple web front end. You'll also l
 include::{common-includes}/gitclone.adoc[]
 
 [role='command']
-include::{common-includes}/twyb-intro.adoc[]
+include::{common-includes}/twyb-intro-mvnw.adoc[]
 
 The finished application is secured with form authentication.
 
@@ -76,7 +76,7 @@ Sign in to the application with one of the following user credentials from the u
 Notice that when you sign in as Bob or Carl, the browser redirects to the `admin` page and you can view their names and roles. When you sign in as Alice, you can only view Alice's name. When you sign in as Dave, you are blocked and see an `Error 403: Authorization failed` message because Dave doesn't have a role that is supported by the application.
 
 [role='command']
-include::{common-includes}/twyb-end.adoc[]
+include::{common-includes}/twyb-end-mvnw.adoc[]
 
 // =================================================================================================
 // Adding authentication and authorization
@@ -94,7 +94,7 @@ cd /home/project/guide-security-intro/start
 endif::[]
 
 [role='command']
-include::{common-includes}/devmode-lmp33-start.adoc[]
+include::{common-includes}/devmode-mvnw-start.adoc[]
 
 [role="code_command hotspot", subs="quotes"]
 ----
