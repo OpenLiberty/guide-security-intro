@@ -12,6 +12,8 @@
 package io.openliberty.guides.ui;
 
 import java.io.IOException;
+import java.io.Serial;
+
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.SecurityContext;
 import jakarta.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
@@ -47,6 +49,7 @@ import jakarta.servlet.http.HttpServletResponse;
 // tag::HomeServlet[]
 public class HomeServlet extends HttpServlet {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Inject

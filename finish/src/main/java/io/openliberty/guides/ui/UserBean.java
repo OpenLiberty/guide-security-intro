@@ -12,6 +12,7 @@
 // tag::userbean[]
 package io.openliberty.guides.ui;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.enterprise.context.RequestScoped;
@@ -24,6 +25,7 @@ import jakarta.security.enterprise.SecurityContext;
 
 public class UserBean implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Inject
